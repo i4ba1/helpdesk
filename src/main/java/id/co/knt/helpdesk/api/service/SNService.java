@@ -4,7 +4,7 @@ import id.co.knt.helpdesk.api.model.SerialNumber;
 import java.util.List;
 
 public interface SNService{
-    String registerSerialNumber(String serialNumber);
+    SerialNumber registerSerialNumber(String serialNumber);
     List<SerialNumber> findAllSN();
 
     SerialNumber findSN(Long id);

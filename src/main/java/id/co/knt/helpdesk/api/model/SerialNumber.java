@@ -41,18 +41,6 @@ public class SerialNumber implements Serializable {
     @Column(name="register_date")
     private Date registerDate;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="mac_id", referencedColumnName="id")
-	private MacAddr macAddr;
-
-	public MacAddr getMacAddr() {
-		return macAddr;
-	}
-
-	public void setMacAddr(MacAddr macAddr) {
-		this.macAddr = macAddr;
-	}
-
 	public Long getId() {
 		return id;
 	}

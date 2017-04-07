@@ -1,19 +1,12 @@
 package id.co.knt.helpdesk.api.impl;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.simontuffs.onejar.Boot;
-
-import id.co.knt.helpdesk.api.model.MacAddr;
 import id.co.knt.helpdesk.api.model.SerialNumber;
-import id.co.knt.helpdesk.api.repositories.MacAddrRepo;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.co.knt.helpdesk.api.service.SNService;
 import id.web.pos.integra.gawl.Gawl;
@@ -26,17 +19,11 @@ public class SNServiceImpl implements SNService {
 	@Autowired
 	private SNRepo snRepo;
 
-	@Autowired
-	private MacAddrRepo macAddrRepo;
-
 	@Override
-	public String registerSerialNumber(String serialNumber) {
+	public SerialNumber registerSerialNumber(String serialNumber) {
 		SerialNumber snNumber = null;
-		MacAddr ma = null;
-		InetAddress addr;
-		byte[] mac = null;
 		
-		try {
+		/*try {
 			addr = InetAddress.getLocalHost();
 			NetworkInterface ni = NetworkInterface.getByInetAddress(addr);
 			mac = ni.getHardwareAddress();
@@ -50,8 +37,11 @@ public class SNServiceImpl implements SNService {
 			ma.setMacAddress(mac);
 			ma.setCreatedDate(new Date());
 			macAddrRepo.save(ma);
-		}
+		}*/
 
+		//gawl.generate(arg0, arg1)
+		//gawl.generate(type, module)
+		String passKey = "";
 		if (gawl.validate(serialNumber)) {
 			try {
 				Map<String, Byte> extractResult = gawl.extract(serialNumber);
@@ -60,35 +50,32 @@ public class SNServiceImpl implements SNService {
 					byte seed1 = extractResult.get(Gawl.SEED1);
 					byte seed2 = extractResult.get(Gawl.SEED2);
 					// Generate passkey
-					String passKey = gawl.pass(seed1, seed2);
-					
-					//Generate activation key
-                    Boot.run(new String[]{passKey});
+					passKey = gawl.pass(seed1, seed2);
 
 					if (Type == 3) {
-						// get passkey and put into textbox
+						//save the serial number
 						if (extractResult.get(Gawl.SEED1) == seed1) {
 							snNumber = new SerialNumber();
 							snNumber.setSerialNumber(serialNumber);
 							snNumber.setPassKey(passKey);
-							snNumber.setMacAddr(ma);
 							snNumber.setRegisterDate(new Date());
-							snRepo.save(snNumber);
+							//snRepo.save(snNumber);
 						} else {
-							return "404";
+							return null;
 						}
 					} else {
-						return "404";
+						return null;
 					}
 
 				} else {
-					return "404";
+					return null;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		
+		return snNumber;
 	}
 
 	@Override
