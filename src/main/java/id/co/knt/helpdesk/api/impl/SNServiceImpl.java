@@ -1,6 +1,7 @@
 package id.co.knt.helpdesk.api.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,26 +23,8 @@ public class SNServiceImpl implements SNService {
 	@Override
 	public SerialNumber registerSerialNumber(String serialNumber) {
 		SerialNumber snNumber = null;
-		
-		/*try {
-			addr = InetAddress.getLocalHost();
-			NetworkInterface ni = NetworkInterface.getByInetAddress(addr);
-			mac = ni.getHardwareAddress();
-			ma = macAddrRepo.findByMacAddress(mac);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-
-		if (ma == null) {
-			ma = new MacAddr();
-			ma.setMacAddress(mac);
-			ma.setCreatedDate(new Date());
-			macAddrRepo.save(ma);
-		}*/
-
-		//gawl.generate(arg0, arg1)
-		//gawl.generate(type, module)
 		String passKey = "";
+		
 		if (gawl.validate(serialNumber)) {
 			try {
 				Map<String, Byte> extractResult = gawl.extract(serialNumber);
@@ -95,4 +78,40 @@ public class SNServiceImpl implements SNService {
 		snRepo.delete(id);
 	}
 
+	@Override
+	public SerialNumber generateActivationKey(Long id, String passKey){
+		String activationKey = "";
+		SerialNumber snNumber = snRepo.findOne(id);
+		try{
+			activationKey = gawl.activate(passKey);
+			snNumber.setActivationKey(activationKey);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return snNumber;
+	}
+
+	@Override
+	public int activateActivationKey(Long id, String activationKey){
+		SerialNumber snNumber = snRepo.findOne(id);
+		Map<String, Byte> info = new HashMap<>();
+		int result = 0;
+
+		try{
+			info = gawl.extract(snNumber.getSerialNumber());
+			String passKey = gawl.pass(((Byte)info.get("seed1")).byteValue(), ((Byte)info.get("seed2")).byteValue());
+			if (!gawl.challenge(passKey, activationKey)) {
+				result = -1;
+			} else {
+				snNumber.setActivationKey(activationKey);
+				snRepo.save(snNumber);
+				result = 1;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		return result;
+	}
 }

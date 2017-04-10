@@ -10,4 +10,8 @@ public interface SNService{
     SerialNumber findSN(Long id);
 
     void deleteSN(Long id);
+
+    SerialNumber generateActivationKey(Long id, String passKey);
+
+    int activateActivationKey(Long id, String activationKey);
 }

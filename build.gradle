@@ -7,12 +7,28 @@
  */
 
 // Apply the java-library plugin to add support for Java Library
-apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'com.bmuschko.tomcat'
+
+war{
+    baseName = 'helpdesk'
+    version = '1.0.0-development'
+}
 
 // JDK 8
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.5'
+    }
+}
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -20,6 +36,13 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     mavenLocal()
     mavenCentral()
+}
+
+dependencies {
+    def tomcatVersion = '8.0.43'
+    tomcat  "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
 }
 
 dependencies {
@@ -35,6 +58,9 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:5.2.9.Final'
     compile 'id.web.pos.integra.gawl:gawl:1.0'
     compile 'id.co.knt.activator:activator:1.0'
+    compile 'com.jsoniter:jsoniter:0.9.8'
+    compile 'org.postgresql:postgresql:9.4-1200-jdbc41'
+    compile 'commons-io:commons-io:2.5'
 
     // Use JUnit test framework
     compile 'junit:junit:4.12'

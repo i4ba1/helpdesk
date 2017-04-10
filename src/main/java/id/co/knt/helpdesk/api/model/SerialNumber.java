@@ -5,12 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,6 +37,9 @@ public class SerialNumber implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="register_date")
     private Date registerDate;
+
+	@Column(name="type_app")
+	private String typeApp;
 
 	public Long getId() {
 		return id;
@@ -75,5 +75,13 @@ public class SerialNumber implements Serializable {
 
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
+	}
+
+	public void setTypeApp(String typeApp){
+		this.typeApp = typeApp;
+	}
+
+	public String getTypeApp(){
+		return this.typeApp;
 	}
 }
