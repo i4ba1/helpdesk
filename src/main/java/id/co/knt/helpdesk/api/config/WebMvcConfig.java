@@ -1,6 +1,5 @@
 package id.co.knt.helpdesk.api.config;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -8,20 +7,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
 @Configuration
 @ComponentScan(basePackages = { "id.co.knt.helpdesk.api" })
@@ -52,7 +48,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
 		ObjectMapper mapper = new ObjectMapper();
 		// Registering Hibernate4Module to support lazy objects
-		mapper.registerModule(new Hibernate4Module());
+		mapper.registerModule(new Hibernate5Module());
 
 		messageConverter.setObjectMapper(mapper);
 		return messageConverter;

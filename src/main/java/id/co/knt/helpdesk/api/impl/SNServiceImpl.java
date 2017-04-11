@@ -42,7 +42,7 @@ public class SNServiceImpl implements SNService {
 							snNumber.setSerialNumber(serialNumber);
 							snNumber.setPassKey(passKey);
 							snNumber.setRegisterDate(new Date());
-							//snRepo.save(snNumber);
+							snNumber = snRepo.save(snNumber);
 						} else {
 							return null;
 						}

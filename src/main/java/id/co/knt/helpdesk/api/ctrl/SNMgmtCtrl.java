@@ -1,10 +1,11 @@
 package id.co.knt.helpdesk.api.ctrl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +20,8 @@ public class SNMgmtCtrl{
     @Autowired
     private SNService snService;
 
-    //
-    @RequestMapping(value="/register/", method = RequestMethod.POST)
-    public ResponseEntity<SerialNumber> register(@RequestBody String serialNumber){
+    @RequestMapping(value="/register/{serialNumber}", method = RequestMethod.POST)
+    public ResponseEntity<SerialNumber> register(@PathVariable String serialNumber){
         SerialNumber number = snService.registerSerialNumber(serialNumber);
         if(!serialNumber.equals(null)){
             return new ResponseEntity<SerialNumber>(number, HttpStatus.OK);
@@ -37,7 +37,7 @@ public class SNMgmtCtrl{
     	return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.OK);
     }
     
-    @RequestMapping(value="/activate/", method = RequestMethod.POST)
+    @RequestMapping(value="/activate/{id}/{activationKey}", method = RequestMethod.POST)
     public ResponseEntity<Void> activate(@PathVariable Long id, @PathVariable String activationKey){
     	int result = snService.activateActivationKey(id, activationKey);
     	if (result <= 0) {
@@ -47,5 +47,23 @@ public class SNMgmtCtrl{
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    @RequestMapping(value={ "" }, method = RequestMethod.GET)
+    public ResponseEntity<List<SerialNumber>> findAllSN(){
+    	List<SerialNumber> listSN = snService.findAllSN();
+    	if(listSN.isEmpty()){
+    		return new ResponseEntity<List<SerialNumber>>(listSN, HttpStatus.EXPECTATION_FAILED);
+    	}
+    	
+    	return new ResponseEntity<List<SerialNumber>>(listSN, HttpStatus.OK);
+    }
     
+    @RequestMapping(value="/viewDetailSN/{id}", method = RequestMethod.GET)
+    public ResponseEntity<SerialNumber> viewDetailSN (@PathVariable Long id){
+    	SerialNumber serialNumber = snService.findSN(id);
+    	if(serialNumber.equals(null)){
+    		return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.EXPECTATION_FAILED);
+    	}
+    	
+    	return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.OK);
+    }
 }
