@@ -1,7 +1,5 @@
 package id.co.knt.helpdesk.api.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,12 +48,6 @@ public class LoginServiceImpl implements LoginService {
 		Login l = loginRepo.findByToken(token);
 		
 		return l;
-	}
-
-	@Override
-	public List<Login> listOnlineUser() {
-		List<Login> logins = loginRepo.findOnlineUsers();
-		return logins;
 	}
 
 	@Override

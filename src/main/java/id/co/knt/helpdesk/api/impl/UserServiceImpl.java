@@ -15,8 +15,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User registerUser(User user) {
-		userRepo.save(user);
-		return null;
+		User u = userRepo.save(user);
+		
+		return u;
 	}
 
 	@Override
@@ -27,6 +28,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getDetailUser(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User validateUser(String userName, String pass) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -8,4 +8,8 @@ public interface UserService {
 	User updateUser(User user);
 
 	User getDetailUser(Integer id);
+
+	User validateUser(String userName, String pass);
+
+	User findUserByUsername(String username);
 }

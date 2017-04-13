@@ -1,18 +1,18 @@
 package id.co.knt.helpdesk.api.ctrl;
 
+import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,17 +27,12 @@ import id.co.knt.helpdesk.api.model.User;
 import id.co.knt.helpdesk.api.service.LoginService;
 import id.co.knt.helpdesk.api.service.UserService;
 
-import java.io.File;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.HashMap;
-
 /**
  * @author Muhamad Nizar Iqbal
  */
-@CrossOrigin(origins = "http://localhost:8787")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping(value = "/user/authorization")
+@RequestMapping(value = "/userManagement")
 public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
     
@@ -78,6 +73,30 @@ public class LoginController {
 
         return new ResponseEntity<List<Map<String, Object>>>(new ArrayList<>(), HttpStatus.NOT_FOUND);
     }
+    
+    @RequestMapping(value = "/createUser/", method = RequestMethod.POST)
+    public ResponseEntity<Boolean> createAdmin(@RequestBody User newUser) {
+    	LOG.info("ResponseEntity<Boolean> createAdmin /createAdmin/");
+		User adminUser = userService.findUserByUsername("admin");
+		User u = null;
+
+		try {
+			if (adminUser == null) {
+				newUser.setUserName("a4m1n");
+				newUser.setName("admin");
+				newUser.setCreatedDate(new Date());
+				String pass = "aDmin123!";
+
+				newUser.setPassword(pass);
+				u = userService.registerUser(newUser);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return u != null ? new ResponseEntity<Boolean>(true, HttpStatus.OK)
+				: new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
+    }
 
     private ResponseEntity<List<Map<String, Object>>> firstLogin(Date dt, SecureRandom rand, DateTime dateTime,
                                                                  User user) {
@@ -93,16 +112,6 @@ public class LoginController {
         mapObj.put("type", "full-version");
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
         data.add(mapObj);
-
-        File dir = new File(LoginController.QUESTION_IMAGE_DIRECTORY);
-        boolean successfully = false;
-        if (!dir.exists()) {
-            successfully = dir.mkdir();
-        }
-
-        if (successfully) {
-            LOG.info("successfully create directory");
-        }
 
         return loginService.saveLogin(newLogin) != null
                 ? new ResponseEntity<List<Map<String, Object>>>(data, HttpStatus.OK)
