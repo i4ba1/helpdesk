@@ -24,37 +24,40 @@ public class SNServiceImpl implements SNService {
 	public SerialNumber registerSerialNumber(String serialNumber) {
 		SerialNumber snNumber = null;
 		String passKey = "";
+		SerialNumber sn = snRepo.findfBySerialNumber(serialNumber);
 		
-		if (gawl.validate(serialNumber)) {
-			try {
-				Map<String, Byte> extractResult = gawl.extract(serialNumber);
-				if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
-					byte Type = extractResult.get(Gawl.TYPE);
-					byte seed1 = extractResult.get(Gawl.SEED1);
-					byte seed2 = extractResult.get(Gawl.SEED2);
-					// Generate passkey
-					passKey = gawl.pass(seed1, seed2);
+		if(!sn.equals(null)){
+			if (gawl.validate(serialNumber)) {
+				try {
+					Map<String, Byte> extractResult = gawl.extract(serialNumber);
+					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
+						byte Type = extractResult.get(Gawl.TYPE);
+						byte seed1 = extractResult.get(Gawl.SEED1);
+						byte seed2 = extractResult.get(Gawl.SEED2);
+						// Generate passkey
+						passKey = gawl.pass(seed1, seed2);
 
-					if (Type == 3) {
-						//save the serial number
-						if (extractResult.get(Gawl.SEED1) == seed1) {
-							snNumber = new SerialNumber();
-							snNumber.setSerialNumber(serialNumber);
-							snNumber.setPassKey(passKey);
-							snNumber.setRegisterDate(new Date());
-							snNumber = snRepo.save(snNumber);
+						if (Type == 3) {
+							//save the serial number
+							if (extractResult.get(Gawl.SEED1) == seed1) {
+								snNumber = new SerialNumber();
+								snNumber.setSerialNumber(serialNumber);
+								snNumber.setPassKey(passKey);
+								snNumber.setRegisterDate(new Date());
+								snNumber = snRepo.save(snNumber);
+							} else {
+								return null;
+							}
 						} else {
 							return null;
 						}
+
 					} else {
 						return null;
 					}
-
-				} else {
-					return null;
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 		
