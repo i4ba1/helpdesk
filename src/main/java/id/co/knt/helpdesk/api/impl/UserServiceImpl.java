@@ -1,7 +1,5 @@
 package id.co.knt.helpdesk.api.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +21,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<User> findAllUser() {
 		// TODO Auto-generated method stub
 		return null;
 	}
