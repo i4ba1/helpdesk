@@ -1,7 +1,5 @@
 package id.co.knt.helpdesk.api.service;
 
-import java.util.List;
-
 import id.co.knt.helpdesk.api.model.Login;
 import id.co.knt.helpdesk.api.model.User;
 

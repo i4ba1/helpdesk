@@ -1,15 +1,14 @@
 package id.co.knt.helpdesk.api.repositories;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import id.co.knt.helpdesk.api.model.Login;
 import id.co.knt.helpdesk.api.model.User;
 
-
+@Repository
 public interface LoginRepository extends JpaRepository<Login, Long> {
 	
 	@Query("select l from Login as l where l.user= :user")
@@ -20,7 +19,4 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
 	
 	@Query("select l from Login as l where l.token= :token and l.tokenExpired > :today")
 	Login validateToken(@Param("token") String token, @Param("today") Long today);
-	
-	@Query("select l from Login as l where l.token is not null and l.user.userType=1")
-	List<Login> findOnlineUsers();
 }

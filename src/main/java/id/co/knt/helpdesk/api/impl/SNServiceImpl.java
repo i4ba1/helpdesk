@@ -24,9 +24,9 @@ public class SNServiceImpl implements SNService {
 	public SerialNumber registerSerialNumber(String serialNumber) {
 		SerialNumber snNumber = null;
 		String passKey = "";
-		SerialNumber sn = snRepo.findfBySerialNumber(serialNumber);
+		SerialNumber sn = snRepo.findBySerialNumber(serialNumber);
 		
-		if(!sn.equals(null)){
+		if(sn == null){
 			if (gawl.validate(serialNumber)) {
 				try {
 					Map<String, Byte> extractResult = gawl.extract(serialNumber);
@@ -59,6 +59,8 @@ public class SNServiceImpl implements SNService {
 					e.printStackTrace();
 				}
 			}
+		}else{
+			return null;
 		}
 		
 		return snNumber;

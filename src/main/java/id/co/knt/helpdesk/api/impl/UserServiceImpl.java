@@ -34,13 +34,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User validateUser(String userName, String pass) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepo.validateUser(userName, pass);
 	}
 
 	@Override
-	public User findUserByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public User findUserByUsername(String userName) {
+		User currentUser = userRepo.findUserByUserName(userName);
+		
+		return currentUser;
 	}
 }

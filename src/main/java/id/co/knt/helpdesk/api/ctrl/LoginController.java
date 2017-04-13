@@ -2,12 +2,7 @@ package id.co.knt.helpdesk.api.ctrl;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -49,7 +44,7 @@ public class LoginController {
      * @return
      */
     @RequestMapping(value = "/loggingIn/", method = RequestMethod.POST)
-    public ResponseEntity<List<Map<String, Object>>> login(@RequestBody User newUser) {
+    public ResponseEntity<Login> login(@RequestBody User newUser) {
         Date dt = new Date();
         DateTime dateTime = new DateTime(dt);
         dateTime = dateTime.plusHours(3);
@@ -58,26 +53,27 @@ public class LoginController {
          * First check if the username and password are valid
          */
         User user = userService.validateUser(newUser.getUserName(),
-                Base64.getEncoder().encodeToString(newUser.getPassword().getBytes()));
+                newUser.getPassword());
         Boolean isValid = user == null ? false : true;
+        Login login = null;
 
         if (isValid) {
-            Login login = loginService.findByUser(user);
+            login = loginService.findByUser(user);
    
             if (login == null) {
                 return firstLogin(dt, rand, dateTime, user);
             } else {
-                return new ResponseEntity<List<Map<String, Object>>>(new ArrayList<>(), HttpStatus.FORBIDDEN);
+                return new ResponseEntity<Login>(login, HttpStatus.OK);
             }
         }
 
-        return new ResponseEntity<List<Map<String, Object>>>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Login>(login, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/createUser/", method = RequestMethod.POST)
     public ResponseEntity<Boolean> createAdmin(@RequestBody User newUser) {
     	LOG.info("ResponseEntity<Boolean> createAdmin /createAdmin/");
-		User adminUser = userService.findUserByUsername("admin");
+		User adminUser = userService.findUserByUsername("a4m1n");
 		User u = null;
 
 		try {
@@ -98,7 +94,7 @@ public class LoginController {
 				: new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
     }
 
-    private ResponseEntity<List<Map<String, Object>>> firstLogin(Date dt, SecureRandom rand, DateTime dateTime,
+    private ResponseEntity<Login> firstLogin(Date dt, SecureRandom rand, DateTime dateTime,
                                                                  User user) {
         Login newLogin = new Login();
         newLogin.setLoginDate(dt);
@@ -106,16 +102,9 @@ public class LoginController {
         newLogin.setTokenExpired(dateTime.getMillis());
         newLogin.setUser(user);
 
-        Map<String, Object> mapObj = new HashMap<String, Object>();
-        mapObj.put("token", newLogin.getToken());
-        mapObj.put("user", user);
-        mapObj.put("type", "full-version");
-        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-        data.add(mapObj);
-
         return loginService.saveLogin(newLogin) != null
-                ? new ResponseEntity<List<Map<String, Object>>>(data, HttpStatus.OK)
-                : new ResponseEntity<List<Map<String, Object>>>(data, HttpStatus.NOT_FOUND);
+                ? new ResponseEntity<Login>(newLogin, HttpStatus.OK)
+                : new ResponseEntity<Login>(newLogin, HttpStatus.NOT_FOUND);
     }
 
     /**
