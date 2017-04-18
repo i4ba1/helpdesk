@@ -39,7 +39,6 @@ public class LoginController {
 
     /**
      * Logging In and create new token for user
-     *
      * @param objects
      * @return
      */
@@ -65,9 +64,9 @@ public class LoginController {
             } else {
                 return new ResponseEntity<Login>(login, HttpStatus.OK);
             }
+        }else{
+        	return new ResponseEntity<Login>(login, HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<Login>(login, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/createUser/", method = RequestMethod.POST)
