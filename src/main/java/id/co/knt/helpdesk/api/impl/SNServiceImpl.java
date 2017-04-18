@@ -25,8 +25,8 @@ public class SNServiceImpl implements SNService {
 		SerialNumber snNumber = null;
 		String passKey = "";
 		SerialNumber sn = snRepo.findBySerialNumber(serialNumber);
-		
-		if(sn == null){
+
+		if (sn == null) {
 			if (gawl.validate(serialNumber)) {
 				try {
 					Map<String, Byte> extractResult = gawl.extract(serialNumber);
@@ -38,7 +38,7 @@ public class SNServiceImpl implements SNService {
 						passKey = gawl.pass(seed1, seed2);
 
 						if (Type == 3) {
-							//save the serial number
+							// save the serial number
 							if (extractResult.get(Gawl.SEED1) == seed1) {
 								snNumber = new SerialNumber();
 								snNumber.setSerialNumber(serialNumber);
@@ -59,10 +59,10 @@ public class SNServiceImpl implements SNService {
 					e.printStackTrace();
 				}
 			}
-		}else{
+		} else {
 			return null;
 		}
-		
+
 		return snNumber;
 	}
 
@@ -84,28 +84,32 @@ public class SNServiceImpl implements SNService {
 	}
 
 	@Override
-	public SerialNumber generateActivationKey(Long id, String passKey){
+	public SerialNumber generateActivationKey(Long id, String passKey) {
 		String activationKey = "";
 		SerialNumber snNumber = snRepo.findOne(id);
-		try{
-			activationKey = gawl.activate(passKey);
-			snNumber.setActivationKey(activationKey);
-		}catch(Exception e){
+		try {
+			if (snNumber.getPassKey().equals(passKey)) {
+				activationKey = gawl.activate(passKey);
+				snNumber.setActivationKey(activationKey);
+			}else{
+				return null;
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return snNumber;
 	}
 
 	@Override
-	public int activateActivationKey(Long id, String activationKey){
+	public int activateActivationKey(Long id, String activationKey) {
 		SerialNumber snNumber = snRepo.findOne(id);
 		Map<String, Byte> info = new HashMap<>();
 		int result = 0;
 
-		try{
+		try {
 			info = gawl.extract(snNumber.getSerialNumber());
-			String passKey = gawl.pass(((Byte)info.get("seed1")).byteValue(), ((Byte)info.get("seed2")).byteValue());
+			String passKey = gawl.pass(((Byte) info.get("seed1")).byteValue(), ((Byte) info.get("seed2")).byteValue());
 			if (!gawl.challenge(passKey, activationKey)) {
 				result = -1;
 			} else {
@@ -113,7 +117,7 @@ public class SNServiceImpl implements SNService {
 				snRepo.save(snNumber);
 				result = 1;
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

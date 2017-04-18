@@ -33,6 +33,9 @@ public class SNMgmtCtrl{
     @RequestMapping(value="/requestActiovationKey/{id}/{passKey}", method = RequestMethod.GET)
     public ResponseEntity<SerialNumber> getActivationKey(@PathVariable Long id, @PathVariable String passKey){
     	SerialNumber serialNumber = snService.generateActivationKey(id, passKey);
+    	if(serialNumber.equals(null)){
+    		return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.NOT_FOUND);
+    	}
     	
     	return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.OK);
     }
