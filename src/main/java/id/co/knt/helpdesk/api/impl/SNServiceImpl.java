@@ -36,6 +36,7 @@ public class SNServiceImpl implements SNService {
 						byte seed2 = extractResult.get(Gawl.SEED2);
 						// Generate passkey
 						passKey = gawl.pass(seed1, seed2);
+						String xlock = gawl.xlock(serialNumber);
 
 						if (Type == 3) {
 							// save the serial number
@@ -43,6 +44,7 @@ public class SNServiceImpl implements SNService {
 								snNumber = new SerialNumber();
 								snNumber.setSerialNumber(serialNumber);
 								snNumber.setPassKey(passKey);
+								snNumber.setXlock(xlock);
 								snNumber.setRegisterDate(new Date());
 								snNumber = snRepo.save(snNumber);
 							} else {
@@ -84,14 +86,14 @@ public class SNServiceImpl implements SNService {
 	}
 
 	@Override
-	public SerialNumber generateActivationKey(Long id, String passKey) {
+	public SerialNumber generateActivationKey(Long id, String xlock) {
 		String activationKey = "";
 		SerialNumber snNumber = snRepo.findOne(id);
 		try {
-			if (snNumber.getPassKey().equals(passKey)) {
-				activationKey = gawl.activate(passKey);
+			if (snNumber.getXlock().equals(xlock)) {
+				activationKey = gawl.activate(xlock);
 				snNumber.setActivationKey(activationKey);
-			}else{
+			} else {
 				return null;
 			}
 		} catch (Exception e) {
@@ -109,8 +111,8 @@ public class SNServiceImpl implements SNService {
 
 		try {
 			info = gawl.extract(snNumber.getSerialNumber());
-			String passKey = gawl.pass(((Byte) info.get("seed1")).byteValue(), ((Byte) info.get("seed2")).byteValue());
-			if (!gawl.challenge(passKey, activationKey)) {
+			//String passKey = gawl.pass(((Byte) info.get("seed1")).byteValue(), ((Byte) info.get("seed2")).byteValue());
+			if (!gawl.challenge(gawl.getXlock(), activationKey)) {
 				result = -1;
 			} else {
 				snNumber.setActivationKey(activationKey);
@@ -122,5 +124,60 @@ public class SNServiceImpl implements SNService {
 		}
 
 		return result;
+	}
+
+	@Override
+	public int registerAndActivate(String serialNumber) {
+
+		SerialNumber snNumber = null;
+		String passKey = "";
+		SerialNumber sn = snRepo.findBySerialNumber(serialNumber);
+
+		if (sn == null) {
+			if (gawl.validate(serialNumber)) {
+				try {
+					Map<String, Byte> extractResult = gawl.extract(serialNumber);
+					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
+						byte Type = extractResult.get(Gawl.TYPE);
+						byte seed1 = extractResult.get(Gawl.SEED1);
+						byte seed2 = extractResult.get(Gawl.SEED2);
+						// Generate passkey
+						passKey = gawl.pass(seed1, seed2);
+						String xlock = gawl.xlock(serialNumber);
+
+						if (Type == 3) {
+							// save the serial number, passkey and xlock and
+							// activated
+							if (extractResult.get(Gawl.SEED1) == seed1) {
+								snNumber = new SerialNumber();
+								snNumber.setSerialNumber(serialNumber);
+								snNumber.setPassKey(passKey);
+								snNumber.setRegisterDate(new Date());
+								snNumber.setXlock(xlock);
+								snNumber = snRepo.save(snNumber);
+
+								if (snNumber != null) {
+									snNumber = generateActivationKey(snNumber.getId(), snNumber.getXlock());
+									activateActivationKey(snNumber.getId(), snNumber.getActivationKey());
+								}
+							} else {
+								return 1;
+							}
+						} else {
+							return 1;
+						}
+
+					} else {
+						return 1;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			return 1;
+		}
+
+		return 0;
 	}
 }

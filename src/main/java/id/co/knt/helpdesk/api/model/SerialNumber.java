@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 public class SerialNumber implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 7230259872048745134L;
 
@@ -38,50 +38,61 @@ public class SerialNumber implements Serializable {
     @Column(name="register_date")
     private Date registerDate;
 
-	@Column(name="type_app")
-	private String typeApp;
+		@Column(name="type_app")
+		private String typeApp;
 
-	public Long getId() {
-		return id;
-	}
+		@Column(name="xlock")
+		private String xlock;
 
-	public String getPassKey() {
-		return passKey;
-	}
+		public Long getId() {
+			return id;
+		}
 
-	public void setPassKey(String passKey) {
-		this.passKey = passKey;
-	}
+		public String getPassKey() {
+			return passKey;
+		}
 
-	public String getActivationKey() {
-		return activationKey;
-	}
+		public void setPassKey(String passKey) {
+			this.passKey = passKey;
+		}
 
-	public void setActivationKey(String activationKey) {
-		this.activationKey = activationKey;
-	}
+		public String getActivationKey() {
+			return activationKey;
+		}
 
-	public Date getRegisterDate() {
-		return registerDate;
-	}
+		public void setActivationKey(String activationKey) {
+			this.activationKey = activationKey;
+		}
 
-	public void setRegisterDate(Date registerDate) {
-		this.registerDate = registerDate;
-	}
+		public Date getRegisterDate() {
+			return registerDate;
+		}
 
-	public String getSerialNumber() {
-		return serialNumber;
-	}
+		public void setRegisterDate(Date registerDate) {
+			this.registerDate = registerDate;
+		}
 
-	public void setSerialNumber(String serialNumber) {
-		this.serialNumber = serialNumber;
-	}
+		public String getSerialNumber() {
+			return serialNumber;
+		}
 
-	public void setTypeApp(String typeApp){
-		this.typeApp = typeApp;
-	}
+		public void setSerialNumber(String serialNumber) {
+			this.serialNumber = serialNumber;
+		}
 
-	public String getTypeApp(){
-		return this.typeApp;
-	}
+		public void setTypeApp(String typeApp){
+			this.typeApp = typeApp;
+		}
+
+		public String getTypeApp(){
+			return this.typeApp;
+		}
+
+		public void setXlock(String xlock){
+			this.xlock = xlock;
+		}
+
+		public String getXlock(){
+			return this.xlock;
+		}
 }

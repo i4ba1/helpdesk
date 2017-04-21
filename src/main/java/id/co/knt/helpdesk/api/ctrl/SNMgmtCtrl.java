@@ -30,7 +30,7 @@ public class SNMgmtCtrl{
         return new ResponseEntity<SerialNumber>(number, HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value="/requestActiovationKey/{id}/{passKey}", method = RequestMethod.GET)
+    @RequestMapping(value="/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
     public ResponseEntity<SerialNumber> getActivationKey(@PathVariable Long id, @PathVariable String passKey){
     	SerialNumber serialNumber = snService.generateActivationKey(id, passKey);
     	if(serialNumber.equals(null)){
@@ -44,6 +44,16 @@ public class SNMgmtCtrl{
     public ResponseEntity<Void> activate(@PathVariable Long id, @PathVariable String activationKey){
     	int result = snService.activateActivationKey(id, activationKey);
     	if (result <= 0) {
+    		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
+    	
+    	return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/registerAndActivated/{serialNumber}", method = RequestMethod.POST)
+    public ResponseEntity<Integer> activate(@PathVariable String serialNumber){
+    	int result = snService.registerAndActivate(serialNumber);
+    	if (result > 0) {
     		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
     	

@@ -5,6 +5,9 @@ import java.util.List;
 
 public interface SNService{
     SerialNumber registerSerialNumber(String serialNumber);
+
+    int registerAndActivate(String serialNumber);
+
     List<SerialNumber> findAllSN();
 
     SerialNumber findSN(Long id);
