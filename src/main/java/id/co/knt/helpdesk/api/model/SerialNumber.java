@@ -13,7 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="helpdesk_sn")
+@Table(name = "helpdesk_sn")
 public class SerialNumber implements Serializable {
 
 	/**
@@ -21,78 +21,78 @@ public class SerialNumber implements Serializable {
 	 */
 	private static final long serialVersionUID = 7230259872048745134L;
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @Column(name="serial_number")
-    private String serialNumber;
+	@Column(name = "serial_number")
+	private String serialNumber;
 
-    @Column(name="passkey")
-    private String passKey;
+	@Column(name = "passkey")
+	private String passKey;
 
-    @Column(name="activation_key")
-    private String activationKey;
+	@Column(name = "activation_key")
+	private String activationKey;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="register_date")
-    private Date registerDate;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "register_date")
+	private Date registerDate;
 
-		@Column(name="type_app")
-		private String typeApp;
+	@Column(name = "type_app")
+	private String typeApp;
 
-		@Column(name="xlock")
-		private String xlock;
+	@Column(name = "xlock")
+	private String xlock;
 
-		public Long getId() {
-			return id;
-		}
+	public Long getId() {
+		return id;
+	}
 
-		public String getPassKey() {
-			return passKey;
-		}
+	public String getPassKey() {
+		return passKey;
+	}
 
-		public void setPassKey(String passKey) {
-			this.passKey = passKey;
-		}
+	public void setPassKey(String passKey) {
+		this.passKey = passKey;
+	}
 
-		public String getActivationKey() {
-			return activationKey;
-		}
+	public String getActivationKey() {
+		return activationKey;
+	}
 
-		public void setActivationKey(String activationKey) {
-			this.activationKey = activationKey;
-		}
+	public void setActivationKey(String activationKey) {
+		this.activationKey = activationKey;
+	}
 
-		public Date getRegisterDate() {
-			return registerDate;
-		}
+	public Date getRegisterDate() {
+		return registerDate;
+	}
 
-		public void setRegisterDate(Date registerDate) {
-			this.registerDate = registerDate;
-		}
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
+	}
 
-		public String getSerialNumber() {
-			return serialNumber;
-		}
+	public String getSerialNumber() {
+		return serialNumber;
+	}
 
-		public void setSerialNumber(String serialNumber) {
-			this.serialNumber = serialNumber;
-		}
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
 
-		public void setTypeApp(String typeApp){
-			this.typeApp = typeApp;
-		}
+	public void setTypeApp(String typeApp) {
+		this.typeApp = typeApp;
+	}
 
-		public String getTypeApp(){
-			return this.typeApp;
-		}
+	public String getTypeApp() {
+		return this.typeApp;
+	}
 
-		public void setXlock(String xlock){
-			this.xlock = xlock;
-		}
+	public void setXlock(String xlock) {
+		this.xlock = xlock;
+	}
 
-		public String getXlock(){
-			return this.xlock;
-		}
+	public String getXlock() {
+		return this.xlock;
+	}
 }

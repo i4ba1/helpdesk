@@ -6,7 +6,7 @@ import java.util.List;
 public interface SNService{
     SerialNumber registerSerialNumber(String serialNumber);
 
-    int registerAndActivate(String serialNumber);
+    SerialNumber registerAndActivate(String serialNumber);
 
     List<SerialNumber> findAllSN();
 

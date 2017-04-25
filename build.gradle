@@ -66,6 +66,7 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'joda-time:joda-time:2.9.9'
     compile 'com.github.oshi:oshi-core:3.4.2'
+    compile 'org.apache.commons:commons-lang3:3.5'
 
     // Use JUnit test framework
     compile 'junit:junit:4.12'

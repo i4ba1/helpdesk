@@ -1,12 +1,12 @@
 package id.co.knt.helpdesk.api.impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import id.co.knt.helpdesk.api.model.SerialNumber;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.co.knt.helpdesk.api.service.SNService;
@@ -106,13 +106,13 @@ public class SNServiceImpl implements SNService {
 	@Override
 	public int activateActivationKey(Long id, String activationKey) {
 		SerialNumber snNumber = snRepo.findOne(id);
-		Map<String, Byte> info = new HashMap<>();
 		int result = 0;
 
 		try {
-			info = gawl.extract(snNumber.getSerialNumber());
-			//String passKey = gawl.pass(((Byte) info.get("seed1")).byteValue(), ((Byte) info.get("seed2")).byteValue());
-			if (!gawl.challenge(gawl.getXlock(), activationKey)) {
+			// String passKey = gawl.pass(((Byte)
+			// info.get("seed1")).byteValue(), ((Byte)
+			// info.get("seed2")).byteValue());
+			if (!gawl.challenge(snNumber.getPassKey(), activationKey)) {
 				result = -1;
 			} else {
 				snNumber.setActivationKey(activationKey);
@@ -127,7 +127,7 @@ public class SNServiceImpl implements SNService {
 	}
 
 	@Override
-	public int registerAndActivate(String serialNumber) {
+	public SerialNumber registerAndActivate(String serialNumber) {
 
 		SerialNumber snNumber = null;
 		String passKey = "";
@@ -158,26 +158,18 @@ public class SNServiceImpl implements SNService {
 
 								if (snNumber != null) {
 									snNumber = generateActivationKey(snNumber.getId(), snNumber.getXlock());
-									activateActivationKey(snNumber.getId(), snNumber.getActivationKey());
+									snNumber.setActivationKey(snNumber.getActivationKey());
 								}
-							} else {
-								return 1;
 							}
-						} else {
-							return 1;
 						}
 
-					} else {
-						return 1;
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		} else {
-			return 1;
 		}
 
-		return 0;
+		return snNumber;
 	}
 }

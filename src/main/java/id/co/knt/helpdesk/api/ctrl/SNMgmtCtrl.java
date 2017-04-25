@@ -51,13 +51,13 @@ public class SNMgmtCtrl{
     }
     
     @RequestMapping(value="/registerAndActivated/{serialNumber}", method = RequestMethod.POST)
-    public ResponseEntity<Integer> activate(@PathVariable String serialNumber){
-    	int result = snService.registerAndActivate(serialNumber);
-    	if (result > 0) {
-    		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+    public ResponseEntity<SerialNumber> activate(@PathVariable String serialNumber){
+    	SerialNumber result = snService.registerAndActivate(serialNumber);
+    	if (result == null) {
+    		return new ResponseEntity<SerialNumber>(result, HttpStatus.EXPECTATION_FAILED);
 		}
     	
-    	return new ResponseEntity<>(HttpStatus.OK);
+    	return new ResponseEntity<SerialNumber>(result, HttpStatus.OK);
     }
     
     @RequestMapping(value={ "" }, method = RequestMethod.GET)
