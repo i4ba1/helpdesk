@@ -15,68 +15,69 @@ import id.co.knt.helpdesk.api.service.SNService;
 
 @RestController
 @RequestMapping(value = "/snManagement")
-public class SNMgmtCtrl{
+public class SNMgmtCtrl {
 
-    @Autowired
-    private SNService snService;
+	@Autowired
+	private SNService snService;
 
-    @RequestMapping(value="/register/{serialNumber}", method = RequestMethod.POST)
-    public ResponseEntity<SerialNumber> register(@PathVariable String serialNumber){
-        SerialNumber number = snService.registerSerialNumber(serialNumber);
-        if(!serialNumber.equals(null)){
-            return new ResponseEntity<SerialNumber>(number, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<SerialNumber>(number, HttpStatus.NOT_FOUND);
-    }
-
-    @RequestMapping(value="/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
-    public ResponseEntity<SerialNumber> getActivationKey(@PathVariable Long id, @PathVariable String passKey){
-    	SerialNumber serialNumber = snService.generateActivationKey(id, passKey);
-    	if(serialNumber.equals(null)){
-    		return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.NOT_FOUND);
-    	}
-    	
-    	return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value="/activate/{id}/{activationKey}", method = RequestMethod.POST)
-    public ResponseEntity<Void> activate(@PathVariable Long id, @PathVariable String activationKey){
-    	int result = snService.activateActivationKey(id, activationKey);
-    	if (result <= 0) {
-    		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+	@RequestMapping(value = "/register/{serialNumber}", method = RequestMethod.POST)
+	public ResponseEntity<SerialNumber> register(@PathVariable String serialNumber) {
+		SerialNumber number = snService.registerSerialNumber(serialNumber);
+		if (!serialNumber.equals(null)) {
+			return new ResponseEntity<SerialNumber>(number, HttpStatus.OK);
 		}
-    	
-    	return new ResponseEntity<>(HttpStatus.OK);
-    }
-    
-    @RequestMapping(value="/registerAndActivated/{serialNumber}", method = RequestMethod.POST)
-    public ResponseEntity<SerialNumber> activate(@PathVariable String serialNumber){
-    	SerialNumber result = snService.registerAndActivate(serialNumber);
-    	if (result == null) {
-    		return new ResponseEntity<SerialNumber>(result, HttpStatus.EXPECTATION_FAILED);
+
+		return new ResponseEntity<SerialNumber>(number, HttpStatus.NOT_FOUND);
+	}
+
+	@RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
+	public ResponseEntity<SerialNumber> getActivationKey(@PathVariable Long id, @PathVariable String passKey) {
+		SerialNumber serialNumber = snService.generateActivationKey(id, passKey);
+		if (serialNumber.equals(null)) {
+			return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.NOT_FOUND);
 		}
-    	
-    	return new ResponseEntity<SerialNumber>(result, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value={ "" }, method = RequestMethod.GET)
-    public ResponseEntity<List<SerialNumber>> findAllSN(){
-    	List<SerialNumber> listSN = snService.findAllSN();
-    	if(listSN.isEmpty()){
-    		return new ResponseEntity<List<SerialNumber>>(listSN, HttpStatus.EXPECTATION_FAILED);
-    	}
-    	
-    	return new ResponseEntity<List<SerialNumber>>(listSN, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value="/viewDetailSN/{id}", method = RequestMethod.GET)
-    public ResponseEntity<SerialNumber> viewDetailSN (@PathVariable Long id){
-    	SerialNumber serialNumber = snService.findSN(id);
-    	if(serialNumber.equals(null)){
-    		return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.EXPECTATION_FAILED);
-    	}
-    	
-    	return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.OK);
-    }
+
+		return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/activate/{id}/{activationKey}", method = RequestMethod.POST)
+	public ResponseEntity<Void> activate(@PathVariable Long id, @PathVariable String activationKey) {
+		int result = snService.activateActivationKey(id, activationKey);
+		if (result <= 0) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/activateByInternet/{serialNumber}/{passKey}/{xlock}", method = RequestMethod.POST)
+	public ResponseEntity<SerialNumber> activateByInternet(@PathVariable String serialNumber,
+			@PathVariable String passKey, @PathVariable String xlock) {
+		SerialNumber result = snService.onlineActivation(serialNumber, passKey, xlock);
+		if (result == null) {
+			return new ResponseEntity<SerialNumber>(result, HttpStatus.EXPECTATION_FAILED);
+		}
+
+		return new ResponseEntity<SerialNumber>(result, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = { "" }, method = RequestMethod.GET)
+	public ResponseEntity<List<SerialNumber>> findAllSN() {
+		List<SerialNumber> listSN = snService.findAllSN();
+		if (listSN.isEmpty()) {
+			return new ResponseEntity<List<SerialNumber>>(listSN, HttpStatus.EXPECTATION_FAILED);
+		}
+
+		return new ResponseEntity<List<SerialNumber>>(listSN, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/viewDetailSN/{id}", method = RequestMethod.GET)
+	public ResponseEntity<SerialNumber> viewDetailSN(@PathVariable Long id) {
+		SerialNumber serialNumber = snService.findSN(id);
+		if (serialNumber.equals(null)) {
+			return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.EXPECTATION_FAILED);
+		}
+
+		return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.OK);
+	}
 }

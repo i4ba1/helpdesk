@@ -1,0 +1,62 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <section class="content-header" style="padding:15px;">
+            <div class="title-brand">
+                <span id="root-title">{{'KNT_APPS'|translate}}</span> / <span class="child-title">{{'SERIAL_NUMBER'|translate}}</span> </div>
+        </section>
+        <div class="content">
+
+            <div class="col-md-12 col-sm-12 col-lg-12">
+                <table st-safe-src="rowCollection" st-table="displayCollection" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th width="100">No.</th>
+                            <th st-sort="serialNumber">{{'SERIAL_NUMBER' | translate}}</th>
+                            <th st-sort="passKey">{{'PASS_KEY' | translate}}</th>
+                            <th st-sort="activationKey">{{'ACTIVATION_KEY' | translate}}</th>
+                            <th st-sort="registerDate">{{'REGISTRATION_DATE' | translate}}</th>
+                            <!--<th st-sort="typeApp">{{'APP_TYPE' | translate}}</th>-->
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>
+                                <input st-search="serialNumber" placeholder="{{'FILTER_SERIAL_NUMBER'|translate}}" class="input-sm form-control" type="search" />
+                            </th>
+                            <th>
+                                <input st-search="passKey" placeholder="{{'FILTER_PASS_KEY'|translate}}" class="input-sm form-control" type="search" />
+                            </th>
+                            <th>
+                                <input st-search="activationKey" placeholder="{{'FILTER_ACTIVATION_KEY'|translate}}" class="input-sm form-control" type="search" />
+                            </th>
+                            <th>
+
+                            </th>
+                            <!--<th>
+                                <input st-search="typeApp" placeholder="{{'FILTER_TYPE_APP'|translate}}" class="input-sm form-control" type="search" />
+                            </th>-->
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in displayCollection track by $index">
+                            <td>{{(currentPage-1)*itemPage+$index+1}}</td>
+                            <td>{{row.serialNumber}}</td>
+                            <td>{{row.passKey}}</td>
+                            <td>{{row.activationKey}}</td>
+                            <td>{{row.registerDate |date:"dd/MM/yyyy"}}</td>
+                            <!--<td>{{row.typeApp}}</td>-->
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                <div st-pagination="" st-items-by-page="itemPage" st-displayed-pages="5" st-page-change="rembemberCurrentPage(newPage)"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

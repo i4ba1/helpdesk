@@ -61,12 +61,15 @@ dependencies {
     compile 'id.web.pos.integra.gawl12:gawl:1.2'
     compile 'id.co.knt.activator:activator:1.0'
     compile 'com.jsoniter:jsoniter:0.9.8'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.8.8'
     compile 'org.postgresql:postgresql:9.4-1200-jdbc41'
     compile 'commons-io:commons-io:2.5'
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'joda-time:joda-time:2.9.9'
     compile 'com.github.oshi:oshi-core:3.4.2'
     compile 'org.apache.commons:commons-lang3:3.5'
+    compile 'com.github.oshi:oshi-parent:3.4.2'
+    compile 'com.github.oshi:oshi-json:3.4.2'
 
     // Use JUnit test framework
     compile 'junit:junit:4.12'

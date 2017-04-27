@@ -1,12 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Title of the document</title>
+    <meta charset="utf-8">
+    <title>KNT Help Desk</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="assets/admin-lte/css/AdminLTE.css">
+    <link rel="stylesheet" href="assets/admin-lte/css/skin-custome-blue.css">
+    <link rel="stylesheet" href="assets/styles/css/styles.css">
+    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css">
 </head>
 
-<body>
-Content of the document......
+<body ng-app="application" class="hold-transition skin-blue sidebar-mini">
+
+    <!-- Views From UI ROUTER-->
+    <ui-view></ui-view>
+
+    <!--==================[Import Scripts]=====================-->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/tinymce/tinymce.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-ui-tinymce/src/tinymce.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-smart-table/dist/smart-table.min.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.min.js"></script>
+    <script src="bower_components/angular-ui-select/dist/select.js"></script>
+
+    <!--==================[Application Setting]=====================-->
+    <script src="app.js"></script>
+    <script src="app.route.js"></script>
+    <script src="app.transleter.js"></script>
+
+    <!--==================[Contollers]=====================-->
+    <script src="sections/login/login.ctrl.js"></script>
+    <script src="sections/administrator/administrator-home.ctr.js"></script>
+    <script src="sections/administrator/project/project-apps-sn.ctrl.js"></script>
+
+    <!--ctrl dashboard-->
+    <script src="sections/administrator/dashboard/dashboard.ctrl.js"></script>
+
+    <!--==================[Directives]=====================-->
+    <script src="directives/footer.drct.js"></script>
+
+    <!--==================[Factory]========================-->
+    <script src="factories/request-factory.js"></script>
+
+    <!--==================[Filters]========================-->
+    <!--<script src="filters/props.filter.js"></script>-->
+
 </body>
 
 </html>

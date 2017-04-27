@@ -1,0 +1,3 @@
+@mixin forScreen($mediaMin,$mediaMax){
+    @media (min-width: $mediaMin/16+em) and (max-width: $mediaMax/16+em) { @content; }
+}

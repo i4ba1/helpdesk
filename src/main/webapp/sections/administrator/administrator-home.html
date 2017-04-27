@@ -1,0 +1,75 @@
+<div class="wrapper">
+
+    <header class="main-header">
+
+        <nav class="navbar navbar-static-top" role="navigation">
+            <ul class="nav navbar-nav">
+                <li class="knt-logo">
+                    <img src="assets/images/knt.png">
+                </li>
+            </ul>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a class="click-able" ng-click="logout()"><i class="fa fa-sign-out fa-lg"></i> {{'LOGOUT' | translate}}</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="main-sidebar">
+
+        <section class="sidebar">
+
+            <div class="user-panel">
+                <a ng-click="pushMenu()" role="button" class="pull-right">
+                    <img src="assets/images/navigasi.png">
+                </a>
+            </div>
+            <!-- Sidebar Menu -->
+            <ul class="sidebar-menu">
+
+                <!-- BERANDA-->
+                <!--<li>
+                    <a ui-sref="administrator.home">
+                        <img class="sidebar-img" src="assets/images/beranda.png" alt="beranda">
+                        <span class="cst-margin-left">{{'DASHBOARD' | translate}}</span>
+                    </a>
+                </li>-->
+
+                <li class="treeview">
+                    <a href="">
+                        <i class="fa fa-archive fa-lg" aria-hidden="true"></i>
+                        <span class="cst-margin-left">{{'KNT_APPS' | translate}}</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <!--<li class="cst-margin-top">
+                            <a ui-sref="administrator.project-apps">{{'PROJECT_APPS' | translate}}</a>
+                        </li>-->
+                        <li class="cst-margin-top">
+                            <a ui-sref="administrator.project-sn">{{'SERIAL_NUMBER' | translate}}</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a ui-sref="administrator.about-us">
+                        <img class="sidebar-img" src="assets/images/about_us.png" alt="tentang kami">
+                        <span class="cst-margin-left">{{'ABOUT_US' | translate}}</span>
+                    </a>
+                </li>
+            </ul>
+            <!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <div class="content-wrapper" style="min-height:92.5vh;">
+        <div ui-view="content"></div>
+    </div>
+
+
+</div>

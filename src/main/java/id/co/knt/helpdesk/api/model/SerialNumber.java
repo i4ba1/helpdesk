@@ -43,6 +43,9 @@ public class SerialNumber implements Serializable {
 
 	@Column(name = "xlock")
 	private String xlock;
+	
+	@Column(name = "osSerialNumber")
+	private String osSerialNumber;
 
 	public Long getId() {
 		return id;
@@ -94,5 +97,13 @@ public class SerialNumber implements Serializable {
 
 	public String getXlock() {
 		return this.xlock;
+	}
+
+	public String getOsSerialNumber() {
+		return osSerialNumber;
+	}
+
+	public void setOsSerialNumber(String osSerialNumber) {
+		this.osSerialNumber = osSerialNumber;
 	}
 }
