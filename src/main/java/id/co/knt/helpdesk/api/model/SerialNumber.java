@@ -38,14 +38,14 @@ public class SerialNumber implements Serializable {
 	@Column(name = "register_date")
 	private Date registerDate;
 
-	@Column(name = "type_app")
-	private String typeApp;
-
 	@Column(name = "xlock")
 	private String xlock;
 	
-	@Column(name = "osSerialNumber")
-	private String osSerialNumber;
+	@Column(name = "mac_addr")
+	private byte[] macAddr;
+	
+	@Column(name = "serialNumberStatus")
+	private boolean serialNumberStatus; 
 
 	public Long getId() {
 		return id;
@@ -83,14 +83,6 @@ public class SerialNumber implements Serializable {
 		this.serialNumber = serialNumber;
 	}
 
-	public void setTypeApp(String typeApp) {
-		this.typeApp = typeApp;
-	}
-
-	public String getTypeApp() {
-		return this.typeApp;
-	}
-
 	public void setXlock(String xlock) {
 		this.xlock = xlock;
 	}
@@ -99,11 +91,19 @@ public class SerialNumber implements Serializable {
 		return this.xlock;
 	}
 
-	public String getOsSerialNumber() {
-		return osSerialNumber;
+	public byte[] getMacAddr() {
+		return macAddr;
 	}
 
-	public void setOsSerialNumber(String osSerialNumber) {
-		this.osSerialNumber = osSerialNumber;
+	public void setMacAddr(byte[] macAddr) {
+		this.macAddr = macAddr;
+	}
+
+	public boolean isSerialNumberStatus() {
+		return serialNumberStatus;
+	}
+
+	public void setSerialNumberStatus(boolean serialNumberStatus) {
+		this.serialNumberStatus = serialNumberStatus;
 	}
 }

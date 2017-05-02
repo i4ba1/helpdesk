@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +21,8 @@ public class SNMgmtCtrl {
 	@Autowired
 	private SNService snService;
 
-	@RequestMapping(value = "/register/{serialNumber}", method = RequestMethod.POST)
-	public ResponseEntity<SerialNumber> register(@PathVariable String serialNumber) {
+	@RequestMapping(value = "/register/", method = RequestMethod.POST)
+	public ResponseEntity<SerialNumber> register(@RequestBody SerialNumber serialNumber) {
 		SerialNumber number = snService.registerSerialNumber(serialNumber);
 		if (!serialNumber.equals(null)) {
 			return new ResponseEntity<SerialNumber>(number, HttpStatus.OK);
@@ -30,9 +31,10 @@ public class SNMgmtCtrl {
 		return new ResponseEntity<SerialNumber>(number, HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
-	public ResponseEntity<SerialNumber> getActivationKey(@PathVariable Long id, @PathVariable String passKey) {
-		SerialNumber serialNumber = snService.generateActivationKey(id, passKey);
+	@RequestMapping(value = "/requestActivationKey/{id}/{passKey}/{xlock}", method = RequestMethod.GET)
+	public ResponseEntity<SerialNumber> requestActivationKey(@PathVariable Long id, @PathVariable String passKey,
+			@PathVariable String xlock) {
+		SerialNumber serialNumber = snService.generateActivationKey(id, passKey, xlock);
 		if (serialNumber.equals(null)) {
 			return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.NOT_FOUND);
 		}
@@ -41,8 +43,9 @@ public class SNMgmtCtrl {
 	}
 
 	@RequestMapping(value = "/activate/{id}/{activationKey}", method = RequestMethod.POST)
-	public ResponseEntity<Void> activate(@PathVariable Long id, @PathVariable String activationKey) {
-		int result = snService.activateActivationKey(id, activationKey);
+	public ResponseEntity<Void> activate(@PathVariable Long id, @PathVariable String xlock,
+			@PathVariable String activationKey) {
+		int result = snService.activateActivationKey(id, xlock, activationKey);
 		if (result <= 0) {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
@@ -50,10 +53,9 @@ public class SNMgmtCtrl {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/activateByInternet/{serialNumber}/{passKey}/{xlock}", method = RequestMethod.POST)
-	public ResponseEntity<SerialNumber> activateByInternet(@PathVariable String serialNumber,
-			@PathVariable String passKey, @PathVariable String xlock) {
-		SerialNumber result = snService.onlineActivation(serialNumber, passKey, xlock);
+	@RequestMapping(value = "/activateByInternet/", method = RequestMethod.POST)
+	public ResponseEntity<SerialNumber> activateByInternet(@RequestBody SerialNumber serialNumber) {
+		SerialNumber result = snService.onlineActivation(serialNumber);
 		if (result == null) {
 			return new ResponseEntity<SerialNumber>(result, HttpStatus.EXPECTATION_FAILED);
 		}

@@ -4,9 +4,9 @@ import id.co.knt.helpdesk.api.model.SerialNumber;
 import java.util.List;
 
 public interface SNService{
-    SerialNumber registerSerialNumber(String serialNumber);
+    SerialNumber registerSerialNumber(SerialNumber serialNumber);
 
-    SerialNumber onlineActivation(String serialNumber, String passKey, String xlock);
+    SerialNumber onlineActivation(SerialNumber serialNumber);
     
     List<SerialNumber> findSNNeedActivated(List<SerialNumber> serialNumbers);
 
@@ -16,7 +16,7 @@ public interface SNService{
 
     void deleteSN(Long id);
 
-    SerialNumber generateActivationKey(Long id, String passKey);
+    SerialNumber generateActivationKey(Long id, String passKey, String xlock);
 
-    int activateActivationKey(Long id, String activationKey);
+    int activateActivationKey(Long id, String xlock, String activationKey);
 }

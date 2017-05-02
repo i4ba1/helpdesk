@@ -1,5 +1,6 @@
 package id.co.knt.helpdesk.api.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -7,51 +8,53 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jsoniter.JsonIterator;
-
 import id.co.knt.helpdesk.api.model.ActivationHistory;
 import id.co.knt.helpdesk.api.model.SerialNumber;
+import id.co.knt.helpdesk.api.repositories.HistoryRepo;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.co.knt.helpdesk.api.service.SNService;
 import id.co.knt.helpdesk.api.utilities.MACAddr;
 import id.web.pos.integra.gawl.Gawl;
-import oshi.json.SystemInfo;
 
-@Service("snServieImpl")
+@Service("snServiceImpl")
 public class SNServiceImpl implements SNService {
 
 	private Gawl gawl = new Gawl();
 
 	@Autowired
 	private SNRepo snRepo;
+	
+	@Autowired
+	private HistoryRepo historyRepo;
 
 	@Override
-	public SerialNumber registerSerialNumber(String serialNumber) {
+	public SerialNumber registerSerialNumber(SerialNumber serialNumber) {
 		SerialNumber snNumber = null;
 		String passKey = "";
-		SerialNumber sn = snRepo.findBySerialNumber(serialNumber);
+		SerialNumber sn = snRepo.findBySerialNumber(serialNumber.getSerialNumber());
 
 		if (sn == null) {
-			if (gawl.validate(serialNumber)) {
+			if (gawl.validate(serialNumber.getSerialNumber())) {
 				try {
-					Map<String, Byte> extractResult = gawl.extract(serialNumber);
+					Map<String, Byte> extractResult = gawl.extract(serialNumber.getSerialNumber());
 					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
 						byte Type = extractResult.get(Gawl.TYPE);
 						byte seed1 = extractResult.get(Gawl.SEED1);
 						byte seed2 = extractResult.get(Gawl.SEED2);
 						// Generate passkey
 						passKey = gawl.pass(seed1, seed2);
-						String xlock = gawl.xlock(serialNumber);
+						String xlock = gawl.xlock(serialNumber.getSerialNumber());
 
 						if (Type == 3) {
 							// save the serial number
 							if (extractResult.get(Gawl.SEED1) == seed1) {
 								snNumber = new SerialNumber();
-								snNumber.setSerialNumber(serialNumber);
+								snNumber.setSerialNumber(serialNumber.getSerialNumber());
 								snNumber.setPassKey(passKey);
 								snNumber.setXlock(xlock);
 								snNumber.setRegisterDate(new Date());
-								snNumber = snRepo.save(snNumber);
+								snNumber.setSerialNumberStatus(false);
+								snRepo.save(snNumber);
 							} else {
 								return null;
 							}
@@ -91,11 +94,11 @@ public class SNServiceImpl implements SNService {
 	}
 
 	@Override
-	public SerialNumber generateActivationKey(Long id, String xlock) {
+	public SerialNumber generateActivationKey(Long id, String passKey, String xlock) {
 		String activationKey = "";
 		SerialNumber snNumber = snRepo.findOne(id);
 		try {
-			if (snNumber.getXlock().equals(xlock)) {
+			if (passKey.equals(snNumber.getPassKey()) && snNumber.getXlock().equals(xlock)) {
 				activationKey = gawl.activate(xlock);
 				snNumber.setActivationKey(activationKey);
 			} else {
@@ -109,18 +112,16 @@ public class SNServiceImpl implements SNService {
 	}
 
 	@Override
-	public int activateActivationKey(Long id, String activationKey) {
+	public int activateActivationKey(Long id, String xlock, String activationKey) {
 		SerialNumber snNumber = snRepo.findOne(id);
 		int result = 0;
 
 		try {
-			// String passKey = gawl.pass(((Byte)
-			// info.get("seed1")).byteValue(), ((Byte)
-			// info.get("seed2")).byteValue());
-			if (!gawl.challenge(snNumber.getPassKey(), activationKey)) {
+			if (!gawl.challenge(snNumber.getPassKey(), activationKey) && xlock.equals(snNumber.getXlock())) {
 				result = -1;
 			} else {
 				snNumber.setActivationKey(activationKey);
+				snNumber.setSerialNumberStatus(true);
 				snRepo.save(snNumber);
 				result = 1;
 			}
@@ -132,40 +133,45 @@ public class SNServiceImpl implements SNService {
 	}
 
 	@Override
-	public SerialNumber onlineActivation(String serialNumber, String passKey, String xlock) {
+	public SerialNumber onlineActivation(SerialNumber serialNumber) {
 
 		SerialNumber snNumber = null;
-		SerialNumber sn = snRepo.findBySerialNumber(serialNumber);
+		SerialNumber sn = snRepo.findBySerialNumber(serialNumber.getSerialNumber());
+		String passKey = "";
 
 		if (sn == null) {
-			if (gawl.validate(serialNumber)) {
+			if (gawl.validate(serialNumber.getSerialNumber())) {
 				try {
-					Map<String, Byte> extractResult = gawl.extract(serialNumber);
+					Map<String, Byte> extractResult = gawl.extract(serialNumber.getSerialNumber());
 					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
 						byte Type = extractResult.get(Gawl.TYPE);
 						byte seed1 = extractResult.get(Gawl.SEED1);
+						byte seed2 = extractResult.get(Gawl.SEED2);
+						
+						passKey = gawl.pass(seed1, seed2);
+						String xlock = gawl.xlock(serialNumber.getSerialNumber());
 
 						if (Type == 3) {
 							// save the serial number, passkey and xlock and
 							// activated
 							if (extractResult.get(Gawl.SEED1) == seed1) {
 								snNumber = new SerialNumber();
-								snNumber.setSerialNumber(serialNumber);
+								snNumber.setSerialNumber(serialNumber.getSerialNumber());
 								snNumber.setPassKey(passKey);
 								snNumber.setRegisterDate(new Date());
 								snNumber.setXlock(xlock);
-								SystemInfo si = new SystemInfo();
-								si.getOperatingSystem().getVersion();
+								snNumber.setMacAddr(MACAddr.getMacAddress());
 								snNumber = snRepo.save(snNumber);
 
 								if (snNumber != null) {
-									snNumber = generateActivationKey(snNumber.getId(), xlock);
+									snNumber = generateActivationKey(snNumber.getId(), passKey, xlock);
 									snNumber.setActivationKey(snNumber.getActivationKey());
+									snNumber.setSerialNumberStatus(true);
 									snNumber = snRepo.saveAndFlush(snNumber);
 
 									if (snNumber != null) {
 										ActivationHistory history = new ActivationHistory(new Date(), snNumber);
-
+										historyRepo.save(history);
 									}
 								}
 							}
@@ -183,12 +189,17 @@ public class SNServiceImpl implements SNService {
 
 	@Override
 	public List<SerialNumber> findSNNeedActivated(List<SerialNumber> serialNumbers) {
+		List<SerialNumber> list = new ArrayList<>();
 		serialNumbers.forEach((sn)->{
 			SerialNumber number = snRepo.findOne(sn.getId());
-			
+			if(!sn.getMacAddr().equals(number.getMacAddr())){
+				number.setActivationKey("");
+				number.setSerialNumberStatus(false);
+				number = snRepo.saveAndFlush(number);
+				list.add(number);
+			}
 		});
-		return null;
+		
+		return list;
 	}
-
-	
 }

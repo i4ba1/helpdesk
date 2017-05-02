@@ -30,7 +30,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/api/**").allowCredentials(true).allowedMethods("POST", "PUT", "GET", "DELETE")
-				.allowedOrigins("http://localhost:8787");
+				.allowedOrigins("http://localhost:8080");
 	}
 
 	@Bean
