@@ -13,7 +13,6 @@ import id.co.knt.helpdesk.api.model.SerialNumber;
 import id.co.knt.helpdesk.api.repositories.HistoryRepo;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.co.knt.helpdesk.api.service.SNService;
-import id.co.knt.helpdesk.api.utilities.MACAddr;
 import id.web.pos.integra.gawl.Gawl;
 
 @Service("snServiceImpl")
@@ -23,7 +22,7 @@ public class SNServiceImpl implements SNService {
 
 	@Autowired
 	private SNRepo snRepo;
-	
+
 	@Autowired
 	private HistoryRepo historyRepo;
 
@@ -52,6 +51,8 @@ public class SNServiceImpl implements SNService {
 								snNumber.setSerialNumber(serialNumber.getSerialNumber());
 								snNumber.setPassKey(passKey);
 								snNumber.setXlock(xlock);
+								snNumber.setMacAddr(serialNumber.getMacAddr());
+								snNumber.setActivationKey("");
 								snNumber.setRegisterDate(new Date());
 								snNumber.setSerialNumberStatus(false);
 								snRepo.save(snNumber);
@@ -139,7 +140,7 @@ public class SNServiceImpl implements SNService {
 		SerialNumber sn = snRepo.findBySerialNumber(serialNumber.getSerialNumber());
 		String passKey = "";
 
-		if (sn == null) {
+		if (sn != null) {
 			if (gawl.validate(serialNumber.getSerialNumber())) {
 				try {
 					Map<String, Byte> extractResult = gawl.extract(serialNumber.getSerialNumber());
@@ -147,24 +148,17 @@ public class SNServiceImpl implements SNService {
 						byte Type = extractResult.get(Gawl.TYPE);
 						byte seed1 = extractResult.get(Gawl.SEED1);
 						byte seed2 = extractResult.get(Gawl.SEED2);
-						
+
 						passKey = gawl.pass(seed1, seed2);
 						String xlock = gawl.xlock(serialNumber.getSerialNumber());
 
 						if (Type == 3) {
-							// save the serial number, passkey and xlock and
-							// activated
-							if (extractResult.get(Gawl.SEED1) == seed1) {
+							if (serialNumber.getPassKey().compareTo(sn.getPassKey()) == 0
+									&& serialNumber.getXlock().compareTo(sn.getXlock()) == 0) {
 								snNumber = new SerialNumber();
-								snNumber.setSerialNumber(serialNumber.getSerialNumber());
-								snNumber.setPassKey(passKey);
-								snNumber.setRegisterDate(new Date());
-								snNumber.setXlock(xlock);
-								snNumber.setMacAddr(MACAddr.getMacAddress());
-								snNumber = snRepo.save(snNumber);
 
 								if (snNumber != null) {
-									snNumber = generateActivationKey(snNumber.getId(), passKey, xlock);
+									snNumber = generateActivationKey(sn.getId(), passKey, xlock);
 									snNumber.setActivationKey(snNumber.getActivationKey());
 									snNumber.setSerialNumberStatus(true);
 									snNumber = snRepo.saveAndFlush(snNumber);
@@ -190,16 +184,16 @@ public class SNServiceImpl implements SNService {
 	@Override
 	public List<SerialNumber> findSNNeedActivated(List<SerialNumber> serialNumbers) {
 		List<SerialNumber> list = new ArrayList<>();
-		serialNumbers.forEach((sn)->{
+		serialNumbers.forEach((sn) -> {
 			SerialNumber number = snRepo.findOne(sn.getId());
-			if(!sn.getMacAddr().equals(number.getMacAddr())){
+			if (!sn.getMacAddr().equals(number.getMacAddr())) {
 				number.setActivationKey("");
 				number.setSerialNumberStatus(false);
 				number = snRepo.saveAndFlush(number);
 				list.add(number);
 			}
 		});
-		
+
 		return list;
 	}
 }

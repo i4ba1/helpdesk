@@ -33,7 +33,7 @@
 
 
         if (RequestFactory.isAlreadyAuthenticated()) {
-            $state.go('administrator.project-sn');
+            $state.go('administrator.sn');
         } else {
             $scope.login = login;
             $scope.model = { username: null, password: null };
@@ -51,7 +51,7 @@
                         $cookies.putObject("loggingIn", data, {
                             expires: (new $window.Date(now.getFullYear(), now.getMonth(), now.getDate() + 2))
                         });
-                        $state.go('administrator.project-sn');
+                        $state.go('administrator.sn');
                     },
                     function(responseError) {
                         console.error("Error : " + responseError);

@@ -1,62 +1,97 @@
-<div class="container-fluid">
-    <div class="row-fluid">
-        <section class="content-header" style="padding:15px;">
-            <div class="title-brand">
-                <span id="root-title">{{'KNT_APPS'|translate}}</span> / <span class="child-title">{{'SERIAL_NUMBER'|translate}}</span> </div>
-        </section>
-        <div class="content">
+<div class="container-fluid" >
+	<div class="row-fluid">
+		<section class="content-header" style="padding: 15px;">
+			<div class="title-brand">
+				<span id="root-title">{{'KNT_APPS'|translate}}</span> / <span
+					class="child-title">{{'SERIAL_NUMBER'|translate}}</span>
+				<div class="pull-right">
+					<div class="btn btn-default" ui-sref="administrator.sn.reg-actv({state:'register'})">
+						<i class="fa fa-fw fa-plus fa-lg"
+							title="{{'REGISTER_SERIAL'|translate}}"></i>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="content">
 
-            <div class="col-md-12 col-sm-12 col-lg-12">
-                <table st-safe-src="rowCollection" st-table="displayCollection" class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th width="100">No.</th>
-                            <th st-sort="serialNumber">{{'SERIAL_NUMBER' | translate}}</th>
-                            <th st-sort="passKey">{{'PASS_KEY' | translate}}</th>
-                            <th st-sort="activationKey">{{'ACTIVATION_KEY' | translate}}</th>
-                            <th st-sort="registerDate">{{'REGISTRATION_DATE' | translate}}</th>
-                            <!--<th st-sort="typeApp">{{'APP_TYPE' | translate}}</th>-->
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th>
-                                <input st-search="serialNumber" placeholder="{{'FILTER_SERIAL_NUMBER'|translate}}" class="input-sm form-control" type="search" />
-                            </th>
-                            <th>
-                                <input st-search="passKey" placeholder="{{'FILTER_PASS_KEY'|translate}}" class="input-sm form-control" type="search" />
-                            </th>
-                            <th>
-                                <input st-search="activationKey" placeholder="{{'FILTER_ACTIVATION_KEY'|translate}}" class="input-sm form-control" type="search" />
-                            </th>
-                            <th>
-
-                            </th>
-                            <!--<th>
+			<div class="col-md-12 col-sm-12 col-lg-12">
+				<table st-safe-src="rowCollection" st-table="displayCollection"
+					class="table table-striped">
+					<thead>
+						<tr>
+							<th width="50">No.</th>
+							<th st-sort="serialNumber">{{'SERIAL_NUMBER' | translate}}</th>
+							<th st-sort="macAddr">{{'MAC_ADDR' | translate}}</th>
+							<th st-sort="passKey">{{'PASS_KEY' | translate}}</th>
+							<th st-sort="xlock">{{'XLOCK' | translate}}</th>
+							<th st-sort="serialNumberStatus">{{'SN_STATUS' | translate}}</th>
+							<th st-sort="registerDate">{{'REGISTRATION_DATE' |
+								translate}}</th>
+							<!--<th st-sort="typeApp">{{'APP_TYPE' | translate}}</th>-->
+							<th width="100"></th>
+						</tr>
+						<tr>
+							<th></th>
+							<th><input st-search="serialNumber"
+								placeholder="{{'FILTER_SERIAL_NUMBER'|translate}}"
+								class="input-sm form-control" type="search" /></th>
+							<th><input st-search="macAddr"
+								placeholder="{{'FILTER_MAC_ADDR'|translate}}"
+								class="input-sm form-control" type="search" /></th>
+							<th><input st-search="passKey"
+								placeholder="{{'FILTER_PASS_KEY'|translate}}"
+								class="input-sm form-control" type="search" /></th>
+							<th><input st-search="xlock"
+								placeholder="{{'FILTER_XLOCK'|translate}}"
+								class="input-sm form-control" type="search" /></th>
+							<th colspan="3"></th>
+							<!--<th>
                                 <input st-search="typeApp" placeholder="{{'FILTER_TYPE_APP'|translate}}" class="input-sm form-control" type="search" />
                             </th>-->
-                        </tr>
+						</tr>
 
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="row in displayCollection track by $index">
-                            <td>{{(currentPage-1)*itemPage+$index+1}}</td>
-                            <td>{{row.serialNumber}}</td>
-                            <td>{{row.passKey}}</td>
-                            <td>{{row.activationKey}}</td>
-                            <td>{{row.registerDate |date:"dd/MM/yyyy"}}</td>
-                            <!--<td>{{row.typeApp}}</td>-->
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="5" class="text-center">
-                                <div st-pagination="" st-items-by-page="itemPage" st-displayed-pages="5" st-page-change="rembemberCurrentPage(newPage)"></div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+					</thead>
+					<tbody>
+						<tr ng-repeat="row in displayCollection track by $index">
+							<td>{{(currentPage-1)*itemPage+$index+1}}</td>
+							<td>{{row.serialNumber}}</td>
+							<td>{{row.macAddr}}</td>
+							<td>{{row.passKey}}</td>
+							<td>{{row.xlock}}</td>
+							<td ng-switch='row.serialNumberStatus' class="text-center">
+								<div ng-switch-default style="color: red">
+									<i class="fa fa-times fa-lg" aria-hidden="true"
+										title="{{'UNACTIVATED'|translate}}"></i>
+								</div>
+								<div ng-switch-when="true" style="color: green">
+									<i class="fa fa-check fa-lg" aria-hidden="true"
+										title="{{'ACTIVATED'|translate}}"></i>
+								</div>
+							</td>
+							<td>{{row.registerDate |date:"dd/MM/yyyy"}}</td>
+							<td>
+								<div class="btn btn-primary" title="{{'REACTIVATE'|translate}}"
+									ng-hide="row.serialNumberStatus"
+									ng-show="!row.serialNumberStatus"
+									ui-sref="administrator.sn.reg-actv({state:'reactivate'})">
+									<i class="fa fa-globe fa-lg" aria-hidden="true"></i>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="5" class="text-center">
+								<div st-pagination="" st-items-by-page="itemPage"
+									st-displayed-pages="5"
+									st-page-change="rembemberCurrentPage(newPage)"></div>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
 
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
+
 </div>

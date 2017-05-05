@@ -58,7 +58,15 @@
             FILTER_PASS_KEY: "Saring Pass Key...",
             FILTER_ACTIVATION_KEY: "Saring Activation Key...",
             FILTER_REGISTRATION_DATE: "Saring Tanggal..",
-            FILTER_TYPE_APP: "Saring Tipe App"
+            FILTER_TYPE_APP: "Saring Tipe App",
+            MAC_ADDR:"MAC",
+            XLOCK:"XLock",
+            SN_STATUS:"SN Status",
+            ACTIVATE:'Activasi',
+            REACTIVATE:'Activasi Ulang',
+            ACTIVATED:"Teraktivasi",
+            UNACTIVATED:"Belum Teraktivasi"
+            	
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

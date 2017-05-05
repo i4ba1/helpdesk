@@ -41,12 +41,22 @@
                     }
                 }
             })
-            .state('administrator.project-sn', {
-                url: "/project-sn",
+            .state('administrator.sn', {
+                url: "/sn",
                 views: {
                     'content@administrator': {
                         templateUrl: "sections/administrator/project/project-apps-sn.html",
                         controller: "ProjectSerialNumberController as snCtrl"
+                    }
+                }
+            })
+            
+            .state('administrator.sn.reg-actv', {
+                url: "/:state",
+                views: {
+                    'content@administrator': {
+                        templateUrl: "sections/administrator/project/activate-and-register.html",
+                        controller: "ActivateAndRegisterController as snCtrl"
                     }
                 }
             });

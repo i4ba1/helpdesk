@@ -20,9 +20,11 @@
         $scope.currentPage = 1;
         $scope.maxSize = 5;
         $scope.itemPage = 10;
+        
 
         $scope.rembemberCurrentPage = getCurrentPage;
-
+        $scope.activateSerialNumber = activateSerialNumber;
+        
         // Call getAllSerialNumber
         getAllSerialNumber();
 
@@ -44,6 +46,10 @@
 
         function getCurrentPage(p) {
             $scope.currentPage = p
+        }
+        
+        function activateSerialNumber(serialNumber){
+        	
         }
     }
 

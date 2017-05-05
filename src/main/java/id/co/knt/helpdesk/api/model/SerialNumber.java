@@ -42,7 +42,7 @@ public class SerialNumber implements Serializable {
 	private String xlock;
 	
 	@Column(name = "mac_addr")
-	private byte[] macAddr;
+	private String macAddr;
 	
 	@Column(name = "serialNumberStatus")
 	private boolean serialNumberStatus; 
@@ -91,11 +91,11 @@ public class SerialNumber implements Serializable {
 		return this.xlock;
 	}
 
-	public byte[] getMacAddr() {
+	public String getMacAddr() {
 		return macAddr;
 	}
 
-	public void setMacAddr(byte[] macAddr) {
+	public void setMacAddr(String macAddr) {
 		this.macAddr = macAddr;
 	}
 
