@@ -12,4 +12,7 @@ public interface SNRepo extends JpaRepository<SerialNumber, Long> {
 	
     @Query("select sn from SerialNumber sn where sn.serialNumber= :serialNumber")
     SerialNumber findBySerialNumber(@Param("serialNumber") String serialNumber);
+    
+    @Query("select sn from SerialNumber sn where sn.activationKey= :activationKey")
+    SerialNumber findByActivation(@Param("activationKey") String activationKey);
 }

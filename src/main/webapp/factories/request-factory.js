@@ -3,74 +3,77 @@
  */
 (function() {
 
-    'use strict';
-    angular.module('application')
-        .factory("RequestFactory", RequestFactory);
+	'use strict';
+	angular.module('application')
+		.factory("RequestFactory", RequestFactory);
 
-    RequestFactory.$inject = ["$http", "$state", "$cookies"];
+	RequestFactory.$inject = [ "$http", "$state", "$cookies" ];
 
-    function RequestFactory($http, $state, $cookies) {
-        var baseURL = "/helpdesk";
-        var service = {
-            getBaseUrl: getBaseUrl,
-            getSerialNumber: getSerialNumber,
-            createAdmin: createAdmin,
-            login: login,
-            logout: logout,
-            isAlreadyAuthenticated: isAlreadyAuthenticated
-        }
+	function RequestFactory($http, $state, $cookies) {
+		var baseURL = "/helpdesk";
+		var service = {
+			getBaseUrl : getBaseUrl,
+			getSerialNumber : getSerialNumber,
+			createAdmin : createAdmin,
+			login : login,
+			logout : logout,
+			isAlreadyAuthenticated : isAlreadyAuthenticated,
+			activate : activate
+		}
 
-        return service;
+		return service;
 
-        /** ------------------------------------------------------ */
+		/** ------------------------------------------------------ */
 
-        function getBaseUrl() {
-            return baseURL;
-        }
+		function getBaseUrl() {
+			return baseURL;
+		}
 
-        function getSerialNumber() {
-            return $http.get(baseURL + '/api/snManagement');
-        }
+		function getSerialNumber() {
+			return $http.get(baseURL + '/api/snManagement');
+		}
 
-        function login(model) {
-            var formData = {
-                id: "",
-                name: "",
-                createdDate: "",
-                userName: model.username,
-                password: model.password
+		function login(model) {
+			var formData = {
+				id : "",
+				name : "",
+				createdDate : "",
+				userName : model.username,
+				password : model.password
+			}
+			return $http.post(baseURL + "/api/userManagement/loggingIn/", formData);
+		}
 
-            }
-            return $http.post(baseURL + "/api/userManagement/loggingIn/", formData);
-        }
+		function createAdmin() {
+			var formData = {
+				id : "",
+				name : "",
+				createdDate : "",
+				userName : "",
+				password : ""
+			}
+			return $http.post(baseURL + "/api/userManagement/createUser/", formData);
+		}
 
-        function createAdmin() {
-            var formData = {
-                id: "",
-                name: "",
-                createdDate: "",
-                userName: "",
-                password: ""
+		function logout() {
+			var loggingIn = $cookies.getObject("loggingIn");
+			return $http.post(baseURL + "/api/userManagement/loggedOut/", loggingIn);
+		}
 
-            }
-            return $http.post(baseURL + "/api/userManagement/createUser/", formData);
-        }
+		function isAlreadyAuthenticated() {
+			var user = $cookies.getObject("loggingIn");
+			if (user) {
+				return true;
+			} else {
+				$state.go("login");
+				return false;
+			}
+		}
 
-        function logout() {
-            var loggingIn = $cookies.getObject("loggingIn");
-            return $http.post(baseURL + "/api/userManagement/loggedOut/", loggingIn);
-        }
+		function activate(serialNumber) {
+			return $http.post(baseURL + "/api/snManagement/activate/", serialNumber);
+		}
 
-        function isAlreadyAuthenticated() {
-            var user = $cookies.getObject("loggingIn");
-            if (user) {
-                return true;
-            } else {
-                $state.go("login");
-                return false;
-            }
-        }
-
-    }
+	}
 
 })();

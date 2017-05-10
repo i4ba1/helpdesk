@@ -4,12 +4,12 @@
 			<div class="title-brand">
 				<span id="root-title">{{'KNT_APPS'|translate}}</span> / <span
 					class="child-title">{{'SERIAL_NUMBER'|translate}}</span>
-				<div class="pull-right">
+				<!-- <div class="pull-right">
 					<div class="btn btn-default" ui-sref="administrator.sn.reg-actv({state:'register'})">
 						<i class="fa fa-fw fa-plus fa-lg"
 							title="{{'REGISTER_SERIAL'|translate}}"></i>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</section>
 		<div class="content">
@@ -73,7 +73,7 @@
 								<div class="btn btn-primary" title="{{'REACTIVATE'|translate}}"
 									ng-hide="row.serialNumberStatus"
 									ng-show="!row.serialNumberStatus"
-									ui-sref="administrator.sn.reg-actv({state:'reactivate'})">
+									ng-click="activateSerialNumber(row)">
 									<i class="fa fa-globe fa-lg" aria-hidden="true"></i>
 								</div>
 							</td>

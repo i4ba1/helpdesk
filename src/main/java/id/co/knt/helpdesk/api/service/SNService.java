@@ -13,10 +13,12 @@ public interface SNService{
     List<SerialNumber> findAllSN();
 
     SerialNumber findSN(Long id);
+    
+    SerialNumber findBySerial(String serial);
 
     void deleteSN(Long id);
 
     SerialNumber generateActivationKey(Long id, String passKey, String xlock);
 
-    int activateActivationKey(Long id, String xlock, String activationKey);
+    SerialNumber manuallyActivate(Long id, String xlock, String activationKey);
 }

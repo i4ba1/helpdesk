@@ -11,9 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "helpdesk_sn")
+@Table(name = "helpdesk_sn", uniqueConstraints=@UniqueConstraint(columnNames="serial_number"))
 public class SerialNumber implements Serializable {
 
 	/**

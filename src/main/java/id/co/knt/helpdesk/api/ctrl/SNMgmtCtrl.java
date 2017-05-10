@@ -23,6 +23,11 @@ public class SNMgmtCtrl {
 
 	@RequestMapping(value = "/register/", method = RequestMethod.POST)
 	public ResponseEntity<SerialNumber> register(@RequestBody SerialNumber serialNumber) {
+		if(snService.findBySerial(serialNumber.getSerialNumber()) != null){
+			serialNumber = null;
+			return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.CONFLICT);
+		}
+		
 		SerialNumber number = snService.registerSerialNumber(serialNumber);
 		if (!serialNumber.equals(null)) {
 			return new ResponseEntity<SerialNumber>(number, HttpStatus.OK);
@@ -42,15 +47,15 @@ public class SNMgmtCtrl {
 		return new ResponseEntity<SerialNumber>(serialNumber, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/activate/{id}/{activationKey}", method = RequestMethod.POST)
-	public ResponseEntity<Void> activate(@PathVariable Long id, @PathVariable String xlock,
-			@PathVariable String activationKey) {
-		int result = snService.activateActivationKey(id, xlock, activationKey);
-		if (result <= 0) {
-			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+	@RequestMapping(value = "/activate/", method = RequestMethod.POST)
+	public ResponseEntity<SerialNumber> activate(@RequestBody SerialNumber serialNumber) {
+		SerialNumber result = snService.manuallyActivate(serialNumber.getId(), serialNumber.getXlock(),
+				serialNumber.getActivationKey());
+		if (result == null) {
+			return new ResponseEntity<SerialNumber>(result, HttpStatus.EXPECTATION_FAILED);
 		}
 
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<SerialNumber>(result, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/activateByInternet/", method = RequestMethod.POST)

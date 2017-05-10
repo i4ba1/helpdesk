@@ -65,8 +65,11 @@
             ACTIVATE:'Activasi',
             REACTIVATE:'Activasi Ulang',
             ACTIVATED:"Teraktivasi",
-            UNACTIVATED:"Belum Teraktivasi"
-            	
+            UNACTIVATED:"Belum Teraktivasi",
+            ACTIVATION_SUCCESS:"Aktifasi Berhasil",
+            ACTIVATION_FAILED:"Aktifasi Gagal",
+            ACTIVATION_SUCCESS_MESSAGES:"Aktifasi Serial Number Berhasil",
+            ACTIVATION_FAILED_MESSAGES:"Aktifasi Serial Number Gagal"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
