@@ -16,7 +16,7 @@ import id.co.knt.helpdesk.api.service.SNService;
 
 @RestController
 @RequestMapping(value = "/snManagement")
-public class SNMgmtCtrl {
+public class SNManagementController {
 
 	@Autowired
 	private SNService snService;
