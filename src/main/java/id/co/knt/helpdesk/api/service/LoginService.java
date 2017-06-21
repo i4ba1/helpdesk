@@ -5,6 +5,7 @@ import id.co.knt.helpdesk.api.model.User;
 
 
 public interface LoginService {
+	
 	Login saveLogin(Login login);
 	
 	Boolean validateToken(String token, Long today);
