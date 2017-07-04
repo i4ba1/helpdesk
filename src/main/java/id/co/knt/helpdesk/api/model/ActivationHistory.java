@@ -34,9 +34,9 @@ public class ActivationHistory implements Serializable {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="sn_id", referencedColumnName="id")
-	private SerialNumber serialNumber;
+	private License serialNumber;
 
-	public ActivationHistory(Date activationDate, SerialNumber serialNumber) {
+	public ActivationHistory(Date activationDate, License serialNumber) {
 		super();
 		this.activationDate = activationDate;
 		this.serialNumber = serialNumber;
@@ -54,11 +54,11 @@ public class ActivationHistory implements Serializable {
 		return id;
 	}
 
-	public SerialNumber getSerialNumber() {
+	public License getSerialNumber() {
 		return serialNumber;
 	}
 
-	public void setSerialNumber(SerialNumber serialNumber) {
+	public void setSerialNumber(License serialNumber) {
 		this.serialNumber = serialNumber;
 	}
 }

@@ -1,24 +1,24 @@
 package id.co.knt.helpdesk.api.service;
 
-import id.co.knt.helpdesk.api.model.SerialNumber;
+import id.co.knt.helpdesk.api.model.License;
 import java.util.List;
 
 public interface SNService{
-    SerialNumber registerSerialNumber(SerialNumber serialNumber);
+    License registerSerialNumber(License serialNumber);
 
-    SerialNumber onlineActivation(SerialNumber serialNumber);
+    License onlineActivation(License serialNumber);
     
-    List<SerialNumber> findSNNeedActivated(List<SerialNumber> serialNumbers);
+    List<License> findSNNeedActivated(List<License> serialNumbers);
 
-    List<SerialNumber> findAllSN();
+    List<License> findAllSN();
 
-    SerialNumber findSN(Long id);
+    License findSN(Long id);
     
-    SerialNumber findBySerial(String serial);
+    License findBySerial(String serial);
 
     void deleteSN(Long id);
 
-    SerialNumber generateActivationKey(Long id, String passKey, String xlock);
+    License generateActivationKey(Long id, String passKey, String xlock);
 
-    SerialNumber manuallyActivate(Long id, String xlock, String activationKey);
+    License manuallyActivate(Long id, String xlock, String activationKey);
 }
