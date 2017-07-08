@@ -1,5 +1,5 @@
 {
-    "name": "kntHelpDesk",
+    "name": "knthelpdesk",
     "version": "0.0.0",
     "dependencies": {
         "angular": "^1.5.8",

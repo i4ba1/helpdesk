@@ -13,52 +13,53 @@
         $urlRouterProvider.otherwise("/");
 
         $stateProvider.state('login', {
-                url: "/",
-                views: {
-                    '': {
-                        templateUrl: "sections/login/login.html",
-                        controller: "LoginController as loginCtrl"
-                    }
+            url: "/",
+            views: {
+                '': {
+                    templateUrl: "sections/login/login.html",
+                    controller: "LoginController as loginCtrl"
                 }
-            })
-            .state('administrator', {
-                url: "/admin",
-                views: {
-                    '': {
-                        templateUrl: "sections/administrator/administrator-home.html",
-                        controller: "AdministratorController as adminCtrl"
-                    }
+            }
+        })
+
+        .state('administrator', {
+            url: "/admin",
+            views: {
+                '': {
+                    templateUrl: "sections/administrator/administrator-home.html",
+                    controller: "AdministratorController as adminCtrl"
                 }
-            })
-            .state('administrator.about-us', {
-                url: "/about",
-                views: {
-                    'content@administrator': {
-                        templateUrl: "sections/administrator/about-us/about-us.html",
-                        controller: function($rootScope, $state, RequestFactory) {
-                            RequestFactory.isAlreadyAuthenticated();
-                        }
-                    }
+            }
+        })
+
+        .state('administrator.about-us', {
+            url: "/about",
+            views: {
+                'content@administrator': {
+                    templateUrl: "sections/administrator/about-us/about-us.html",
+                    controller: "AboutUsController"
                 }
-            })
-            .state('administrator.sn', {
-                url: "/sn",
-                views: {
-                    'content@administrator': {
-                        templateUrl: "sections/administrator/project/project-apps-sn.html",
-                        controller: "ProjectSerialNumberController as snCtrl"
-                    }
+            }
+        })
+
+        .state('administrator.license', {
+            url: "/license",
+            views: {
+                'content@administrator': {
+                    templateUrl: "sections/administrator/license-manangement/license.html",
+                    controller: "ProjectSerialNumberController as snCtrl"
                 }
-            })
-            
-            .state('administrator.sn.reg-actv', {
-                url: "/:state",
-                views: {
-                    'content@administrator': {
-                        templateUrl: "sections/administrator/project/activate-and-register.html",
-                        controller: "ActivateAndRegisterController as snCtrl"
-                    }
+            }
+        })
+
+        .state('administrator.license.activation', {
+            url: "/:state",
+            views: {
+                'content@administrator': {
+                    templateUrl: "sections/administrator/license-management/license-acativation.html",
+                    controller: "ActivateAndRegisterController as snCtrl"
                 }
-            });
+            }
+        });
     }
 })();
