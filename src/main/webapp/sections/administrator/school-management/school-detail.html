@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <section class="content-header" style="padding:15px">
+            <div class="title-brand">
+                <span id="root-title">{{'KNT_APPS'|translate}}</span> / <span class="child-title">{{'SCHOOL'|translate}}</span> / <span class="child-title">{{title|translate}}</span>
+             </div>
+        </section>
+        <section class="content">
+            <form class="form-horizontal" name="schoolRegisterForm">
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-sm-offset-1" for="schoolName">Nama Sekolah</label>
+                    <div class="col-sm-4">
+                        <input type="email" class="form-control" id="schoolName" placeholder="Enter school name">
+                    </div>
+                </div>
+
+                <!--Button Save!-->
+                <div class="form-group" >
+                    <div class="col-xs-offset-3 clos-xs-6">
+                        <button class="btn btn-primary" type="submit" ng-disabled="studentForm.$invalid">{{isUpdate?"Ubah":"Simpan"}}</button>
+                        <a ui-sref="^" class="btn btn-default">Batal</a>      
+                    </div>
+                </div>
+            </form>
+        </section>
+    <div>
+</div>

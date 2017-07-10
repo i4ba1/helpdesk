@@ -59,6 +59,26 @@
                         controller: "ActivateAndRegisterController as snCtrl"
                     }
                 }
+            })
+            
+            .state('administrator.schoolMgmt', {
+                url: "/school-management",
+                views: {
+                    'content@administrator': {
+                        templateUrl: "sections/administrator/school-management/school-list.html",
+                        controller: "SchoolController as schoolCtrl"
+                    }
+                }
+            })
+
+            .state('administrator.schoolMgmt.schoolDetail', {
+                url: "/school/list",
+                views: {
+                    'content@administrator': {
+                        templateUrl: "sections/administrator/school-management/school-detail.html",
+                        controller: "SchoolController as schoolCtrl"
+                    }
+                }
             });
     }
 })();

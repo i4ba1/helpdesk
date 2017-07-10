@@ -17,3 +17,5 @@
 .externalToolBuilders/**
 .tern-project
 .vscode
+build/**
+.gradle/**
