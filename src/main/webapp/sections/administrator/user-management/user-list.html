@@ -1,0 +1,36 @@
+<section class="content-header" style="padding:15px;">
+    <div class="title-brand">
+        <span id="root-title">{{'USER_MANAGEMENT'|translate}}</span> / <span class="child-title">{{'PROJECT_APPS'|translate}}</span>
+        <a ui-sref="administrator.user-management.user-detail"> <span class="pull-right"><i class="fa fa-plus-square fa-2x" aria-hidden="true"></i></span></a>
+    </div>
+</section>
+<div class="content">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <table st-table="rowCollection" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th width="100">No.</th>
+                        <th>{{'FIRST_NAME'|translate}}</th>
+                        <th>{{'LAST_NAME'|translate}}</th>
+                        <th>{{'USERNAME'|translate}}</th>
+                        <th>{{'USER_CREATED_DATE'|translate}}</th>
+                        <th>{{'ROLE'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat='row in rowCollection'>
+                        <td>{{$index+1}}</td>
+                        <td>{{row.firstName}}</td>
+                        <td>{{row.lastName}}</td>
+                        <td>{{row.userName}}</td>
+                        <td>{{row.createdDate|date:'dd-MM-yyyy'}}</td>
+                        <td>{{row.role}}</td>
+                        <td width="25"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></td>
+                        <td><i class="fa fa-trash fa-lg" aria-hidden="true"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

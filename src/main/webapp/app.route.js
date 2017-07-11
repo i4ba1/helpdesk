@@ -91,6 +91,26 @@
                     controller: "SchoolController as schoolCtrl"
                 }
             }
+        })
+
+        .state('administrator.user-management', {
+            url: "/user-management",
+            views: {
+                'content@administrator': {
+                    templateUrl: "sections/administrator/user-management/user-list.html",
+                    controller: "UserManagementController as userMgmtCtrl"
+                }
+            }
+        })
+
+        .state('administrator.user-management.user-detail', {
+            url: "/detail?:userId",
+            views: {
+                'content@administrator': {
+                    templateUrl: "sections/administrator/user-management/user-detail.html",
+                    controller: "UserManagementController as userMgmtCtrl"
+                }
+            }
         });
 
     }

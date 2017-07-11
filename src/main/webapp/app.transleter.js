@@ -30,8 +30,6 @@
         });
         $translateProvider.translations('id', {
             WELCOME: "Selamat Datang",
-            USERNAME_PLH: "Nama Pengguna",
-            PASSWORD_PLH: "Kata Sandi",
             REMEMBER_ME: "ingat saya",
             LOGIN: "Masuk",
             LOGOUT: "Keluar",
@@ -40,7 +38,7 @@
             SYSTEM_ARCHITECT: "System Architect",
             UI_UX_DESIGNER: "UI/UX Designer",
             PROGRAMMER: "Programmer",
-            PHONE: "Telepon",
+            PHONE: "Nomor Telepon",
             FAX: "Fax",
             EMAIL: "Email",
             COMPANY: "Perusahaan",
@@ -74,7 +72,24 @@
             SCHOOL: "Sekolah",
             SCHOOL_MANAGEMENT: "Manajement Sekolah",
             ERROR_LOGIN_TITLE: "Login Gagal",
-            LOGIN_ERROR_MESSAGE: "Maaf Nama Pengguna atau Kata Sandi Salah!"
+            LOGIN_ERROR_MESSAGE: "Maaf Nama Pengguna atau Kata Sandi Salah!",
+            SCHOOL_ADDRESS: "Alamat Sekolah",
+            SCHOOL_NAME: "Nama Sekolah",
+            REGISTER_DATE: "Tanggal Daftar",
+            USER_MANAGEMENT: "User Management",
+            FIRST_NAME: "Nama Depan",
+            FIRST_NAME_PLH: "Masukkan nama belakang",
+            LAST_NAME: "Nama Belakang",
+            LAST_NAME_PLH: "Masukkan nama belakang",
+            USERNAME: "Nama Pengguna",
+            USERNAME_PLH: "Masukkan nama pengguna",
+            UPDATE: "Ubah",
+            SAVE: "Simpan",
+            CANCEL: "Batal",
+            PASSWORD: "Kata Sandi",
+            PASSWORD_PLH: "Masukkan kata sandi",
+            USER_CREATED_DATE: "User created date",
+            ROLE: "Role"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
