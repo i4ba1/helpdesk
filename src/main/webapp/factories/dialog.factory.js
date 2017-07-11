@@ -45,7 +45,7 @@
             modalInstance = uibModal.open({
                 animation: true,
                 templateUrl: 'sections/components/error-dialog.html',
-                controller: null,
+                controller: errorDialogController,
                 controllerAs: '$ctrl',
                 size: size,
                 resolve: {
@@ -78,7 +78,7 @@
         function errorDialogController($uibModalInstance, params) {
             var ctrl = this;
             ctrl.title = params.title;
-            ctrl.messages = params.content;
+            ctrl.messages = params.messsages;
 
             ctrl.ok = function() {
                 $uibModalInstance.close("close");

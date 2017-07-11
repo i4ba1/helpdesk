@@ -72,7 +72,9 @@
             ACTIVATION_SUCCESS_MESSAGES: "Aktifasi Serial Number Berhasil",
             ACTIVATION_FAILED_MESSAGES: "Aktifasi Serial Number Gagal",
             SCHOOL: "Sekolah",
-            SCHOOL_MANAGEMENT: "Manajement Sekolah"
+            SCHOOL_MANAGEMENT: "Manajement Sekolah",
+            ERROR_LOGIN_TITLE: "Login Gagal",
+            LOGIN_ERROR_MESSAGE: "Maaf Nama Pengguna atau Kata Sandi Salah!"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

@@ -6,9 +6,9 @@
     angular.module('application')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$scope', '$state', 'RequestFactory', '$cookies', '$window'];
+    LoginController.$inject = ['$scope', '$state', 'RequestFactory', '$cookies', '$window', 'DialogFactory'];
 
-    function LoginController($scope, $state, RequestFactory, $cookies, $window) {
+    function LoginController($scope, $state, RequestFactory, $cookies, $window, DialogFactory) {
         var now = new $window.Date();
         var isAdminCreated = $cookies.get("isAdminCreated");
 
@@ -55,6 +55,7 @@
                     },
                     function(responseError) {
                         console.error("Error : " + responseError);
+                        DialogFactory.errorDialog("ERROR_LOGIN_TITLE", ["LOGIN_ERROR_MESSAGE"], "md");
                     }
                 );
             }
