@@ -25,7 +25,8 @@
             FAX: "Fax",
             EMAIL: "Email",
             COMPANY: "Company",
-            WEBSITE: "Website"
+            WEBSITE: "Website",
+            SCHOOL: "School"
         });
         $translateProvider.translations('id', {
             WELCOME: "Selamat Datang",
@@ -69,7 +70,8 @@
             ACTIVATION_SUCCESS:"Aktifasi Berhasil",
             ACTIVATION_FAILED:"Aktifasi Gagal",
             ACTIVATION_SUCCESS_MESSAGES:"Aktifasi Serial Number Berhasil",
-            ACTIVATION_FAILED_MESSAGES:"Aktifasi Serial Number Gagal"
+            ACTIVATION_FAILED_MESSAGES:"Aktifasi Serial Number Gagal",
+            SCHOOL: "Sekolah"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
