@@ -50,10 +50,10 @@
         function activateSerialNumber(serialNumber) {
             RequestFactory.activate(serialNumber).then(
                 function(response) {
-                    DialogFactory.showDialogMsg("ACTIVATION_SUCCESS", "ACTIVATION_SUCCESS_MESSAGES", "md", "Activation Key :" + response.data.activationKey);
+                    DialogFactory.activationDialog("ACTIVATION_SUCCESS", "ACTIVATION_SUCCESS_MESSAGES", "md", "Activation Key :" + response.data.activationKey);
                 },
                 function(errorResponse) {
-                    DialogFactory.showDialogMsg("ACTIVATION_FAILED", "ACTIVATION_FAILED_MESSAGES", "md", null);
+                    DialogFactory.activationDialog("ACTIVATION_FAILED", "ACTIVATION_FAILED_MESSAGES", "md", null);
                 });
         }
 

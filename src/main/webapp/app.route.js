@@ -10,10 +10,10 @@
     function config($stateProvider, $urlRouterProvider, uiSelectConfig, $qProvider) {
         $qProvider.errorOnUnhandledRejections(false);
         uiSelectConfig.theme = 'bootstrap';
-        $urlRouterProvider.otherwise("/");
+        $urlRouterProvider.otherwise("/login");
 
         $stateProvider.state('login', {
-            url: "/",
+            url: "/login",
             views: {
                 '': {
                     templateUrl: "sections/login/login.html",
@@ -32,6 +32,16 @@
             }
         })
 
+        .state('administrator.dashboard', {
+            url: "/dashboard",
+            views: {
+                'content@administrator': {
+                    templateUrl: "sections/administrator/dashboard/dashboard.html",
+                    controller: "DashboardController as dashboardCtrl"
+                }
+            }
+        })
+
         .state('administrator.about-us', {
             url: "/about",
             views: {
@@ -46,7 +56,7 @@
             url: "/license",
             views: {
                 'content@administrator': {
-                    templateUrl: "sections/administrator/license-manangement/license.html",
+                    templateUrl: "sections/administrator/license-management/license.html",
                     controller: "ProjectSerialNumberController as snCtrl"
                 }
             }
@@ -63,7 +73,7 @@
             }
         })
 
-        .state('administrator.schoolMgmt', {
+        .state('administrator.school-management', {
             url: "/school-management",
             views: {
                 'content@administrator': {
@@ -73,8 +83,8 @@
             }
         })
 
-        .state('administrator.schoolMgmt.schoolDetail', {
-            url: "/school/list",
+        .state('administrator.school-management.school-detail', {
+            url: "/detail?:schoolId",
             views: {
                 'content@administrator': {
                     templateUrl: "sections/administrator/school-management/school-detail.html",

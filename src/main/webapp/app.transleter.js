@@ -60,18 +60,19 @@
             FILTER_ACTIVATION_KEY: "Saring Activation Key...",
             FILTER_REGISTRATION_DATE: "Saring Tanggal..",
             FILTER_TYPE_APP: "Saring Tipe App",
-            MAC_ADDR:"MAC",
-            XLOCK:"XLock",
-            SN_STATUS:"SN Status",
-            ACTIVATE:'Activasi',
-            REACTIVATE:'Activasi Ulang',
-            ACTIVATED:"Teraktivasi",
-            UNACTIVATED:"Belum Teraktivasi",
-            ACTIVATION_SUCCESS:"Aktifasi Berhasil",
-            ACTIVATION_FAILED:"Aktifasi Gagal",
-            ACTIVATION_SUCCESS_MESSAGES:"Aktifasi Serial Number Berhasil",
-            ACTIVATION_FAILED_MESSAGES:"Aktifasi Serial Number Gagal",
-            SCHOOL: "Sekolah"
+            MAC_ADDR: "MAC",
+            XLOCK: "XLock",
+            SN_STATUS: "SN Status",
+            ACTIVATE: 'Activasi',
+            REACTIVATE: 'Activasi Ulang',
+            ACTIVATED: "Teraktivasi",
+            UNACTIVATED: "Belum Teraktivasi",
+            ACTIVATION_SUCCESS: "Aktifasi Berhasil",
+            ACTIVATION_FAILED: "Aktifasi Gagal",
+            ACTIVATION_SUCCESS_MESSAGES: "Aktifasi Serial Number Berhasil",
+            ACTIVATION_FAILED_MESSAGES: "Aktifasi Serial Number Gagal",
+            SCHOOL: "Sekolah",
+            SCHOOL_MANAGEMENT: "Manajement Sekolah"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
