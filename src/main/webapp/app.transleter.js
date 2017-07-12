@@ -88,8 +88,14 @@
             CANCEL: "Batal",
             PASSWORD: "Kata Sandi",
             PASSWORD_PLH: "Masukkan kata sandi",
-            USER_CREATED_DATE: "User created date",
-            ROLE: "Role"
+            CREATED_DATE: "Tanggal dibuat",
+            ROLE: "Role",
+            KNT_PRODUCT: "Product",
+            PRODUCT_NAME:"Nama Produk",
+            PRODUCT_NAME_PLH:"Masukan nama produk",
+            PRODUCT_CODE:"Kode Produk",
+            PRODUCT_CODE_PLH:"Kode Produk",
+            CODE:"Kode",
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

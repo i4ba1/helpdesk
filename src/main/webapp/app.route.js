@@ -111,6 +111,26 @@
                     controller: "UserManagementController as userMgmtCtrl"
                 }
             }
+        })
+
+        .state('administrator.product-management', {
+            url: "/product-management",
+            views: {
+                'content@administrator': {
+                    templateUrl: "sections/administrator/product-management/product-list.html",
+                    controller: "ProductManagementController as productMgmtCtrl"
+                }
+            }
+        })
+
+        .state('administrator.product-management.product-detail', {
+            url: "/detail?:productId",
+            views: {
+                'content@administrator': {
+                    templateUrl: "sections/administrator/product-management/product-detail.html",
+                    controller: "ProductManagementController as productMgmtCtrl"
+                }
+            }
         });
 
     }
