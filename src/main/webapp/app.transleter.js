@@ -76,7 +76,7 @@
             SCHOOL_ADDRESS: "Alamat Sekolah",
             SCHOOL_NAME: "Nama Sekolah",
             REGISTER_DATE: "Tanggal Daftar",
-            USER_MANAGEMENT: "User Management",
+            USER_MANAGEMENT: "Manajemen Pengguna",
             FIRST_NAME: "Nama Depan",
             FIRST_NAME_PLH: "Masukkan nama belakang",
             LAST_NAME: "Nama Belakang",
@@ -91,11 +91,13 @@
             CREATED_DATE: "Tanggal dibuat",
             ROLE: "Role",
             KNT_PRODUCT: "Product",
-            PRODUCT_NAME:"Nama Produk",
-            PRODUCT_NAME_PLH:"Masukan nama produk",
-            PRODUCT_CODE:"Kode Produk",
-            PRODUCT_CODE_PLH:"Kode Produk",
-            CODE:"Kode",
+            PRODUCT_NAME: "Nama Produk",
+            PRODUCT_NAME_PLH: "Masukan nama produk",
+            PRODUCT_CODE: "Kode Produk",
+            PRODUCT_CODE_PLH: "Masukan kode produk",
+            CODE: "Kode",
+            PRODUCT_MANAGEMENT: "Manajemen Produk",
+
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
