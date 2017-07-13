@@ -131,6 +131,17 @@
                     controller: "ProductManagementController as productMgmtCtrl"
                 }
             }
+        })
+
+        .state('administrator.generator', {
+            url: "/generator",
+            views: {
+                'content@administrator': {
+                    templateUrl: "sections/administrator/license-generator/license-generator.html",
+                    controller: "GeneratorController as generatorCtrl"
+                }
+            }
+
         });
 
     }

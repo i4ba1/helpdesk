@@ -1,0 +1,16 @@
+[{
+        "productName": "SmartBee",
+        "productCode": 1,
+        "licenseType": "CLASS"
+    },
+    {
+        "productName": "SmartBee UKS",
+        "productCode": 2,
+        "licenseType": "UNIT"
+    },
+    {
+        "productName": "SmartBee CBT",
+        "productCode": 3,
+        "licenseType": "CLIENT"
+    }
+]

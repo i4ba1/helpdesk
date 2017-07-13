@@ -3,77 +3,103 @@
  */
 (function() {
 
-	'use strict';
-	angular.module('application')
-		.factory("RequestFactory", RequestFactory);
+    'use strict';
+    angular.module('application')
+        .factory("RequestFactory", RequestFactory);
 
-	RequestFactory.$inject = [ "$http", "$state", "$cookies" ];
+    RequestFactory.$inject = ["$http", "$state", "$cookies"];
 
-	function RequestFactory($http, $state, $cookies) {
-		var baseURL = "/helpdesk";
-		var service = {
-			getBaseUrl : getBaseUrl,
-			getSerialNumber : getSerialNumber,
-			createAdmin : createAdmin,
-			login : login,
-			logout : logout,
-			isAlreadyAuthenticated : isAlreadyAuthenticated,
-			activate : activate
-		}
+    function RequestFactory($http, $state, $cookies) {
+        var baseURL = "/helpdesk";
+        var service = {
+            getBaseUrl: getBaseUrl,
+            getSerialNumber: getSerialNumber,
+            createAdmin: createAdmin,
+            login: login,
+            logout: logout,
+            isAlreadyAuthenticated: isAlreadyAuthenticated,
+            activate: activate,
+            getProducts: getProducts,
+            getSchools: getSchools,
+            getUsers: getUsers
+        }
 
-		return service;
+        return service;
 
-		/** ------------------------------------------------------ */
+        /** ------------------------------------------------------ */
 
-		function getBaseUrl() {
-			return baseURL;
-		}
+        function getBaseUrl() {
+            return baseURL;
+        }
 
-		function getSerialNumber() {
-			return $http.get(baseURL + '/api/snManagement');
-		}
+        function getSerialNumber() {
+            return $http.get(baseURL + '/api/snManagement');
+        }
 
-		function login(model) {
-			var formData = {
-				id : "",
-				name : "",
-				createdDate : "",
-				userName : model.username,
-				password : model.password
-			}
-			return $http.post(baseURL + "/api/userManagement/loggingIn/", formData);
-		}
+        function login(model) {
+            var formData = {
+                id: "",
+                name: "",
+                createdDate: "",
+                userName: model.username,
+                password: model.password
+            }
+            return $http.post(baseURL + "/api/userManagement/loggingIn/", formData);
+        }
 
-		function createAdmin() {
-			var formData = {
-				id : "",
-				name : "",
-				createdDate : "",
-				userName : "",
-				password : ""
-			}
-			return $http.post(baseURL + "/api/userManagement/createUser/", formData);
-		}
+        function createAdmin() {
+            var formData = {
+                id: "",
+                name: "",
+                createdDate: "",
+                userName: "",
+                password: ""
+            }
+            return $http.post(baseURL + "/api/userManagement/createUser/", formData);
+        }
 
-		function logout() {
-			var loggingIn = $cookies.getObject("loggingIn");
-			return $http.post(baseURL + "/api/userManagement/loggedOut/", loggingIn);
-		}
+        function logout() {
+            var loggingIn = $cookies.getObject("loggingIn");
+            return $http.post(baseURL + "/api/userManagement/loggedOut/", loggingIn);
+        }
 
-		function isAlreadyAuthenticated() {
-			var user = $cookies.getObject("loggingIn");
-			if (user) {
-				return true;
-			} else {
-				$state.go("login");
-				return false;
-			}
-		}
+        function isAlreadyAuthenticated() {
+            var user = $cookies.getObject("loggingIn");
+            if (user) {
+                return true;
+            } else {
+                $state.go("login");
+                return false;
+            }
+        }
 
-		function activate(serialNumber) {
-			return $http.post(baseURL + "/api/snManagement/activate/", serialNumber);
-		}
+        function activate(serialNumber) {
+            return $http.post(baseURL + "/api/snManagement/activate/", serialNumber);
+        }
 
-	}
+        /**
+         * 
+         */
+        function getUsers() {
+            return $http.get("assets/dummy/user.dummy.json");
+        }
+
+        /**
+         * 
+         */
+        function getProducts() {
+            return $http.get("assets/dummy/product.dummy.json");
+        }
+
+
+        /**
+         * 
+         */
+        function getSchools() {
+            return $http.get("assets/dummy/school.dummy.json");
+        }
+
+
+    }
 
 })();

@@ -97,6 +97,7 @@
             PRODUCT_CODE_PLH: "Masukan kode produk",
             CODE: "Kode",
             PRODUCT_MANAGEMENT: "Manajemen Produk",
+            GENERATOR: "Generator"
 
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
