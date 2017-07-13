@@ -22,7 +22,8 @@
             getProducts: getProducts,
             getSchools: getSchools,
             getUsers: getUsers,
-            licenseGenerator: licenseGenerator
+            licenseGenerator: licenseGenerator,
+            getNotifications: getNotifications
         }
 
         return service;
@@ -105,6 +106,7 @@
             return $http.get("assets/dummy/school.dummy.json");
         }
 
+<<<<<<< HEAD
         /**
          * @param  generator { selectedProduct,licenseCount,secondParam}
          * requestType  is POST 
@@ -113,6 +115,11 @@
             return $http.post("assets/dummy/generated-license.dummy.json");
         }
 
+=======
+        function getNotifications() {
+            return $http.get("assets/dummy/dashboard.dummy.json");
+        }
+>>>>>>> create dashboard ui
 
     }
 

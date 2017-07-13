@@ -105,8 +105,7 @@
             SELECT_PRODUCT: "Pilih Produk",
             SELECT_SCHOOL: "Pilih Sekolah",
             NO: "No.",
-
-
+            NOTIFICATION: "Pemberitahuan"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
