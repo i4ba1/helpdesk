@@ -1,0 +1,40 @@
+[{
+
+        "license": "1231231c",
+        "passKey": "",
+        "activationKey": "",
+        "createdDate": "",
+        "schoool": {},
+        "product": {
+            "productName": "SmartBee",
+            "productCode": 1,
+            "licenseType": "CLASS"
+        }
+    },
+    {
+
+        "license": "asdasdasd",
+        "passKey": "",
+        "activationKey": "",
+        "createdDate": "",
+        "schoool": {},
+        "product": {
+            "productName": "SmartBee",
+            "productCode": 1,
+            "licenseType": "CLASS"
+        }
+    },
+    {
+
+        "license": "fghfghfghfg",
+        "passKey": "",
+        "activationKey": "",
+        "createdDate": "",
+        "schoool": {},
+        "product": {
+            "productName": "SmartBee",
+            "productCode": 1,
+            "licenseType": "CLASS"
+        }
+    }
+]

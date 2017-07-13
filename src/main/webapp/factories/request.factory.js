@@ -21,7 +21,8 @@
             activate: activate,
             getProducts: getProducts,
             getSchools: getSchools,
-            getUsers: getUsers
+            getUsers: getUsers,
+            licenseGenerator: licenseGenerator
         }
 
         return service;
@@ -36,6 +37,9 @@
             return $http.get(baseURL + '/api/snManagement');
         }
 
+        /**
+         * @param  {} model
+         */
         function login(model) {
             var formData = {
                 id: "",
@@ -78,14 +82,15 @@
         }
 
         /**
-         * 
+         * get all user data
          */
         function getUsers() {
             return $http.get("assets/dummy/user.dummy.json");
         }
 
         /**
-         * 
+         * get all product data
+         * requestType is GET
          */
         function getProducts() {
             return $http.get("assets/dummy/product.dummy.json");
@@ -93,10 +98,19 @@
 
 
         /**
-         * 
+         * get all school data
+         * requestType is GET
          */
         function getSchools() {
             return $http.get("assets/dummy/school.dummy.json");
+        }
+
+        /**
+         * @param  generator { selectedProduct,licenseCount,secondParam}
+         * requestType  is POST 
+         */
+        function licenseGenerator(generator) {
+            return $http.post("assets/dummy/generated-license.dummy.json");
         }
 
 

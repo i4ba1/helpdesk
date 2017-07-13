@@ -97,7 +97,15 @@
             PRODUCT_CODE_PLH: "Masukan kode produk",
             CODE: "Kode",
             PRODUCT_MANAGEMENT: "Manajemen Produk",
-            GENERATOR: "Generator"
+            GENERATOR: "Generator",
+            LICENSE_COUNT: "Jumlah Lisensi",
+            LICENSE_COUNT_PLH: "Masukan jumlah lisensi",
+            SECOND_PARAM: "Parameter",
+            SECOND_PARAM_PLH: "Masukan kelas atau jumlah client",
+            SELECT_PRODUCT: "Pilih Produk",
+            SELECT_SCHOOL: "Pilih Sekolah",
+            NO: "No.",
+
 
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
