@@ -10,3 +10,4 @@ src/main/webapp/bower_components/**
 .gradle
 bin
 build
+**.sass-cache

@@ -1,197 +1,36 @@
 [{
-        "serialNumber": "a",
+        "license": "a",
         "passKey": "asd",
         "activationKey": "sfsd",
         "registerDate": "",
-        "typeApp": "CBT"
+        "product": "CBT"
     },
     {
-        "serialNumber": "b",
+        "license": "b",
         "passKey": "",
         "activationKey": "",
         "registerDate": "",
-        "typeApp": "Autoring Tool"
+        "product": "Autoring Tool"
     },
     {
-        "serialNumber": "c",
+        "license": "c",
         "passKey": "",
         "activationKey": "",
         "registerDate": "",
-        "typeApp": "Smartbee SD"
+        "product": "Smartbee SD"
     },
     {
-        "serialNumber": "d",
+        "license": "d",
         "passKey": "",
         "activationKey": "",
         "registerDate": "",
-        "typeApp": "Smartbee SMP"
+        "product": "Smartbee SMP"
     },
     {
-        "serialNumber": "b2",
+        "license": "b2",
         "passKey": "",
         "activationKey": "",
         "registerDate": "",
-        "typeApp": "Autoring Tool"
-    },
-    {
-        "serialNumber": "c344",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SD"
-    },
-    {
-        "serialNumber": "d1",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SMP"
-    },
-    {
-        "serialNumber": "a",
-        "passKey": "asd",
-        "activationKey": "sfsd",
-        "registerDate": "",
-        "typeApp": "CBT"
-    },
-    {
-        "serialNumber": "b",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Autoring Tool"
-    },
-    {
-        "serialNumber": "c",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SD"
-    },
-    {
-        "serialNumber": "d",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SMP"
-    },
-    {
-        "serialNumber": "b2",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Autoring Tool"
-    },
-    {
-        "serialNumber": "c344",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SD"
-    },
-    {
-        "serialNumber": "d1",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SMP"
-    },
-    {
-        "serialNumber": "a",
-        "passKey": "asd",
-        "activationKey": "sfsd",
-        "registerDate": "",
-        "typeApp": "CBT"
-    },
-    {
-        "serialNumber": "b",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Autoring Tool"
-    },
-    {
-        "serialNumber": "c",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SD"
-    },
-    {
-        "serialNumber": "d",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SMP"
-    },
-    {
-        "serialNumber": "b2",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Autoring Tool"
-    },
-    {
-        "serialNumber": "c344",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SD"
-    },
-    {
-        "serialNumber": "d1",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SMP"
-    },
-    {
-        "serialNumber": "a",
-        "passKey": "asd",
-        "activationKey": "sfsd",
-        "registerDate": "",
-        "typeApp": "CBT"
-    },
-    {
-        "serialNumber": "b",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Autoring Tool"
-    },
-    {
-        "serialNumber": "c",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SD"
-    },
-    {
-        "serialNumber": "d",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SMP"
-    },
-    {
-        "serialNumber": "b2",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Autoring Tool"
-    },
-    {
-        "serialNumber": "c344",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SD"
-    },
-    {
-        "serialNumber": "d1",
-        "passKey": "",
-        "activationKey": "",
-        "registerDate": "",
-        "typeApp": "Smartbee SMP"
+        "product": "Autoring Tool"
     }
 ]

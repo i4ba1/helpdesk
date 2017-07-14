@@ -1,16 +1,19 @@
 [{
         "productName": "SmartBee",
         "productCode": 1,
-        "licenseType": "CLASS"
+        "licenseType": "CLASS",
+        "licenseCount": 100
     },
     {
         "productName": "SmartBee UKS",
         "productCode": 2,
-        "licenseType": "UNIT"
+        "licenseType": "UNIT",
+        "licenseCount": 230
     },
     {
         "productName": "SmartBee CBT",
         "productCode": 3,
-        "licenseType": "CLIENT"
+        "licenseType": "CLIENT",
+        "licenseCount": 400
     }
 ]
