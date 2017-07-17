@@ -1,7 +1,6 @@
 package id.co.knt.helpdesk.api.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +29,7 @@ public class School implements Serializable{
 	private String schoolAddress;
 	
 	@Column(name="created_date")
-	private Date createdDate;
+	private Long createdDate;
 
 	public String getSchoolName() {
 		return schoolName;
@@ -48,11 +47,11 @@ public class School implements Serializable{
 		this.schoolAddress = schoolAddress;
 	}
 
-	public Date getCreatedDate() {
+	public Long getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Long createdDate) {
 		this.createdDate = createdDate;
 	}
 
