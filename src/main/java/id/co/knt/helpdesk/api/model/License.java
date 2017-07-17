@@ -53,6 +53,11 @@ public class License implements Serializable {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="school_id")
 	private School school;
+	
+	@ManyToOne(fetch= FetchType.LAZY)
+	@JoinColumn(name="product_id")
+	private Product product;
+	
 
 	public Long getId() {
 		return id;
