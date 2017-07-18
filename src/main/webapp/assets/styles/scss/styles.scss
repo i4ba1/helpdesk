@@ -569,3 +569,14 @@ input.ng-dirty {
         border: 1.5px solid greenyellow;
     }
 }
+
+.data {
+    &-not-found {
+        text-align: center;
+        height: 100px;
+        padding-top: 35px!important;
+        font-size: 16px;
+        font-weight: bold;
+        color: rgba(gray, .5);
+    }
+}

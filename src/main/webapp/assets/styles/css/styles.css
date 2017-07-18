@@ -399,4 +399,12 @@ input.ng-dirty.ng-invalid {
 input.ng-dirty.ng-valid {
   border: 1.5px solid greenyellow; }
 
+.data-not-found {
+  text-align: center;
+  height: 100px;
+  padding-top: 35px !important;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgba(128, 128, 128, 0.5); }
+
 /*# sourceMappingURL=styles.css.map */
