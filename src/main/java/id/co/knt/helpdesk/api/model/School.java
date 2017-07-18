@@ -30,6 +30,9 @@ public class School implements Serializable{
 	
 	@Column(name="created_date")
 	private Long createdDate;
+	
+	@Column(name= "deleted")
+	private Boolean deleted;
 
 	public String getSchoolName() {
 		return schoolName;
@@ -57,6 +60,14 @@ public class School implements Serializable{
 
 	public Integer getId() {
 		return id;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 	
 }

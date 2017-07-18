@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,11 +27,15 @@ import id.co.knt.helpdesk.api.repositories.SchoolRepo;
 @RestController
 @RequestMapping(value = "/schoolManagement")
 public class SchoolController {
+	
 	private static final Logger LOG = LoggerFactory.getLogger(School.class);
 
 	@Autowired
 	SchoolRepo schoolRepo;
 
+	/**
+	 * @return List<School>
+	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ResponseEntity<List<School>> getAllSchool() {
 		LOG.info("=============[getAllSchool]============");
@@ -38,23 +43,56 @@ public class SchoolController {
 
 		if (schools.size() > 0) {
 			return new ResponseEntity<List<School>>(schools, HttpStatus.OK);
-		} 
-		
+		}
+
 		return new ResponseEntity<List<School>>(schools, HttpStatus.NOT_FOUND);
 	}
-	
-	@RequestMapping(value="/schoolDetail/{schoolId}",method= RequestMethod.GET)
-	public ResponseEntity<School> getDetailSchool(@PathVariable Integer schoolId){
+
+	/**
+	 * @param schoolId
+	 */
+	@RequestMapping(value = "/schoolDetail/{schoolId}", method = RequestMethod.GET)
+	public ResponseEntity<School> getDetailSchool(@PathVariable Integer schoolId) {
 		LOG.info("============[getDetailSchool]===============");
 		School school = schoolRepo.findOne(schoolId);
-		
-		if(!school.equals(null)){
-			return new ResponseEntity<School>(school,HttpStatus.OK);
+
+		if (!school.equals(null)) {
+			return new ResponseEntity<School>(school, HttpStatus.OK);
 		}
-		
-		return new  ResponseEntity<School>(school, HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<School>(school, HttpStatus.NOT_FOUND);
 	}
-	
-	
+
+	/**
+	 * @param school
+	 */
+	@RequestMapping(value = "/createSchool/", method = RequestMethod.POST)
+	public ResponseEntity<School> createSchool(@RequestBody School school) {
+		LOG.info("============[createSChool]===============");
+		if (schoolRepo.findBySchoolName(school.getSchoolName()) != null) {
+			school = null;
+			return new ResponseEntity<School>(school, HttpStatus.FORBIDDEN);
+		}
+		School schoolResult = schoolRepo.save(school);
+
+		return new ResponseEntity<School>(schoolResult, HttpStatus.OK);
+	}
+
+	/**
+	 * @param schoolId
+	 * soft delete school
+	 */
+	@RequestMapping(value = "/deleteSchool/{schoolId}", method = RequestMethod.DELETE)
+	public ResponseEntity<School> deleteSchool(@PathVariable Integer schoolId) {
+		School school = schoolRepo.findOne(schoolId);
+		
+		if (!school.equals(null)) {
+			school.setDeleted(true);
+			schoolRepo.saveAndFlush(school);
+			return new ResponseEntity<School>(school, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<School>(school, HttpStatus.NOT_FOUND);
+	}
 
 }

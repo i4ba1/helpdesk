@@ -31,6 +31,9 @@ public class Product implements Serializable{
 	
 	@Column(name="created_date")
 	private Long createdDate;
+	
+	@Column(name="deleted")
+	private Boolean deleted;
 
 	public String getProductName() {
 		return productName;
@@ -59,9 +62,14 @@ public class Product implements Serializable{
 	public Integer getId() {
 		return id;
 	}
-	
-	
-	
-	
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+		
 
 }
