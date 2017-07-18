@@ -94,11 +94,58 @@
         }
 
         /**
-         * get all product data
-         * requestType is GET
+         * get all products
          */
         function getProducts() {
-            return $http.get("assets/dummy/product.dummy.json");
+            return $http.get(baseURL + "/productManagement/");
+        }
+
+        /**
+         * View detail of product
+         * @param {*} productId 
+         */
+        function viewProductDetail(productId) {
+            return $http.get(baseURL + "/productDetail/" + productId);
+        }
+
+        /**
+         * Create new of product
+         * @param {*} product 
+         */
+        function createProduct(product) {
+            var formData = {
+                id: null,
+                productName: product.productName,
+                productCode: product.productCode,
+                createdDate: product.createdDate,
+                deleted: false
+            };
+
+            return $http.post(baseURL + "/createProduct/", formData);
+        }
+
+        /**
+         * update current product
+         * @param {*} product 
+         */
+        function updateProduct(product) {
+            var formData = {
+                id: null,
+                productName: product.productName,
+                productCode: null,
+                createdDate: null,
+                deleted: false
+            };
+
+            return $http.put(baseURL + "/updateProduct/", formData);
+        }
+
+        /**
+         * 
+         * @param {*} productId 
+         */
+        function deleteProduct(productId) {
+            return $http.deleted(baseURL + "deleteProduct" + productId);
         }
 
         /**
