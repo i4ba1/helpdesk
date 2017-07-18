@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-07-18 14:21:21
+ * @Last Modified time: 2017-07-18 15:09:45
  * 
  * Application Translate Configuration
  */
@@ -129,7 +129,8 @@
             DELETE_SUCCESS: "Berhasil Hapus",
             DELETE_FAILED: "Gagal Hapus",
             DELETE_DATA_SUCCESS: "Berhasil menghapus data ini !",
-            DELETE_DATA_FAILED: "Gagal menghapus data ini !"
+            DELETE_DATA_FAILED: "Gagal menghapus data ini !",
+            DATA_ALREADY_EXIST: "Data sudah pernah disimpan !"
 
 
         });

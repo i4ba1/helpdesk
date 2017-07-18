@@ -25,7 +25,7 @@
                         <td width="25">
                             <a ui-sref="administrator.school-management.school-detail({schoolId:row.id})"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
                         </td>
-                        <td>
+                        <td ng-hide="true">
                             <a ng-click="deleteSchool(row.id)"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
                         </td>
                     </tr>

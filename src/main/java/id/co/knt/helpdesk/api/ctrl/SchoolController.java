@@ -39,7 +39,7 @@ public class SchoolController {
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ResponseEntity<List<School>> getAllSchool() {
 		LOG.info("=============[getAllSchool]============");
-		List<School> schools = schoolRepo.findAll();
+		List<School> schools = schoolRepo.findAllSchool();
 
 		if (schools.size() > 0) {
 			return new ResponseEntity<List<School>>(schools, HttpStatus.OK);
@@ -69,10 +69,7 @@ public class SchoolController {
 	@RequestMapping(value = { "/createSchool/" }, method = RequestMethod.POST)
 	public ResponseEntity<School> createSchool(@RequestBody School school) {
 		LOG.info("============[/createSChool/]===============");
-		if (schoolRepo.findBySchoolName(school.getSchoolName()) != null) {
-			school = null;
-			return new ResponseEntity<School>(school, HttpStatus.FORBIDDEN);
-		}
+		
 		school.setCreatedDate(System.currentTimeMillis());
 		School schoolResult = schoolRepo.save(school);
 

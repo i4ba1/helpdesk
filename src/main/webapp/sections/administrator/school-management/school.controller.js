@@ -13,17 +13,20 @@
         $scope.submitSchoolForm = submitSchoolForm;
         $scope.deleteSchool = deleteSchool;
 
+        if ($state.is("administrator.school-management")) {
 
-        // get all school
-        RequestFactory.getSchools().then(
-            function(response) {
-                $scope.schools = response.data;
-                $scope.rowCollections = [].concat($scope.schools);
-            },
-            function(error) {
-                DialogFactory.messageDialog("NOTIFICATION", ["DATA_NOT_FOUND"], "sm");
-            }
-        );
+            // get all school
+            RequestFactory.getSchools().then(
+                function(response) {
+                    $scope.schools = response.data;
+                    $scope.rowCollections = [].concat($scope.schools);
+                },
+                function(error) {
+                    DialogFactory.messageDialog("NOTIFICATION", ["DATA_NOT_FOUND"], "sm");
+                }
+            );
+
+        }
 
         if ($scope.schoolId) {
             RequestFactory.schoolDetail($scope.schoolId).then(
@@ -60,7 +63,7 @@
                     );
                 },
                 function(error) {
-                    DialogFactory.messageDialog("SAVE_FAILED", ["SAVE_SCHOOL_FAILED"], "sm");
+                    DialogFactory.messageDialog("SAVE_FAILED", ["DATA_ALREADY_EXIST"], "sm");
                 });
         }
 
