@@ -1,6 +1,12 @@
-/**
+/*
+ * @Author: Marlina_Kreatif 
+ * @Date: 2017-07-18 10:06:11 
+ * @Last Modified by: Margono Sugeng Purwoko
+ * @Last Modified time: 2017-07-18 10:07:17
+ * 
  * Application Translate Configuration
  */
+
 (function() {
     'use strict';
     angular

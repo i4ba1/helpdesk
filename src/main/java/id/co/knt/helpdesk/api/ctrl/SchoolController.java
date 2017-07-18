@@ -27,7 +27,7 @@ import id.co.knt.helpdesk.api.repositories.SchoolRepo;
 @RestController
 @RequestMapping(value = "/schoolManagement")
 public class SchoolController {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(School.class);
 
 	@Autowired
@@ -36,7 +36,7 @@ public class SchoolController {
 	/**
 	 * @return List<School>
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ResponseEntity<List<School>> getAllSchool() {
 		LOG.info("=============[getAllSchool]============");
 		List<School> schools = schoolRepo.findAll();
@@ -51,7 +51,7 @@ public class SchoolController {
 	/**
 	 * @param schoolId
 	 */
-	@RequestMapping(value = "/schoolDetail/{schoolId}", method = RequestMethod.GET)
+	@RequestMapping(value = { "/schoolDetail/{schoolId}" }, method = RequestMethod.GET)
 	public ResponseEntity<School> getDetailSchool(@PathVariable Integer schoolId) {
 		LOG.info("============[getDetailSchool]===============");
 		School school = schoolRepo.findOne(schoolId);
@@ -66,9 +66,9 @@ public class SchoolController {
 	/**
 	 * @param school
 	 */
-	@RequestMapping(value = "/createSchool/", method = RequestMethod.POST)
+	@RequestMapping(value = { "/createSchool/" }, method = RequestMethod.POST)
 	public ResponseEntity<School> createSchool(@RequestBody School school) {
-		LOG.info("============[createSChool]===============");
+		LOG.info("============[/createSChool/]===============");
 		if (schoolRepo.findBySchoolName(school.getSchoolName()) != null) {
 			school = null;
 			return new ResponseEntity<School>(school, HttpStatus.FORBIDDEN);
@@ -79,13 +79,15 @@ public class SchoolController {
 	}
 
 	/**
-	 * @param schoolId
 	 * soft delete school
+	 * 
+	 * @param schoolId
 	 */
-	@RequestMapping(value = "/deleteSchool/{schoolId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = { "/deleteSchool/{schoolId}" }, method = RequestMethod.DELETE)
 	public ResponseEntity<School> deleteSchool(@PathVariable Integer schoolId) {
+		LOG.info("=============[/deleteschool/{schoolId}]==============");
 		School school = schoolRepo.findOne(schoolId);
-		
+
 		if (!school.equals(null)) {
 			school.setDeleted(true);
 			schoolRepo.saveAndFlush(school);
@@ -93,6 +95,27 @@ public class SchoolController {
 		}
 
 		return new ResponseEntity<School>(school, HttpStatus.NOT_FOUND);
+	}
+
+	/**
+	 * @param school
+	 */
+	@RequestMapping(value = { "/updateSchool/" }, method = RequestMethod.PUT)
+	public ResponseEntity<School> updateSchool(@RequestBody School school) {
+		LOG.info("===========[/updateSchool/]=============");
+		School currentSchool = schoolRepo.findOne(school.getId());
+
+		if (!currentSchool.equals(null)) {
+			currentSchool.setSchoolName(school.getSchoolName());
+			currentSchool.setSchoolAddress(school.getSchoolAddress());
+
+		}
+
+		if (!(schoolRepo.saveAndFlush(currentSchool)).equals(null)) {
+			return new ResponseEntity<School>(currentSchool, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<School>(currentSchool, HttpStatus.NOT_FOUND);
 	}
 
 }
