@@ -11,6 +11,7 @@
         $scope.schoolId = $stateParams.schoolId;
         $scope.school = null;
         $scope.submitSchoolForm = submitSchoolForm;
+        $scope.deleteSchool = deleteSchool;
 
 
         // get all school
@@ -20,18 +21,72 @@
                 $scope.rowCollections = [].concat($scope.schools);
             },
             function(error) {
-                console.log("schools not found");
+                DialogFactory.messageDialog("NOTIFICATION", ["DATA_NOT_FOUND"], "sm");
             }
         );
 
-        function submitSchoolForm(school) {
-            RequestFactory.createSchool(school).then(
-                function(response) {},
+        if ($scope.schoolId) {
+            RequestFactory.schoolDetail($scope.schoolId).then(
+                function(response) {
+                    $scope.school = response.data;
+                },
                 function(error) {
-                    console.log("ERROR :: " + error);
-                });
-
-
+                    DialogFactory.messageDialog("NOTIFICATION", ["DATA_NOT_FOUND"], "sm").then(
+                        function(dialogReturn) {
+                            $state.go("administrator.school-management");
+                        },
+                        function(dismiss) {}
+                    );
+                }
+            );
         }
+
+        function submitSchoolForm(school) {
+            var result = null;
+
+            if ($scope.schoolId) {
+                result = RequestFactory.updateSchool(school);
+            } else {
+                result = RequestFactory.createSchool(school);
+            }
+
+            result.then(
+                function(response) {
+                    DialogFactory.messageDialog("SAVE_SUCCESS", ["SAVE_SCHOOL_SUCCESS"], "sm").then(
+                        function(dialogReturn) {
+                            $state.go("administrator.school-management");
+                        },
+                        function(dismiss) {}
+                    );
+                },
+                function(error) {
+                    DialogFactory.messageDialog("SAVE_FAILED", ["SAVE_SCHOOL_FAILED"], "sm");
+                });
+        }
+
+        function deleteSchool(schoolId) {
+            DialogFactory.confirmationDialog("CONFIRMATION", "DELETE_MESSAGE", "sm").then(
+                function(dialogReturn) {
+                    RequestFactory.deleteSchool(schoolId).then(
+                        function(response) {
+                            DialogFactory.messageDialog("DELETE_SUCCESS", ["DELETE_DATA_SUCCESS"], "sm").then(
+                                function(response) {
+                                    $state.go("administrator.school-management");
+                                },
+                                function(dismiss) {}
+                            );
+                        },
+                        function(errorResponse) {
+                            DialogFactory.messageDialog("DELETE_FAILED", ["DELETE_DATA_FAILED"], "sm");
+                        }
+                    )
+                },
+                function(dismiss) {
+
+                }
+            )
+        }
+
+
     }
 })();

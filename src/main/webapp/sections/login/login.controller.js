@@ -55,7 +55,7 @@
                     },
                     function(responseError) {
                         console.error("Error : " + responseError);
-                        DialogFactory.errorDialog("ERROR_LOGIN_TITLE", ["LOGIN_ERROR_MESSAGE"], "md");
+                        DialogFactory.messageDialog("LOGIN_ERROR_TITLE", ["LOGIN_ERROR_MESSAGE"], "md");
                     }
                 );
             }

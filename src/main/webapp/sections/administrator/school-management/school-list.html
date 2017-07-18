@@ -21,9 +21,13 @@
                         <td>{{$index+1}}</td>
                         <td>{{row.schoolName}}</td>
                         <td>{{row.schoolAddress}}</td>
-                        <td>{{row.createdDate}}</td>
-                        <td width="25"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></td>
-                        <td><i class="fa fa-trash fa-lg" aria-hidden="true"></i></td>
+                        <td>{{row.createdDate| date:"dd/MM/yyyy"}}</td>
+                        <td width="25">
+                            <a ui-sref="administrator.school-management.school-detail({schoolId:row.id})"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
+                        </td>
+                        <td>
+                            <a ng-click="deleteSchool(row.id)"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                        </td>
                     </tr>
                 </tbody>
             </table>

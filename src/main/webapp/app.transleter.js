@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-07-18 11:19:08
+ * @Last Modified time: 2017-07-18 14:21:21
  * 
  * Application Translate Configuration
  */
@@ -80,7 +80,7 @@
             SCHOOL_LIST: "Daftar Sekolah",
             SCHOOL_DETAIL: "Detail Sekolah",
             SCHOOL_ADD: "Tambah Sekolah",
-            ERROR_LOGIN_TITLE: "Login Gagal",
+            LOGIN_ERROR_TITLE: "Login Gagal",
             LOGIN_ERROR_MESSAGE: "Maaf Nama Pengguna atau Kata Sandi Salah!",
             SCHOOL_ADDRESS: "Alamat Sekolah",
             SCHOOL_NAME: "Nama Sekolah",
@@ -116,7 +116,22 @@
             SELECT_PRODUCT: "Pilih Produk",
             SELECT_SCHOOL: "Pilih Sekolah",
             NO: "No.",
-            NOTIFICATION: "Pemberitahuan"
+            NOTIFICATION: "Pemberitahuan",
+            SAVE_SUCCESS: "Simpan Data Berhasil",
+            SAVE_FAILED: "Simpan Data Gagal",
+            SAVE_SCHOOL_SUCCESS: "Data sekolah berhasil disimpan",
+            SAVE_SCHOOL_FAILED: "Data Sekolah gagal disimpan",
+            DATA_NOT_FOUND: "Data tidak ditemukan!",
+            YES: "Ya",
+            NOT: "Tidak",
+            DELETE_MESSAGE: "Anda yakin hapus data ini ?",
+            CONFIRMATION: "Konfirmasi",
+            DELETE_SUCCESS: "Berhasil Hapus",
+            DELETE_FAILED: "Gagal Hapus",
+            DELETE_DATA_SUCCESS: "Berhasil menghapus data ini !",
+            DELETE_DATA_FAILED: "Gagal menghapus data ini !"
+
+
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

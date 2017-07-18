@@ -22,6 +22,9 @@
             getProducts: getProducts,
             getSchools: getSchools,
             createSchool: createSchool,
+            schoolDetail: schoolDetail,
+            updateSchool: updateSchool,
+            deleteSchool: deleteSchool,
             getUsers: getUsers,
             licenseGenerator: licenseGenerator,
             getNotifications: getNotifications
@@ -106,6 +109,10 @@
             return $http.get(baseURL + "/schoolManagement/");
         }
 
+        function schoolDetail(schoolId) {
+            return $http.get(baseURL + "/schoolManagement/schoolDetail/" + schoolId);
+        }
+
         function createSchool(school) {
             var formData = {
                 id: null,
@@ -114,7 +121,22 @@
                 createdDate: null,
                 deleted: false
             }
-            return $http.post(baseURL + "/createSchool/", formData)
+            return $http.post(baseURL + "/schoolManagement/createSchool/", formData);
+        }
+
+        function updateSchool(school) {
+            var formData = {
+                id: school.id,
+                schoolName: school.schoolName,
+                schoolAddress: school.schoolAddress,
+                createdDate: school.createdDate,
+                deleted: school.deleted
+            }
+            return $http.put(baseURL + "/schoolManagement/updateSchool/", formData);
+        }
+
+        function deleteSchool(schoolId) {
+            return $http.delete(baseURL + "/schoolManagement/deleteSchool/" + schoolId);
         }
 
         /**

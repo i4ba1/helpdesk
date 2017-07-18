@@ -73,6 +73,7 @@ public class SchoolController {
 			school = null;
 			return new ResponseEntity<School>(school, HttpStatus.FORBIDDEN);
 		}
+		school.setCreatedDate(System.currentTimeMillis());
 		School schoolResult = schoolRepo.save(school);
 
 		return new ResponseEntity<School>(schoolResult, HttpStatus.OK);

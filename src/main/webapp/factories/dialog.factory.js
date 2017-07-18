@@ -41,11 +41,11 @@
          * @param {*} messsages 
          * @param {*} size 
          */
-        function errorDialog(title, messsages, size) {
+        function messageDialog(title, messsages, size) {
             modalInstance = uibModal.open({
                 animation: true,
-                templateUrl: 'sections/components/error-dialog.html',
-                controller: errorDialogController,
+                templateUrl: 'sections/components/message-dialog.html',
+                controller: messageDialogController,
                 controllerAs: '$ctrl',
                 size: size,
                 resolve: {
@@ -57,6 +57,34 @@
                     }
                 }
             });
+
+            return modalInstance.result;
+        }
+
+        /**
+         * @param {*} title 
+         * @param {*} messsage 
+         * @param {*} size 
+         */
+        function confirmationDialog(title, messsage, size) {
+            modalInstance = uibModal.open({
+                animation: true,
+                templateUrl: 'sections/components/confirmation-dialog.html',
+                controller: confirmationDialogController,
+                controllerAs: '$ctrl',
+                size: size,
+                backdrop: 'static',
+                resolve: {
+                    params: function() {
+                        return {
+                            title: title,
+                            messsage: messsage
+                        };
+                    }
+                }
+            });
+
+            return modalInstance.result;
         }
 
         // =======================[END Message Dialog Creator]==============
@@ -75,7 +103,7 @@
 
         }
 
-        function errorDialogController($uibModalInstance, params) {
+        function messageDialogController($uibModalInstance, params) {
             var ctrl = this;
             ctrl.title = params.title;
             ctrl.messages = params.messsages;
@@ -86,11 +114,26 @@
 
 
         }
+
+        function confirmationDialogController($uibModalInstance, params) {
+            var ctrl = this;
+            ctrl.title = params.title;
+            ctrl.message = params.messsage;
+
+            ctrl.ok = function() {
+                $uibModalInstance.close("yes");
+            };
+
+            ctrl.dismiss = function() {
+                $uibModalInstance.dismiss("no");
+            }
+        }
         // =======================[END Message Dialog Controller]===========
 
         var dialogContainer = {
             activationDialog: activationDialog,
-            errorDialog: errorDialog
+            messageDialog: messageDialog,
+            confirmationDialog: confirmationDialog
         };
 
         return dialogContainer;
