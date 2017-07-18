@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-07-18 10:07:17
+ * @Last Modified time: 2017-07-18 11:19:08
  * 
  * Application Translate Configuration
  */
@@ -77,10 +77,15 @@
             ACTIVATION_FAILED_MESSAGES: "Aktifasi Serial Number Gagal",
             SCHOOL: "Sekolah",
             SCHOOL_MANAGEMENT: "Manajement Sekolah",
+            SCHOOL_LIST: "Daftar Sekolah",
+            SCHOOL_DETAIL: "Detail Sekolah",
+            SCHOOL_ADD: "Tambah Sekolah",
             ERROR_LOGIN_TITLE: "Login Gagal",
             LOGIN_ERROR_MESSAGE: "Maaf Nama Pengguna atau Kata Sandi Salah!",
             SCHOOL_ADDRESS: "Alamat Sekolah",
             SCHOOL_NAME: "Nama Sekolah",
+            SCHOOL_ADDRESS_PLH: "Masukan alamat sekolah",
+            SCHOOL_NAME_PLH: "Masukan nama sekolah",
             REGISTER_DATE: "Tanggal Daftar",
             USER_MANAGEMENT: "Manajemen Pengguna",
             FIRST_NAME: "Nama Depan",

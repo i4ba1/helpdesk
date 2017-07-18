@@ -3,11 +3,14 @@
 
     angular.module("application").controller("SchoolController", schoolManagementController);
 
-    schoolManagementController.$inject = ['$scope', '$state', '$stateParams', 'RequestFactory'];
+    schoolManagementController.$inject = ['$scope', '$state', '$stateParams', 'RequestFactory', 'DialogFactory'];
 
-    function schoolManagementController($scope, $state, $stateParams, RequestFactory) {
+    function schoolManagementController($scope, $state, $stateParams, RequestFactory, DialogFactory) {
         $scope.schools = [];
         $scope.rowCollection = [];
+        $scope.schoolId = $stateParams.schoolId;
+        $scope.school = null;
+        $scope.submitSchoolForm = submitSchoolForm;
 
 
         // get all school
@@ -20,5 +23,15 @@
                 console.log("schools not found");
             }
         );
+
+        function submitSchoolForm(school) {
+            RequestFactory.createSchool(school).then(
+                function(response) {},
+                function(error) {
+                    console.log("ERROR :: " + error);
+                });
+
+
+        }
     }
 })();

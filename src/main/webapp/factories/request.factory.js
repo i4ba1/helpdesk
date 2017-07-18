@@ -10,7 +10,7 @@
     RequestFactory.$inject = ["$http", "$state", "$cookies"];
 
     function RequestFactory($http, $state, $cookies) {
-        var baseURL = "/helpdesk";
+        var baseURL = "/helpdesk/api";
         var service = {
             getBaseUrl: getBaseUrl,
             getSerialNumber: getSerialNumber,
@@ -21,6 +21,7 @@
             activate: activate,
             getProducts: getProducts,
             getSchools: getSchools,
+            createSchool: createSchool,
             getUsers: getUsers,
             licenseGenerator: licenseGenerator,
             getNotifications: getNotifications
@@ -35,7 +36,7 @@
         }
 
         function getSerialNumber() {
-            return $http.get(baseURL + '/api/snManagement');
+            return $http.get(baseURL + '/snManagement');
         }
 
         /**
@@ -49,7 +50,7 @@
                 userName: model.username,
                 password: model.password
             }
-            return $http.post(baseURL + "/api/userManagement/loggingIn/", formData);
+            return $http.post(baseURL + "/userManagement/loggingIn/", formData);
         }
 
         function createAdmin() {
@@ -60,12 +61,12 @@
                 userName: "",
                 password: ""
             }
-            return $http.post(baseURL + "/api/userManagement/createUser/", formData);
+            return $http.post(baseURL + "/userManagement/createUser/", formData);
         }
 
         function logout() {
             var loggingIn = $cookies.getObject("loggingIn");
-            return $http.post(baseURL + "/api/userManagement/loggedOut/", loggingIn);
+            return $http.post(baseURL + "/userManagement/loggedOut/", loggingIn);
         }
 
         function isAlreadyAuthenticated() {
@@ -79,7 +80,7 @@
         }
 
         function activate(serialNumber) {
-            return $http.post(baseURL + "/api/snManagement/activate/", serialNumber);
+            return $http.post(baseURL + "/snManagement/activate/", serialNumber);
         }
 
         /**
@@ -102,7 +103,18 @@
          * requestType is GET
          */
         function getSchools() {
-            return $http.get("assets/dummy/school.dummy.json");
+            return $http.get(baseURL + "/schoolManagement/");
+        }
+
+        function createSchool(school) {
+            var formData = {
+                id: null,
+                schoolName: school.schoolName,
+                schoolAddress: school.schoolAddress,
+                createdDate: null,
+                deleted: false
+            }
+            return $http.post(baseURL + "/createSchool/", formData)
         }
 
         /**
