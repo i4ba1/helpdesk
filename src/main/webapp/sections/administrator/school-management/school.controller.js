@@ -58,8 +58,7 @@
                     DialogFactory.messageDialog("SAVE_SUCCESS", ["SAVE_SCHOOL_SUCCESS"], "sm").then(
                         function(dialogReturn) {
                             $state.go("administrator.school-management");
-                        },
-                        function(dismiss) {}
+                        }
                     );
                 },
                 function(error) {

@@ -50,11 +50,7 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value = { "/createProduct/" }, method = RequestMethod.GET)
-	public ResponseEntity<Product> createProduct(@RequestBody Product product){
-		if(productRepo.findByProductName(product.getProductName()) == null){
-			return new ResponseEntity<Product>(product, HttpStatus.NOT_FOUND);
-		}
-		
+	public ResponseEntity<Product> createProduct(@RequestBody Product product){	
 		Product newProduct = productRepo.save(product);
 		if (newProduct != null) {
 			return new ResponseEntity<Product>(product, HttpStatus.OK);

@@ -15,6 +15,6 @@ import id.co.knt.helpdesk.api.model.Product;
 @Repository
 public interface ProductRepo extends JpaRepository<Product, Integer> {
 	
-	@Query("select p from Product p where p.productName= :productNname")
+	@Query("select p from Product p where p.productName= :productName")
 	Product findByProductName(@Param("productName") String productName);
 }
