@@ -20,6 +20,7 @@
             isAlreadyAuthenticated: isAlreadyAuthenticated,
             activate: activate,
             createProduct: createProduct,
+            viewProductDetail: viewProductDetail,
             updateProduct: updateProduct,
             deleteProduct: deleteProduct,
             getProducts: getProducts,
@@ -108,7 +109,7 @@
          * @param {*} productId 
          */
         function viewProductDetail(productId) {
-            return $http.get(baseURL + "/productDetail/" + productId);
+            return $http.get(baseURL + "/productManagement/productDetail/" + productId);
         }
 
         /**
@@ -124,7 +125,7 @@
                 deleted: false
             };
 
-            return $http.post(baseURL + "/createProduct/", formData);
+            return $http.post(baseURL + "/productManagement/createProduct/", formData);
         }
 
         /**
@@ -133,14 +134,14 @@
          */
         function updateProduct(product) {
             var formData = {
-                id: null,
+                id: product.id,
                 productName: product.productName,
-                productCode: null,
+                productCode: product.productCode,
                 createdDate: null,
                 deleted: false
             };
 
-            return $http.put(baseURL + "/updateProduct/", formData);
+            return $http.put(baseURL + "/productManagement/updateProduct/", formData);
         }
 
         /**
@@ -148,7 +149,7 @@
          * @param {*} productId 
          */
         function deleteProduct(productId) {
-            return $http.deleted(baseURL + "deleteProduct" + productId);
+            return $http.deleted(baseURL + "/productManagement/deleteProduct/" + productId);
         }
 
         /**

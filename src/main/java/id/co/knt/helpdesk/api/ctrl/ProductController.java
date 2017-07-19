@@ -49,7 +49,7 @@ public class ProductController {
 		return new ResponseEntity<List<Product>>(products, HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value = { "/createProduct/" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/createProduct/" }, method = RequestMethod.POST)
 	public ResponseEntity<Product> createProduct(@RequestBody Product product){	
 		Product newProduct = productRepo.save(product);
 		if (newProduct != null) {

@@ -34,7 +34,7 @@
         }
 
         if ($scope.productId) {
-            RequestFactory.productDetail($scope.productId).then(
+            RequestFactory.viewProductDetail($scope.productId).then(
                 function(response) {
                     $scope.product = response.data;
                 },
@@ -59,14 +59,14 @@
 
             result.then(
                 function(response) {
-                    DialogFactory.messageDialog("SAVE_SUCCESS", ["SAVE_SCHOOL_SUCCESS"], "sm").then(
+                    DialogFactory.messageDialog("SAVE_SUCCESS", ["SAVE_PRODUCT_SUCCESS"], "sm").then(
                         function(dialogReturn) {
                             $state.go("administrator.product-management");
                         }
                     );
                 },
                 function(error) {
-                    DialogFactory.messageDialog("SAVE_FAILED", ["SAVE_SCHOOL_FAILED"], "sm");
+                    DialogFactory.messageDialog("SAVE_FAILED", ["SAVE_PRODUCT_FAILED"], "sm");
                 });
         }
 

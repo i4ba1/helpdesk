@@ -121,6 +121,8 @@
             SAVE_FAILED: "Simpan Data Gagal",
             SAVE_SCHOOL_SUCCESS: "Data sekolah berhasil disimpan",
             SAVE_SCHOOL_FAILED: "Data Sekolah gagal disimpan",
+            SAVE_PRODUCT_SUCCESS: "Data product berhasil disimpan",
+            SAVE_PRODUCT_FAILED: "Data product gagal disimpan",
             DATA_NOT_FOUND: "Data tidak ditemukan!",
             YES: "Ya",
             NOT: "Tidak",
