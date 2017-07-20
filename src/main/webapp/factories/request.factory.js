@@ -24,6 +24,7 @@
             updateProduct: updateProduct,
             deleteProduct: deleteProduct,
             getProducts: getProducts,
+            getUnreadLicenses: getUnreadLicenses,
             getSchools: getSchools,
             createSchool: createSchool,
             schoolDetail: schoolDetail,
@@ -103,6 +104,10 @@
          */
         function getProducts() {
             return $http.get(baseURL + "/productManagement/");
+        }
+
+        function getUnreadLicenses() {
+            return $http.get(baseURL + "/productManagement/findUnreadLicenses");
         }
 
         /**

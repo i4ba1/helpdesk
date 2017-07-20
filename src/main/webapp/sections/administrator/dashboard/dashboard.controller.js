@@ -15,7 +15,7 @@
         $scope.getBackground = getBackground;
 
         //Get all new notification
-        RequestFactory.getNotifications().then(
+        RequestFactory.getUnreadLicenses().then(
             function(response) {
                 $scope.notifications = response.data;
                 $scope.rowCollections = [].concat($scope.notifications);

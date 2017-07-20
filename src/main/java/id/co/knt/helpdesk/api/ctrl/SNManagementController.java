@@ -125,14 +125,14 @@ public class SNManagementController {
 		return new ResponseEntity<String>(new String(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/findUnreadLinceses/", method=RequestMethod.GET)
+	@RequestMapping(value="/findUnreadLicenses/", method=RequestMethod.GET)
 	public ResponseEntity<List<License>> findUnreadLicenses(){
-		List<License> licenses = snService.findAllSN();
-		List<License> unreadLicenses = new ArrayList<>();
-		for (License license : licenses) {
-			
-		}
+		List<License> unreadLicenses = snService.findUnreadLicense();
 	
-		return null;
+		if(unreadLicenses.isEmpty()) {
+			return new ResponseEntity<List<License>>(unreadLicenses, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<List<License>>(unreadLicenses, HttpStatus.OK);
 	}
 }

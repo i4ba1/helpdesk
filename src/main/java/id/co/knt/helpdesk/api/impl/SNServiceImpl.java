@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import id.co.knt.helpdesk.api.model.ActivationHistory;
 import id.co.knt.helpdesk.api.model.License;
 import id.co.knt.helpdesk.api.model.Product;
 import id.co.knt.helpdesk.api.repositories.ProductRepo;
@@ -32,7 +31,7 @@ public class SNServiceImpl implements SNService {
 
 	@Autowired
 	private ProductRepo productRepo;
-	
+
 	private LicenseGeneratorHistory generatorHistory;
 
 	@Autowired
@@ -49,7 +48,7 @@ public class SNServiceImpl implements SNService {
 					Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
 					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
 						byte Type = extractResult.get(Gawl.TYPE);
-						
+
 						Product product = productRepo.findByProductCode(new Integer(Type));
 
 						snNumber = new License();
@@ -74,10 +73,14 @@ public class SNServiceImpl implements SNService {
 		} else {
 			return snNumber;
 		}
-		
+
 		if (!snNumber.equals(null)) {
 			generatorHistory.setLicense(snNumber);
-			generatorHistory.setMessage("One license for ");
+			generatorHistory
+					.setMessage("One license for " + snNumber.getProduct().getProductName() + " has been created");
+			generatorHistory.setIsRead(false);
+			generatorHistory.setCreatedDate(new Date().getTime());
+			historyRepo.save(generatorHistory);
 		}
 
 		return snNumber;
@@ -123,11 +126,6 @@ public class SNServiceImpl implements SNService {
 		License snNumber = snRepo.findOne(id);
 
 		try {
-			// Map<String, Byte> info =
-			// gawl.extract(snNumber.getSerialNumber());
-			// String passKey = gawl.pass(((Byte)
-			// info.get("seed1")).byteValue(), ((Byte)
-			// info.get("seed2")).byteValue());
 			activationKey = generateActivationKey(id, snNumber.getPassKey(), snNumber.getXlock()).getActivationKey();
 			snNumber.setActivationKey(activationKey);
 			snNumber.setLicenseStatus(true);
@@ -165,8 +163,8 @@ public class SNServiceImpl implements SNService {
 									snNumber = snRepo.saveAndFlush(snNumber);
 
 									if (snNumber != null) {
-										//ActivationHistory history = new ActivationHistory(new Date(), snNumber);
-										//historyRepo.save(history);
+										// ActivationHistory history = new ActivationHistory(new Date(), snNumber);
+										// historyRepo.save(history);
 									}
 								}
 							}
@@ -230,6 +228,17 @@ public class SNServiceImpl implements SNService {
 
 		}
 		return list;
+	}
+
+	@Override
+	public List<License> findUnreadLicense() {
+		List<LicenseGeneratorHistory> generatorHistories = historyRepo.fetchUnreadLicenseGenerator();
+		List<License> unreadLicenses = new ArrayList<>();
+		for (LicenseGeneratorHistory obj : generatorHistories) {
+			unreadLicenses.add(obj.getLicense());
+		}
+		
+		return unreadLicenses;
 	}
 
 }

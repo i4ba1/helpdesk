@@ -23,4 +23,6 @@ public interface SNService{
     License manuallyActivate(Long id, String xlock, String activationKey);
     
     List<License> serialNumberGenerator(Integer productId,Integer licenseCount,Integer secondParam);
+    
+    List<License> findUnreadLicense();
 }
