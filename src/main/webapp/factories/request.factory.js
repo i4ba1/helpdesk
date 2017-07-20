@@ -121,7 +121,7 @@
                 id: null,
                 productName: product.productName,
                 productCode: product.productCode,
-                createdDate: product.createdDate,
+                createdDate: null,
                 deleted: false
             };
 
@@ -137,7 +137,7 @@
                 id: product.id,
                 productName: product.productName,
                 productCode: product.productCode,
-                createdDate: null,
+                createdDate: product.createdDate,
                 deleted: false
             };
 
