@@ -70,6 +70,4 @@ public class Product implements Serializable{
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
-		
-
 }

@@ -1,5 +1,6 @@
 package id.co.knt.helpdesk.api.ctrl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,8 +122,17 @@ public class SNManagementController {
 			
 		}
 		
-		
-
 		return new ResponseEntity<String>(new String(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/findUnreadLinceses/", method=RequestMethod.GET)
+	public ResponseEntity<List<License>> findUnreadLicenses(){
+		List<License> licenses = snService.findAllSN();
+		List<License> unreadLicenses = new ArrayList<>();
+		for (License license : licenses) {
+			
+		}
+	
+		return null;
 	}
 }

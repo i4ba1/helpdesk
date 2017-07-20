@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 import id.co.knt.helpdesk.api.model.ActivationHistory;
 import id.co.knt.helpdesk.api.model.License;
 import id.co.knt.helpdesk.api.model.Product;
-import id.co.knt.helpdesk.api.repositories.HistoryRepo;
 import id.co.knt.helpdesk.api.repositories.ProductRepo;
+import id.co.knt.helpdesk.api.model.LicenseGeneratorHistory;
+import id.co.knt.helpdesk.api.repositories.LicenseGeneratorHistoryRepo;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.co.knt.helpdesk.api.service.SNService;
 import id.web.pos.integra.gawl.Gawl;
@@ -31,9 +32,11 @@ public class SNServiceImpl implements SNService {
 
 	@Autowired
 	private ProductRepo productRepo;
+	
+	private LicenseGeneratorHistory generatorHistory;
 
 	@Autowired
-	private HistoryRepo historyRepo;
+	private LicenseGeneratorHistoryRepo historyRepo;
 
 	@Override
 	public License registerSerialNumber(License serialNumber) {
@@ -60,16 +63,21 @@ public class SNServiceImpl implements SNService {
 						snNumber.setProduct(product);
 						snNumber.setSchool(serialNumber.getSchool());
 						snRepo.save(snNumber);
-
+						snNumber = snRepo.save(snNumber);
 					} else {
-						return null;
+						return snNumber;
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		} else {
-			return null;
+			return snNumber;
+		}
+		
+		if (!snNumber.equals(null)) {
+			generatorHistory.setLicense(snNumber);
+			generatorHistory.setMessage("One license for ");
 		}
 
 		return snNumber;
@@ -157,8 +165,8 @@ public class SNServiceImpl implements SNService {
 									snNumber = snRepo.saveAndFlush(snNumber);
 
 									if (snNumber != null) {
-										ActivationHistory history = new ActivationHistory(new Date(), snNumber);
-										historyRepo.save(history);
+										//ActivationHistory history = new ActivationHistory(new Date(), snNumber);
+										//historyRepo.save(history);
 									}
 								}
 							}
