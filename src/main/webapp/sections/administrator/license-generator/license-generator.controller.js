@@ -3,9 +3,9 @@
     angular.module("application")
         .controller('GeneratorController', generatorController);
 
-    generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope"];
+    generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state"];
 
-    function generatorController(RequestFactory, DialogFactory, $scope) {
+    function generatorController(RequestFactory, DialogFactory, $scope, $state) {
         $scope.generator = {
             selectedProduct: null,
             licenseCount: null,
@@ -16,6 +16,7 @@
         $scope.generatedLicense = [];
         $scope.switchGeneratorForm = null;
         $scope.submitLicenseGenerator = submitLicenseGenerator;
+        $scope.registerGeneratedSN = registerGeneratedSN;
 
         RequestFactory.getSchools().then(
             function(response) {
@@ -37,13 +38,24 @@
 
 
         function submitLicenseGenerator(generator) {
-            RequestFactory.licenseGenerator(generator).then(
+            RequestFactory.licenseGenerator(generator.selectedProduct.id, generator.licenseCount, generator.secondParam).then(
                 function(response) {
                     $scope.generatedLicense = response.data;
                     $scope.switchGeneratorForm = "swictToTable"
                 },
                 function(error) {
                     console.log("Error" + error);
+                }
+            );
+        }
+
+        function registerGeneratedSN(generatedSN) {
+            RequestFactory.registerGeneratedSN(generatedSN).then(
+                function(response) {
+                    $state.go("administrator.license");
+                },
+                function(errorResponse) {
+                    DialogFactory.messageDialog("SAVE_FAILED", ["SAVE_LICENSE_FAILED"], "sm");
                 }
             );
         }

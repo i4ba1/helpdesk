@@ -31,6 +31,7 @@
             deleteSchool: deleteSchool,
             getUsers: getUsers,
             licenseGenerator: licenseGenerator,
+            registerGeneratedSN: registerGeneratedSN,
             getNotifications: getNotifications
         }
 
@@ -191,16 +192,22 @@
         }
 
         /**
-         * @param  generator { selectedProduct,licenseCount,secondParam}
-         * requestType  is POST 
+         * @param  generator { productId, licenseCount, secondParam}
+         * requestType  is GET 
          */
-        function licenseGenerator(generator) {
-            return $http.post("assets/dummy/generated-license.dummy.json");
+        function licenseGenerator(productId, licenseCount, secondParam) {
+            return $http.get(baseURL + "/snManagement/snGenerator/" + productId + "/" + licenseCount + "/" + secondParam);
+        }
+
+        function registerGeneratedSN(snList) {
+            return $http.post(baseURL + "/snManagement/registerGeneratedSN/", snList);
         }
 
         function getNotifications() {
             return $http.get("assets/dummy/dashboard.dummy.json");
         }
+
+
 
 
     }

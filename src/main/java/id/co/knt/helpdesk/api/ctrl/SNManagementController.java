@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import id.co.knt.helpdesk.api.model.License;
 import id.co.knt.helpdesk.api.service.SNService;
 
+/**
+ * @author kntdev
+ *
+ */
 @RestController
 @RequestMapping(value = "/snManagement")
 public class SNManagementController {
@@ -23,11 +27,11 @@ public class SNManagementController {
 
 	@RequestMapping(value = "/register/", method = RequestMethod.POST)
 	public ResponseEntity<License> register(@RequestBody License serialNumber) {
-		if(snService.findBySerial(serialNumber.getLicense()) != null){
+		if (snService.findBySerial(serialNumber.getLicense()) != null) {
 			serialNumber = null;
 			return new ResponseEntity<License>(serialNumber, HttpStatus.CONFLICT);
 		}
-		
+
 		License number = snService.registerSerialNumber(serialNumber);
 		if (!serialNumber.equals(null)) {
 			return new ResponseEntity<License>(number, HttpStatus.OK);
@@ -86,5 +90,39 @@ public class SNManagementController {
 		}
 
 		return new ResponseEntity<License>(serialNumber, HttpStatus.OK);
+	}
+
+	/**
+	 * @author Marlina_Kreatif
+	 * 
+	 * @param productId
+	 * @param licenseCount
+	 * @param secondParam
+	 * @return list<License>
+	 */
+	@RequestMapping(value = { "/snGenerator/{productId}/{licenseCount}/{secondParam}" }, method = RequestMethod.GET)
+	public ResponseEntity<List<License>> snGenerator(@PathVariable Integer productId,
+			@PathVariable Integer licenseCount, @PathVariable Integer secondParam) {
+
+		List<License> list = snService.serialNumberGenerator(productId, licenseCount, secondParam);
+
+		if (list.isEmpty()) {
+			return new ResponseEntity<List<License>>(list, HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<List<License>>(list, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
+	public ResponseEntity<String> registerGeneratedSN(@RequestBody List<License> list) {
+		int counter = 0;
+		for (License license : list) {
+			License number = snService.registerSerialNumber(license);
+			
+		}
+		
+		
+
+		return new ResponseEntity<String>(new String(), HttpStatus.OK);
 	}
 }

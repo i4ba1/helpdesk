@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-07-18 15:09:45
+ * @Last Modified time: 2017-07-20 14:40:06
  * 
  * Application Translate Configuration
  */
@@ -101,7 +101,7 @@
             PASSWORD_PLH: "Masukkan kata sandi",
             CREATED_DATE: "Tanggal dibuat",
             ROLE: "Role",
-            KNT_PRODUCT: "Product",
+            KNT_PRODUCT: "Produk",
             PRODUCT_NAME: "Nama Produk",
             PRODUCT_NAME_PLH: "Masukan nama produk",
             PRODUCT_CODE: "Kode Produk",
@@ -132,7 +132,8 @@
             DELETE_FAILED: "Gagal Hapus",
             DELETE_DATA_SUCCESS: "Berhasil menghapus data ini !",
             DELETE_DATA_FAILED: "Gagal menghapus data ini !",
-            DATA_ALREADY_EXIST: "Data sudah pernah disimpan !"
+            DATA_ALREADY_EXIST: "Data sudah pernah disimpan !",
+            SAVE_LICENSE_FAILED: "Simpan data serial number gagal"
 
 
         });

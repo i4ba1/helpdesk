@@ -21,4 +21,6 @@ public interface SNService{
     License generateActivationKey(Long id, String passKey, String xlock);
 
     License manuallyActivate(Long id, String xlock, String activationKey);
+    
+    List<License> serialNumberGenerator(Integer productId,Integer licenseCount,Integer secondParam);
 }

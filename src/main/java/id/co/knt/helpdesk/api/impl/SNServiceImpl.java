@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import id.co.knt.helpdesk.api.model.ActivationHistory;
 import id.co.knt.helpdesk.api.model.License;
+import id.co.knt.helpdesk.api.model.Product;
 import id.co.knt.helpdesk.api.repositories.HistoryRepo;
+import id.co.knt.helpdesk.api.repositories.ProductRepo;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.co.knt.helpdesk.api.service.SNService;
 import id.web.pos.integra.gawl.Gawl;
@@ -28,6 +30,9 @@ public class SNServiceImpl implements SNService {
 	private SNRepo snRepo;
 
 	@Autowired
+	private ProductRepo productRepo;
+
+	@Autowired
 	private HistoryRepo historyRepo;
 
 	@Override
@@ -41,26 +46,20 @@ public class SNServiceImpl implements SNService {
 					Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
 					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
 						byte Type = extractResult.get(Gawl.TYPE);
-						byte seed1 = extractResult.get(Gawl.SEED1);
+						
+						Product product = productRepo.findByProductCode(new Integer(Type));
 
-						if (Type == 3) {
-							// save the serial number
-							if (extractResult.get(Gawl.SEED1) == seed1) {
-								snNumber = new License();
-								snNumber.setLicense(serialNumber.getLicense());
-								snNumber.setPassKey(serialNumber.getPassKey());
-								snNumber.setXlock(serialNumber.getXlock());
-								snNumber.setMacAddr(serialNumber.getMacAddr());
-								snNumber.setActivationKey("");
-								snNumber.setCreatedDate(new Date().getTime());
-								snNumber.setLicenseStatus(false);
-								snRepo.save(snNumber);
-							} else {
-								return null;
-							}
-						} else {
-							return null;
-						}
+						snNumber = new License();
+						snNumber.setLicense(serialNumber.getLicense());
+						snNumber.setPassKey(serialNumber.getPassKey());
+						snNumber.setXlock(serialNumber.getXlock());
+						snNumber.setMacAddr(serialNumber.getMacAddr());
+						snNumber.setActivationKey("");
+						snNumber.setCreatedDate(new Date().getTime());
+						snNumber.setLicenseStatus(false);
+						snNumber.setProduct(product);
+						snNumber.setSchool(serialNumber.getSchool());
+						snRepo.save(snNumber);
 
 					} else {
 						return null;
@@ -116,10 +115,12 @@ public class SNServiceImpl implements SNService {
 		License snNumber = snRepo.findOne(id);
 
 		try {
-			//Map<String, Byte> info = gawl.extract(snNumber.getSerialNumber());
-			//String passKey = gawl.pass(((Byte) info.get("seed1")).byteValue(), ((Byte) info.get("seed2")).byteValue());
-			activationKey = generateActivationKey(id, snNumber.getPassKey(), 
-					snNumber.getXlock()).getActivationKey();
+			// Map<String, Byte> info =
+			// gawl.extract(snNumber.getSerialNumber());
+			// String passKey = gawl.pass(((Byte)
+			// info.get("seed1")).byteValue(), ((Byte)
+			// info.get("seed2")).byteValue());
+			activationKey = generateActivationKey(id, snNumber.getPassKey(), snNumber.getXlock()).getActivationKey();
 			snNumber.setActivationKey(activationKey);
 			snNumber.setLicenseStatus(true);
 			snNumber = snRepo.saveAndFlush(snNumber);
@@ -194,4 +195,33 @@ public class SNServiceImpl implements SNService {
 		License number = snRepo.findByLicense(serial);
 		return number;
 	}
+
+	@Override
+	public List<License> serialNumberGenerator(Integer productId, Integer licenseCount, Integer secondParam) {
+		Product product = productRepo.findOne(productId);
+		List<License> list = new ArrayList<>();
+		for (int i = 0; i < licenseCount; i++) {
+			try {
+				String generatedSn = gawl.generate(product.getProductCode(), secondParam);
+				Map<String, Byte> extractResult = gawl.extract(generatedSn);
+
+				byte seed1 = extractResult.get(Gawl.SEED1);
+				byte seed2 = extractResult.get(Gawl.SEED2);
+
+				License newLicense = new License();
+				newLicense.setLicense(generatedSn);
+				newLicense.setCreatedDate(System.currentTimeMillis());
+				newLicense.setProduct(product);
+				newLicense.setPassKey(gawl.pass(seed1, seed2));
+				newLicense.setXlock(gawl.xlock(generatedSn));
+
+				list.add(newLicense);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		return list;
+	}
+
 }

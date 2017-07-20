@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "helpdesk_sn", uniqueConstraints=@UniqueConstraint(columnNames="serial_number"))
+@Table(name = "helpdesk_sn", uniqueConstraints = @UniqueConstraint(columnNames = "serial_number"))
 public class License implements Serializable {
 
 	/**
@@ -35,29 +35,28 @@ public class License implements Serializable {
 	@Column(name = "activation_key")
 	private String activationKey;
 
-	@Column(name="created_date")
+	@Column(name = "created_date")
 	private Long createdDate;
 
 	@Column(name = "xlock")
 	private String xlock;
-	
+
 	@Column(name = "mac_addr")
 	private byte[] macAddr;
-	
-	@Column(name="number_of_license")
+
+	@Column(name = "number_of_license")
 	private Integer numberOfClient = 0;
-	
+
 	@Column(name = "licenseStatus")
 	private boolean licenseStatus = true;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="school_id")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "school_id", nullable = true)
 	private School school;
-	
-	@ManyToOne(fetch= FetchType.LAZY)
-	@JoinColumn(name="product_id")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id", nullable = true)
 	private Product product;
-	
 
 	public Long getId() {
 		return id;
@@ -118,7 +117,7 @@ public class License implements Serializable {
 	public void setLicenseStatus(boolean serialNumberStatus) {
 		this.licenseStatus = serialNumberStatus;
 	}
-	
+
 	public Integer getNumberOfClient() {
 		return numberOfClient;
 	}
@@ -134,4 +133,13 @@ public class License implements Serializable {
 	public void setSchool(School school) {
 		this.school = school;
 	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
 }
