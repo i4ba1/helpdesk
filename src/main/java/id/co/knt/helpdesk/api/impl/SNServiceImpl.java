@@ -41,7 +41,8 @@ public class SNServiceImpl implements SNService {
 	public License registerSerialNumber(License serialNumber) {
 		License snNumber = null;
 		License sn = snRepo.findByLicense(serialNumber.getLicense());
-
+		Product product = null;
+		
 		if (sn == null) {
 			if (gawl.validate(serialNumber.getLicense())) {
 				try {
@@ -49,7 +50,7 @@ public class SNServiceImpl implements SNService {
 					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
 						byte Type = extractResult.get(Gawl.TYPE);
 
-						Product product = productRepo.findByProductCode(new Integer(Type));
+						product = productRepo.findByProductCode(new Integer(Type));
 
 						snNumber = new License();
 						snNumber.setLicense(serialNumber.getLicense());
@@ -75,9 +76,10 @@ public class SNServiceImpl implements SNService {
 		}
 
 		if (!snNumber.equals(null)) {
+			generatorHistory = new LicenseGeneratorHistory();
 			generatorHistory.setLicense(snNumber);
 			generatorHistory
-					.setMessage("One license for " + snNumber.getProduct().getProductName() + " has been created");
+					.setMessage("One license for " + product.getProductName() + " has been created");
 			generatorHistory.setIsRead(false);
 			generatorHistory.setCreatedDate(new Date().getTime());
 			historyRepo.save(generatorHistory);
