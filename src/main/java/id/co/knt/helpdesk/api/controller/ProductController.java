@@ -1,7 +1,7 @@
 /**
  * 
  */
-package id.co.knt.helpdesk.api.ctrl;
+package id.co.knt.helpdesk.api.controller;
 
 import java.util.List;
 

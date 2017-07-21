@@ -1,4 +1,4 @@
-package id.co.knt.helpdesk.api.ctrl;
+package id.co.knt.helpdesk.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package id.co.knt.helpdesk.api.ctrl;
+package id.co.knt.helpdesk.api.controller;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
