@@ -1,6 +1,8 @@
 package id.co.knt.helpdesk.api.service;
 
 import id.co.knt.helpdesk.api.model.License;
+import id.co.knt.helpdesk.api.model.LicenseGeneratorHistory;
+
 import java.util.List;
 
 public interface SNService{
@@ -24,5 +26,5 @@ public interface SNService{
     
     List<License> serialNumberGenerator(Integer productId,Integer licenseCount,Integer secondParam);
     
-    List<License> findUnreadLicense();
+    List<LicenseGeneratorHistory> findUnreadLicense();
 }

@@ -1,6 +1,5 @@
 package id.co.knt.helpdesk.api.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import id.co.knt.helpdesk.api.model.License;
+import id.co.knt.helpdesk.api.model.LicenseGeneratorHistory;
 import id.co.knt.helpdesk.api.service.SNService;
 
 /**
@@ -126,13 +126,13 @@ public class SNManagementController {
 	}
 	
 	@RequestMapping(value="/findUnreadLicenses/", method=RequestMethod.GET)
-	public ResponseEntity<List<License>> findUnreadLicenses(){
-		List<License> unreadLicenses = snService.findUnreadLicense();
+	public ResponseEntity<List<LicenseGeneratorHistory>> findUnreadLicenses(){
+		List<LicenseGeneratorHistory> unreadLicenses = snService.findUnreadLicense();
 	
 		if(unreadLicenses.isEmpty()) {
-			return new ResponseEntity<List<License>>(unreadLicenses, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<LicenseGeneratorHistory>>(unreadLicenses, HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<List<License>>(unreadLicenses, HttpStatus.OK);
+		return new ResponseEntity<List<LicenseGeneratorHistory>>(unreadLicenses, HttpStatus.OK);
 	}
 }

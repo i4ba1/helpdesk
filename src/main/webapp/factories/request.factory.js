@@ -92,6 +92,11 @@
             return $http.post(baseURL + "/snManagement/activate/", serialNumber);
         }
 
+
+        function getUnreadLicenses() {
+            return $http.get(baseURL + "/snManagement/findUnreadLicenses/");
+        }
+
         /**
          * get all user data
          */
@@ -104,10 +109,6 @@
          */
         function getProducts() {
             return $http.get(baseURL + "/productManagement/");
-        }
-
-        function getUnreadLicenses() {
-            return $http.get(baseURL + "/productManagement/findUnreadLicenses");
         }
 
         /**

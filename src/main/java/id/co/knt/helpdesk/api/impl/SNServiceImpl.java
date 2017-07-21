@@ -233,14 +233,10 @@ public class SNServiceImpl implements SNService {
 	}
 
 	@Override
-	public List<License> findUnreadLicense() {
+	public List<LicenseGeneratorHistory> findUnreadLicense() {
 		List<LicenseGeneratorHistory> generatorHistories = historyRepo.fetchUnreadLicenseGenerator();
-		List<License> unreadLicenses = new ArrayList<>();
-		for (LicenseGeneratorHistory obj : generatorHistories) {
-			unreadLicenses.add(obj.getLicense());
-		}
 		
-		return unreadLicenses;
+		return generatorHistories;
 	}
 
 }

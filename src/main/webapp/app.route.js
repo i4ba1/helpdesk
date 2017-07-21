@@ -67,6 +67,16 @@
             }
         })
 
+        .state('administrator.license.license-detail', {
+            url: "/detail?:licenseId",
+            views: {
+                'content@administrator': {
+                    templateUrl: "sections/administrator/license/license-detail.html",
+                    controller: "ProjectSerialNumberController as snCtrl"
+                }
+            }
+        })
+
         .state('administrator.license.activation', {
             url: "/:state",
             views: {
