@@ -1,14 +1,16 @@
 <div class="modal-header">
-	<h3 class="modal-title" id="modal-title">{{$ctrl.title|translate}}</h3>
+    <h3 class="modal-title" id="modal-title">{{$ctrl.title|translate}}</h3>
 </div>
 <div class="modal-body" id="modal-body">
-	<div>
-		{{$ctrl.content|translate}}
-		<span class="text-center" ng-show="$ctrl.contentExtra" ng-hide="!$ctrl.contentExtra">
-			:<b><i>{{$ctrl.contentExtra}}</i></b>
-		</span>
-	</div>
+    <div class="text-center">
+        {{$ctrl.content|translate}}
+        <div ng-show="$ctrl.contentExtra" ng-hide="!$ctrl.contentExtra">
+            <p>
+                <b><i> {{$ctrl.contentExtra}}</i></b>
+            </p>
+        </div>
+    </div>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
 </div>

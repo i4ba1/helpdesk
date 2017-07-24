@@ -42,17 +42,17 @@
                             <td>{{row.macAddr}}</td>
                             <td>{{row.passKey}}</td>
                             <td>{{row.xlock}}</td>
-                            <td ng-switch='row.licenseStatus' class="text-center">
-                                <div ng-switch-default style="color: red">
+                            <td class="text-center">
+                                <div ng-hide="row.licenseStatus" ng-show="!row.licenseStatus" style="color: red">
                                     <i class="fa fa-times fa-lg" aria-hidden="true" title="{{'UNACTIVATED'|translate}}"></i>
                                 </div>
-                                <div ng-switch-when="true" style="color: green">
+                                <div ng-hide="!row.licenseStatus" ng-show="row.licenseStatus" style="color: green">
                                     <i class="fa fa-check fa-lg" aria-hidden="true" title="{{'ACTIVATED'|translate}}"></i>
                                 </div>
                             </td>
                             <td>{{row.createdDate |date:"dd/MM/yyyy"}}</td>
                             <td>
-                                <div class="btn btn-primary" title="{{'REACTIVATE'|translate}}" ng-hide="row.licenseStatus" ng-show="!row.licenseStatus" ng-click="activatelicense(row)">
+                                <div class="btn btn-primary" title="{{'REACTIVATE'|translate}}" ng-hide="row.licenseStatus" ng-show="!row.licenseStatus" ng-click="activateSerialNumber(row)">
                                     <i class="fa fa-globe fa-lg" aria-hidden="true"></i>
                                 </div>
                             </td>

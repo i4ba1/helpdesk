@@ -19,8 +19,8 @@
         function activationDialog(title, content, size, contentExtra) {
             modalInstance = uibModal.open({
                 animation: true,
-                templateUrl: 'sections/components/dialog.html',
-                controller: activationDialogControllerfunction,
+                templateUrl: 'sections/components/activation-dialog.html',
+                controller: activationDialogController,
                 controllerAs: '$ctrl',
                 size: size,
                 resolve: {
@@ -33,6 +33,8 @@
                     }
                 }
             });
+
+            return modalInstance.result;
 
         }
 
