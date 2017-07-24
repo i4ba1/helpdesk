@@ -33,7 +33,8 @@
             getUsers: getUsers,
             licenseGenerator: licenseGenerator,
             registerGeneratedSN: registerGeneratedSN,
-            getNotifications: getNotifications
+            getNotifications: getNotifications,
+            viewDetailUnreadLicense: viewDetailUnreadLicense
         }
 
         return service;
@@ -92,9 +93,18 @@
             return $http.post(baseURL + "/snManagement/activate/", serialNumber);
         }
 
-
+        /**
+         * Fetch all unread license
+         */
         function getUnreadLicenses() {
             return $http.get(baseURL + "/snManagement/findUnreadLicenses/");
+        }
+
+        /**
+         * View detail of unread license
+         */
+        function viewDetailUnreadLicense(licenseId, historyId) {
+            return $http.get(baseURL + "/snManagement/viewDetailUnreadLicense/" + licenseId + "/" + historyId);
         }
 
         /**

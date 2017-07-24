@@ -2,6 +2,7 @@ package id.co.knt.helpdesk.api.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -237,6 +238,34 @@ public class SNServiceImpl implements SNService {
 		List<LicenseGeneratorHistory> generatorHistories = historyRepo.fetchUnreadLicenseGenerator();
 		
 		return generatorHistories;
+	}
+	
+	@Override
+	public LicenseGeneratorHistory findDetailHistory(Long id) {
+		LicenseGeneratorHistory history = historyRepo.findOne(id);
+		
+		return history;
+	}
+
+	@Override
+	public Map<String, Object> videDetailLicense(Long licenseId) {
+		License license = snRepo.findLicenseById(licenseId);
+		Map<String, Object> map = new HashMap<>();
+		map.put("licenseKey", license.getLicense());
+		map.put("activationKey", license.getActivationKey());
+		map.put("createdDate", license.getCreatedDate());
+		map.put("licenseStatus", license.isLicenseStatus());
+		map.put("schoolName", license.getSchool().getSchoolName());
+		map.put("productName", license.getProduct().getProductName());
+		
+		return map;
+	}
+
+	@Override
+	public LicenseGeneratorHistory updateReadStatus(LicenseGeneratorHistory generatorHistory) {
+		LicenseGeneratorHistory history = historyRepo.saveAndFlush(generatorHistory);
+		
+		return history;
 	}
 
 }

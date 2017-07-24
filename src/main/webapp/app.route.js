@@ -68,10 +68,10 @@
         })
 
         .state('administrator.license.license-detail', {
-            url: "/detail?:licenseId",
+            url: "/detail?:licenseId:historyId",
             views: {
                 'content@administrator': {
-                    templateUrl: "sections/administrator/license/license-detail.html",
+                    templateUrl: "sections/administrator/license-management/license-detail.html",
                     controller: "ProjectSerialNumberController as snCtrl"
                 }
             }

@@ -6,9 +6,9 @@
     angular.module('application')
         .controller("ProjectSerialNumberController", ProjectSerialNumberController);
 
-    ProjectSerialNumberController.$inject = ['$scope', 'RequestFactory', '$state', 'DialogFactory'];
+    ProjectSerialNumberController.$inject = ['$scope', 'RequestFactory', '$state', "$stateParams", 'DialogFactory'];
 
-    function ProjectSerialNumberController($scope, RequestFactory, $state, DialogFactory) {
+    function ProjectSerialNumberController($scope, RequestFactory, $state, $stateParams, DialogFactory) {
         RequestFactory.isAlreadyAuthenticated();
 
         $scope.rowCollection = [];
@@ -20,7 +20,7 @@
         $scope.maxSize = 5;
         $scope.itemPage = 10;
 
-
+        $scope.object = null;
         $scope.rembemberCurrentPage = getCurrentPage;
         $scope.activateSerialNumber = activateSerialNumber;
 
@@ -57,7 +57,21 @@
                 });
         }
 
-        function openDialog() {}
+        if ($state.is("administrator.license.license-detail")) {
+            var licenseId = $stateParams.licenseId;
+            var historyId = $stateParams.historyId;
+
+            RequestFactory.viewDetailUnreadLicense(licenseId, historyId).then(
+                function(response) {
+                    $scope.object = response.data;
+                },
+                function(error) {
+                    console.log("data not found" + error);
+                }
+            );
+
+            function openDialog() {}
+        }
     }
 
 })();

@@ -3,21 +3,19 @@
     <section class="content">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-
             <div class="col-lg-6">
                 <div class="col-lg-6 col-xs-6" ng-repeat="product in products track by $index">
                     <!-- small box -->
                     <div class="small-box" ng-class="getBackground($index)">
                         <div class="inner">
                             <h3>{{product.licenseCount}}</h3>
-
                             <p>{{product.productName}}</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-bag"></i>
                         </div>
                         <a href="#" class="small-box-footer">More info <i
-							class="fa fa-arrow-circle-right"></i></a>
+                            class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -42,7 +40,7 @@
                                         <td>{{$index+1}}</td>
                                         <td>{{row.message}}</td>
                                         <td width="25">
-                                            <a ui-sref="administrator.license.license-detail({license:row.license.id})">
+                                            <a ui-sref="administrator.license.license-detail({licenseId:row.license.id,historyId:row.id})">
                                                 <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
                                             </a>
                                         </td>
@@ -53,11 +51,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <!-- Main row -->
     </section>
     <!-- /.content -->
 </div>
-
 <footer-directive></footer-directive>

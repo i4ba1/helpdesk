@@ -48,7 +48,7 @@ public class License implements Serializable {
 	private Integer numberOfClient = 0;
 
 	@Column(name = "licenseStatus")
-	private boolean licenseStatus = true;
+	private boolean licenseStatus;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "school_id", nullable = true)

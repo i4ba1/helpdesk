@@ -1,6 +1,7 @@
 package id.co.knt.helpdesk.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -119,20 +120,35 @@ public class SNManagementController {
 		int counter = 0;
 		for (License license : list) {
 			License number = snService.registerSerialNumber(license);
-			
+
 		}
-		
+
 		return new ResponseEntity<String>(new String(), HttpStatus.OK);
 	}
-	
-	@RequestMapping(value="/findUnreadLicenses/", method=RequestMethod.GET)
-	public ResponseEntity<List<LicenseGeneratorHistory>> findUnreadLicenses(){
+
+	@RequestMapping(value = "/findUnreadLicenses/", method = RequestMethod.GET)
+	public ResponseEntity<List<LicenseGeneratorHistory>> findUnreadLicenses() {
 		List<LicenseGeneratorHistory> unreadLicenses = snService.findUnreadLicense();
-	
-		if(unreadLicenses.isEmpty()) {
+
+		if (unreadLicenses.isEmpty()) {
 			return new ResponseEntity<List<LicenseGeneratorHistory>>(unreadLicenses, HttpStatus.NOT_FOUND);
 		}
-		
+
 		return new ResponseEntity<List<LicenseGeneratorHistory>>(unreadLicenses, HttpStatus.OK);
+	}
+
+	@RequestMapping(value="/viewDetailUnreadLicense/{licenseId}/{historyId}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> viewDetailUnreadLicense(@PathVariable Long licenseId, @PathVariable Long historyId){
+		Map<String, Object> object = snService.videDetailLicense(licenseId);
+	
+		if(object.isEmpty()) {
+			return new ResponseEntity<Map<String, Object>>(object, HttpStatus.NOT_FOUND);
+		}
+		
+		LicenseGeneratorHistory generatorHistory = snService.findDetailHistory(historyId);
+		generatorHistory.setIsRead(true);
+		snService.updateReadStatus(generatorHistory);
+		
+		return new ResponseEntity<Map<String, Object>>(object, HttpStatus.OK);
 	}
 }

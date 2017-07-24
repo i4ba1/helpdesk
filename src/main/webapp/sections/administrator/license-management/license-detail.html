@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <section class="content-header" style="padding:15px">
+            <div class="title-brand">
+                <span id="root-title">{{'KNT_PRODUCT'|translate}}</span> / <span class="child-title">{{'LICENSE'|translate}}</span> / <span class="child-title">{{title|translate}}</span>
+            </div>
+        </section>
+        <section class="content">
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-sm-offset-1" for="licenseLabel">{{"LICENSE" |translate}}</label>
+                <label class="control-label col-sm-9" for="licenseKey">{{object.licenseKey}}</label>
+            </div>
+            <br/>
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-sm-offset-1" for="activationLabel">{{"ACTIVATION_KEY"|translate}}</label>
+                <label class="control-label col-sm-9" for="activationKey">{{object.activationKey}}</label>
+            </div>
+            <br/>
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-sm-offset-1" for="datelabel">{{"CREATED_DATE"|translate}}</label>
+                <label class="control-label col-sm-9" for="createdDate">{{object.createdDate | date:"MM-dd-yyyy"}}</label>
+            </div>
+            <br/>
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-sm-offset-1" for="statusLabel">{{"LICENSE_STATUS"|translate}}</label>
+                <label class="control-label col-sm-9" for="licenseStatus">{{object.licenseStatus}}</label>
+            </div>
+            <br/>
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-sm-offset-1" for="schoolLabel">{{"SCHOOL"|translate}}</label>
+                    <label class="control-label col-sm-9" for="schoolName">{{object.schoolName}}</label>
+            </div>
+            <br/>
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-sm-offset-1" for="productLabel">{{"PRODUCT_NAME"|translate}}</label>
+                    <label class="control-label col-sm-9" for="productName">{{object.productName}}</label>
+            </div>
+            <br/>
+            <!--Button Save!
+            <div class="form-group">
+                <div class="col-md-offset-3 clos-md-6">
+                    <button class="btn btn-primary btn-md" type="submit">{{isUpdate?"UPDATE":"SAVE"|translate}}</button>
+                    <a ui-sref="^" class="btn btn-default">{{"CANCEL"|translate}}</a>
+                </div>
+            </div>
+            -->
+        </section>
+    </div>
+</div>

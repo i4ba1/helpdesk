@@ -4,6 +4,7 @@ import id.co.knt.helpdesk.api.model.License;
 import id.co.knt.helpdesk.api.model.LicenseGeneratorHistory;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SNService{
     License registerSerialNumber(License serialNumber);
@@ -27,4 +28,10 @@ public interface SNService{
     List<License> serialNumberGenerator(Integer productId,Integer licenseCount,Integer secondParam);
     
     List<LicenseGeneratorHistory> findUnreadLicense();
-}
+    
+    Map<String, Object> videDetailLicense(Long licenseId);
+    
+    LicenseGeneratorHistory findDetailHistory(Long id);
+    
+    LicenseGeneratorHistory updateReadStatus(LicenseGeneratorHistory generatorHistory);
+ }

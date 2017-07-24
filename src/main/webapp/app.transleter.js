@@ -133,8 +133,9 @@
             DELETE_DATA_SUCCESS: "Berhasil menghapus data ini !",
             DELETE_DATA_FAILED: "Gagal menghapus data ini !",
             DATA_ALREADY_EXIST: "Data sudah pernah disimpan !",
-            SAVE_LICENSE_FAILED: "Simpan data serial number gagal"
-
+            SAVE_LICENSE_FAILED: "Simpan data serial number gagal",
+            LICENSE: "Serial number",
+            LICENSE_STATUS: "Status serial number",
 
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
