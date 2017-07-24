@@ -91,7 +91,7 @@ public class SNServiceImpl implements SNService {
 
 	@Override
 	public List<License> findAllSN() {
-		List<License> serialNumbers = snRepo.findAll();
+		List<License> serialNumbers = snRepo.findAllLicense();
 		return serialNumbers;
 	}
 
