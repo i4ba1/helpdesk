@@ -33,6 +33,7 @@
             getUsers: getUsers,
             licenseGenerator: licenseGenerator,
             registerGeneratedSN: registerGeneratedSN,
+            licenseCountByProduct: licenseCountByProduct,
             getNotifications: getNotifications
         }
 
@@ -207,6 +208,10 @@
 
         function registerGeneratedSN(snList) {
             return $http.post(baseURL + "/snManagement/registerGeneratedSN/", snList);
+        }
+
+        function licenseCountByProduct() {
+            return $http.get(baseURL + "/snManagement/licenseCountByProduct/");
         }
 
         function getNotifications() {

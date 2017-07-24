@@ -27,4 +27,6 @@ public interface SNService{
     List<License> serialNumberGenerator(Integer productId,Integer licenseCount,Integer secondParam);
     
     List<LicenseGeneratorHistory> findUnreadLicense();
+
+    List<Object> findSnCountByProduct();
 }

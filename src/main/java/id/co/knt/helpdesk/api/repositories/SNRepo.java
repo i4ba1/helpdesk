@@ -1,6 +1,6 @@
 package id.co.knt.helpdesk.api.repositories;
 
-
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +16,7 @@ public interface SNRepo extends JpaRepository<License, Long> {
     
     @Query("select sn from License sn where sn.activationKey= :activationKey")
     License findByActivation(@Param("activationKey") String activationKey);
+    
+    @Query("select p.productName ,count(p.productName) from License l inner join l.product p group by p.productName")
+    List<Object> findSnCountByProduct();
 }
