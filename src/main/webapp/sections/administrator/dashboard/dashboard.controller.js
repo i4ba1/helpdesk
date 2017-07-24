@@ -25,7 +25,7 @@
             }
         );
 
-        RequestFactory.getProducts().then(
+        RequestFactory.licenseCountByProduct().then(
             function(response) {
                 $scope.products = response.data;
             },

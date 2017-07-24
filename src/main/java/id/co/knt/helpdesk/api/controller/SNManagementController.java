@@ -1,5 +1,7 @@
 package id.co.knt.helpdesk.api.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -117,10 +119,8 @@ public class SNManagementController {
 
 	@RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
 	public ResponseEntity<String> registerGeneratedSN(@RequestBody List<License> list) {
-		int counter = 0;
 		for (License license : list) {
-			License number = snService.registerSerialNumber(license);
-
+			snService.registerSerialNumber(license);
 		}
 
 		return new ResponseEntity<String>(new String(), HttpStatus.OK);
@@ -135,6 +135,29 @@ public class SNManagementController {
 		}
 
 		return new ResponseEntity<List<LicenseGeneratorHistory>>(unreadLicenses, HttpStatus.OK);
+
+	}
+
+	/**
+	 * 
+	 */
+	@RequestMapping(value = "/licenseCountByProduct/", method = RequestMethod.GET)
+	public ResponseEntity<List<Map<String, Object>>> findSnCountByProduct() {
+		List<Object> list = snService.findSnCountByProduct();
+		List<Map<String, Object>> mapReturn = new ArrayList<>();
+		if (list.size() > 0) {
+			for (Object object : list) {
+				Object[] values = (Object[]) object;
+				Map<String, Object> newMap = new HashMap<>();
+
+				newMap.put("productName", values[0]);
+				newMap.put("licenseCount", values[1]);
+				mapReturn.add(newMap);
+
+			}
+			return new ResponseEntity<List<Map<String, Object>>>(mapReturn, HttpStatus.OK);
+		}
+		return new ResponseEntity<List<Map<String, Object>>>(mapReturn, HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value="/viewDetailUnreadLicense/{licenseId}/{historyId}", method=RequestMethod.GET)

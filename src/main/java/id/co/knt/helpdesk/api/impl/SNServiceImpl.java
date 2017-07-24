@@ -268,4 +268,13 @@ public class SNServiceImpl implements SNService {
 		return history;
 	}
 
+	@Override
+	public List<Object> findSnCountByProduct() {
+		List<Object> list=snRepo.findSnCountByProduct();
+		if(list.size()>0){
+			return list;
+		}
+		return null;
+	}
+
 }

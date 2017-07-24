@@ -34,4 +34,6 @@ public interface SNService{
     LicenseGeneratorHistory findDetailHistory(Long id);
     
     LicenseGeneratorHistory updateReadStatus(LicenseGeneratorHistory generatorHistory);
- }
+
+    List<Object> findSnCountByProduct();
+}

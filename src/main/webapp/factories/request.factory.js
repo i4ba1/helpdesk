@@ -33,8 +33,8 @@
             getUsers: getUsers,
             licenseGenerator: licenseGenerator,
             registerGeneratedSN: registerGeneratedSN,
-            getNotifications: getNotifications,
-            viewDetailUnreadLicense: viewDetailUnreadLicense
+            viewDetailUnreadLicense: viewDetailUnreadLicense,
+            licenseCountByProduct: licenseCountByProduct
         }
 
         return service;
@@ -219,13 +219,9 @@
             return $http.post(baseURL + "/snManagement/registerGeneratedSN/", snList);
         }
 
-        function getNotifications() {
-            return $http.get("assets/dummy/dashboard.dummy.json");
+        function licenseCountByProduct() {
+            return $http.get(baseURL + "/snManagement/licenseCountByProduct/");
         }
-
-
-
-
     }
 
 })();
