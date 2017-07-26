@@ -515,12 +515,14 @@ textarea {
 
 .knt-logo {
     width: 200px;
-    padding: 1px 5px;
+    padding: 5px 5px;
     &>img {
         text-align: center;
         -moz-box-shadow: drop-shadow(2.5px 2.5px 2.5px #222);
         -webkit-filter: drop-shadow(2.5px 2.5px 2.5px #222);
         filter: drop-shadow(2.5px 2.5px 2.5px #222);
+        width: 100%;
+        height: auto;
     }
 }
 
