@@ -407,4 +407,10 @@ input.ng-dirty.ng-valid {
   font-weight: bold;
   color: rgba(128, 128, 128, 0.5); }
 
+.description-text {
+  border: 1px solid black;
+  overflow-y: scroll;
+  height: 270px;
+  text-align: justify; }
+
 /*# sourceMappingURL=styles.css.map */

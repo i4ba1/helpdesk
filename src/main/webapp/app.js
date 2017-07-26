@@ -13,7 +13,8 @@
             'pascalprecht.translate',
             'ui.select',
             'ui.bootstrap',
-            'ui.router'
+            'ui.router',
+            "checklist-model"
         ]);
 
 })();

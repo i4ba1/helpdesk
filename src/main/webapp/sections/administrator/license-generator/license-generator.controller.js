@@ -10,6 +10,7 @@
             selectedProduct: null,
             licenseCount: null,
             secondParam: null,
+            subProduct: [],
         };
         $scope.schools = [];
         $scope.products = [];
@@ -17,6 +18,15 @@
         $scope.switchGeneratorForm = null;
         $scope.submitLicenseGenerator = submitLicenseGenerator;
         $scope.registerGeneratedSN = registerGeneratedSN;
+        $scope.listClass = [
+            {id:1, name:"SD kelas 1", value:1},
+            {id:2, name:"SD kelas 2", value:2},
+            {id:3, name:"SD kelas 3", value:3},
+            {id:4, name:"SD kelas 4", value:4},
+            {id:5, name:"SD kelas 5", value:5},
+            {id:6, name:"SD kelas 6", value:6}
+        ];
+
 
         RequestFactory.getSchools().then(
             function(response) {

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.jsoniter:jsoniter:0.9.8">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jsoniter/jsoniter/0.9.8/c3fd5c1755e8b1c5051155657804df9376cb3269/jsoniter-0.9.8.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jsoniter/jsoniter/0.9.8/27226cc3ea5bcd0540170ae1c0fccbbb0fba7eea/jsoniter-0.9.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -136,7 +136,8 @@
             SAVE_LICENSE_FAILED: "Simpan data serial number gagal",
             LICENSE: "Serial number",
             LICENSE_STATUS: "Status serial number",
-
+            GENERATE: "Generate",
+            DESCRIPTION:"Deskripsi"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

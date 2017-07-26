@@ -580,3 +580,10 @@ input.ng-dirty {
         color: rgba(gray, .5);
     }
 }
+
+.description-text{
+    border: 1px solid black;
+    overflow-y: scroll;
+    height: 270px;
+    text-align: justify;
+}
