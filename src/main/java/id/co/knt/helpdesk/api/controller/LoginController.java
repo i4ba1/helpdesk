@@ -38,8 +38,8 @@ public class LoginController {
     UserService userService;
 
     /**
-     * Logging In and create new token for user
-     * @param objects
+     * Logging in
+     * @param newUser
      * @return
      */
     @RequestMapping(value = "/loggingIn/", method = RequestMethod.POST)
@@ -108,8 +108,7 @@ public class LoginController {
 
     /**
      * Logged out user
-     *
-     * @param objects
+     * @param newLogin
      * @return
      */
     @RequestMapping(value = "/loggedOut/", method = RequestMethod.POST)

@@ -11,3 +11,5 @@ src/main/webapp/bower_components/**
 bin
 build
 **.sass-cache
+.idea/**
+out/**
