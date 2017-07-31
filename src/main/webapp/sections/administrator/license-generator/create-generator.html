@@ -1,16 +1,16 @@
 <div class="container-fluid">
-    <div class="row-fluid" ng-switch="switchGeneratorForm">
+    <div class="row-fluid">
         <section class="content-header" style="padding:15px">
             <div class="title-brand">
                 <span id="root-title">{{'PRODUCT_MANAGEMENT'|translate|uppercase}}</span> / <span class="child-title">{{'GENERATOR'|translate}}</span>
             </div>
         </section>
-        <section class="content" ng-switch-default>
+        <section class="content">
             <form class="form-horizontal" name="licenseGeneratorForm" ng-submit="submitLicenseGenerator(generator)">
                 <div class="form-group">
                     <label class="control-label col-sm-2 col-sm-offset-3" for="productName">{{"PRODUCT_NAME" |translate}}</label>
                     <div class="col-sm-4">
-                        <ui-select ng-model="generator.selectedProduct">
+                        <ui-select ng-model="generator.selectedProduct" on-select="onSelected($item)">
                             <ui-select-match placeholder="{{'SELECT_PRODUCT'|translate}}">
                                 <span ng-bind="$select.selected.productName"></span>
                             </ui-select-match>
@@ -26,18 +26,23 @@
                         <input type="number" ng-model="generator.licenseCount" class="form-control" id="licenseCount" placeholder="{{'LICENSE_COUNT_PLH'|translate}}" min="1">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-switch="generator.selectedProduct.subProductType">
                     <label class="control-label col-sm-2 col-sm-offset-3" for="code">{{"SECOND_PARAM"|translate}}</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4" ng-switch-default>
                         <input type="number" class="form-control" ng-model="generator.secondParam" id="code" placeholder="{{'SECOND_PARAM_PLH'|translate}}" min="1">
+                    </div>
+                    <div class="col-sm-4" ng-switch-when="EP">
+                        <div class="sub-product">
+                            <div ng-repeat="kelas in listClass">
+                                <label>
+                                    <input type="checkbox" checklist-model="generator.subProduct" checklist-value="kelas">{{kelas.name}}
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {{generator.subProduct}}
-                <div class="checkbox" ng-repeat="kelas in listClass">
-                    <label>
-                        <input type="checkbox" checklist-model="generator.subProduct" checklist-value="kelas">{{kelas.name}}
-                    </label>
-                </div>
+
                 <!--Description-->
                 <div class="form-group">
                     <label class="control-label col-sm-2 col-sm-offset-2" for="licenseCount">{{"DESCRIPTION"|translate}}</label>
@@ -77,7 +82,8 @@
                 </div>
             </form>
         </section>
-        <section class="content" ng-switch-when="swictToTable">
+
+        <!--<section class="content" ng-switch-when="switchToTable">
             <table class="table table-striped" st-table="generatedLicense" st-safe-rc="generatedLicense">
                 <thead>
                     <tr>
@@ -108,13 +114,13 @@
                 </tbody>
             </table>
             <hr>
-            <!--Button Save!-->
+            &lt;!&ndash;Button Save!&ndash;&gt;
             <div>
                 <div class="clos-md-12" style="padding-left:15px;">
                     <button class="btn btn-primary btn-md" type="button" ng-click="registerGeneratedSN(generatedLicense)">{{"SAVE"|translate}} </button>
                     <button class="btn btn-default btn-md" type="button">{{"CANCEL"|translate}} </button>
                 </div>
             </div>
-        </section>
+        </section>-->
     </div>
 </div>

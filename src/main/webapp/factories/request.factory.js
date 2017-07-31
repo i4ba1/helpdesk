@@ -34,8 +34,9 @@
             licenseGenerator: licenseGenerator,
             registerGeneratedSN: registerGeneratedSN,
             viewDetailUnreadLicense: viewDetailUnreadLicense,
-            licenseCountByProduct: licenseCountByProduct
-        }
+            licenseCountByProduct: licenseCountByProduct,
+            fetchSubProduct: fetchSubProduct
+        };
 
         return service;
 
@@ -221,6 +222,10 @@
 
         function licenseCountByProduct() {
             return $http.get(baseURL + "/snManagement/licenseCountByProduct/");
+        }
+
+        function fetchSubProduct(productId){
+            return $http.get(baseURL +"");
         }
     }
 

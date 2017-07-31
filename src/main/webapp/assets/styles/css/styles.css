@@ -413,4 +413,11 @@ input.ng-dirty.ng-valid {
   height: 270px;
   text-align: justify; }
 
+.sub-product {
+  border: 1px solid black;
+  overflow-y: scroll;
+  height: 110px;
+  width: 100%;
+  text-align: justify; }
+
 /*# sourceMappingURL=styles.css.map */
