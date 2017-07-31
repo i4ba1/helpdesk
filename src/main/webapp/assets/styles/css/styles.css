@@ -409,4 +409,10 @@ input.ng-dirty.ng-valid {
   font-weight: bold;
   color: rgba(128, 128, 128, 0.5); }
 
+.sub-module {
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  width: 100%;
+  min-height: 10vh;
+  padding: 15px; }
+
 /*# sourceMappingURL=styles.css.map */

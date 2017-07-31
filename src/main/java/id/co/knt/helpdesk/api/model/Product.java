@@ -32,6 +32,15 @@ public class Product implements Serializable{
 	@Column(name="created_date")
 	private Long createdDate;
 	
+	@Column(name="description")
+	private String description;
+	
+	@Column(name="sub_module_type")
+	private String subModuleType;
+	
+	@Column(name="sub_module_lable")
+	private String subModuleLable;
+	
 	@Column(name="deleted")
 	private Boolean deleted;
 
@@ -70,4 +79,29 @@ public class Product implements Serializable{
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getSubModuleType() {
+		return subModuleType;
+	}
+
+	public void setSubModuleType(String subModuleType) {
+		this.subModuleType = subModuleType;
+	}
+
+	public String getSubModuleLable() {
+		return subModuleLable;
+	}
+
+	public void setSubModuleLable(String subModuleLable) {
+		this.subModuleLable = subModuleLable;
+	}
+	
 }

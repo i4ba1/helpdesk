@@ -16,9 +16,16 @@
         $scope.products = [];
         $scope.rowCollections = [];
         $scope.productId = $stateParams.productId;
-        $scope.product = null;
+        $scope.product = {
+            productName: null,
+            productCode: null,
+            subProducts: []
+        };
         $scope.submitProductForm = submitProductForm;
         $scope.deleteProduct = deleteProduct;
+        $scope.entryType = "direct";
+        $scope.entryTypeChange = entryTypeChange;
+        $scope.addNewSubProduct = addNewSubProduct;
 
         if ($state.is("administrator.product-management")) {
             // get all products
@@ -91,6 +98,25 @@
 
                 }
             )
+        }
+
+        function entryTypeChange(type) {
+            if (type && type === "choice") {
+                $scope.product.subProducts = [{
+                    label: null,
+                    value: null
+                }];
+            } else {
+                $scope.product.subProducts = [];
+            }
+        }
+
+        function addNewSubProduct() {
+            var newSubProduct = {
+                label: null,
+                value: null
+            }
+            $scope.product.subProducts.push(newSubProduct);
         }
     }
 
