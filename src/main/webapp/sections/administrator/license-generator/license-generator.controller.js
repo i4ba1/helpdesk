@@ -52,7 +52,7 @@
         }
 
         function submitLicenseGenerator(generator) {
-            RequestFactory.licenseGenerator(generator.selectedProduct.id, generator.licenseCount, generator.subProduct).then(
+            RequestFactory.licenseGenerator(generator.selectedProduct, generator.licenseCount, generator.subProduct).then(
                 function(response) {
                     $scope.generatedLicense = response.data;
                     $cookies.putObject("listGenerated", $scope.generatedLicense);

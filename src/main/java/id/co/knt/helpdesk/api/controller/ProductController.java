@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import id.co.knt.helpdesk.api.model.Product;
 import id.co.knt.helpdesk.api.model.SubProduct;
-import id.co.knt.helpdesk.api.model.dto.ProductDto;
+import id.co.knt.helpdesk.api.model.dto.ProductDTO;
 import id.co.knt.helpdesk.api.repositories.ProductRepo;
 import id.co.knt.helpdesk.api.repositories.SubProductRepo;
 
@@ -56,11 +56,11 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = { "/createProduct/" }, method = RequestMethod.POST)
-	public ResponseEntity<Void> createProduct(@RequestBody ProductDto productDto) {
+	public ResponseEntity<Void> createProduct(@RequestBody ProductDTO productDTO) {
 
 		try {
-			Product newProduct = productRepo.save(productDto.getProduct());
-			List<SubProduct> subProducts = productDto.getSubProducts();
+			Product newProduct = productRepo.save(productDTO.getProduct());
+			List<SubProduct> subProducts = productDTO.getSubProducts();
 
 			for (SubProduct subProduct : subProducts) {
 				subProduct.setProduct(newProduct);
