@@ -205,6 +205,13 @@ public class SNServiceImpl implements SNService {
 		return number;
 	}
 
+	/**
+	 *
+	 * @param productId
+	 * @param licenseCount
+	 * @param secondParam can be number of client or List of subProduct
+	 * @return
+	 */
 	@Override
 	public List<License> serialNumberGenerator(Integer productId, Integer licenseCount, Integer secondParam) {
 		Product product = productRepo.findOne(productId);

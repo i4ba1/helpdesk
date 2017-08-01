@@ -12,4 +12,5 @@ bin
 build
 **.sass-cache
 .idea/**
+src/main/webapp/.idea/workspace.xml
 out/**

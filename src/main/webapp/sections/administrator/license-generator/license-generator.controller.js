@@ -9,7 +9,6 @@
         $scope.generator = {
             selectedProduct: null,
             licenseCount: null,
-            secondParam: null,
             subProduct: [],
         };
         //$scope.schools = [];
@@ -53,7 +52,7 @@
         }
 
         function submitLicenseGenerator(generator) {
-            RequestFactory.licenseGenerator(generator.selectedProduct.id, generator.licenseCount, generator.secondParam).then(
+            RequestFactory.licenseGenerator(generator.selectedProduct.id, generator.licenseCount, generator.subProduct).then(
                 function(response) {
                     $scope.generatedLicense = response.data;
                     $cookies.putObject("listGenerated", $scope.generatedLicense);
@@ -93,8 +92,8 @@
             //do selectedItem.PropertyName like selectedItem.Name or selectedItem.Key
             //whatever property your list has.
             console.log("selectedItem=========> ", selectedItem);
-            $scope.generator.selectedProduct["subProductType"] = "EL";
-            //etchSubProductClass(selectedItem.id);
+            $scope.generator.selectedProduct["subProductType"] = "EP";
+            getSubProduct(1);
         }
     }
 

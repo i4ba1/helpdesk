@@ -225,7 +225,7 @@
         }
 
         function fetchSubProduct(productId){
-            return $http.get(baseURL +"");
+            return $http.get("assets/dummy/list-generator-package.dummy.json");
         }
     }
 
