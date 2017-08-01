@@ -2,21 +2,80 @@
     <div class="row-fluid">
         <section class="content-header" style="padding:15px">
             <div class="title-brand">
-                <span id="root-title">{{'KNT_PRODUCT'|translate}}</span> / <span class="child-title">{{'SCHOOL'|translate}}</span> / <span class="child-title">{{title|translate}}</span>
+                <span id="root-title">{{'PRODUCT_MANAGEMENT'|translate|uppercase}}</span> / <span class="child-title">{{'KNT_PRODUCT'|translate}}</span>
             </div>
         </section>
         <section class="content">
             <form class="form-horizontal" name="schoolRegisterForm" ng-submit="submitProductForm(product)">
                 <div class="form-group">
                     <label class="control-label col-sm-2 col-sm-offset-1" for="productName">{{"PRODUCT_NAME" |translate}}</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <input type="text" class="form-control" id="productName" placeholder="{{'PRODUCT_NAME_PLH'|translate}}" ng-model="product.productName">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"PRODUCT_CODE"|translate}}</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <input type="number" class="form-control" id="productCode" placeholder="{{'PRODUCT_CODE_PLH'|translate}}" ng-model="product.productCode">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"LABEL_TXT"|translate}}</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="labelTxt" placeholder="{{'LABEL_TXT_PLH'|translate}}" ng-model="product.subModuleLable">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"DESCRIPTION"|translate}}</label>
+                    <div class="col-sm-5">
+                        <textarea rows="8" cols="10" class="form-control" id="descriptionTxt" placeholder="{{'DESCRIPTION_PLH'|translate}}" ng-model="product.description"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"SUB_MODULE_TYPE"|translate}}</label>
+                    <div class="col-sm-5">
+                        <label class="radio-inline" for="entryTypeDirect">
+                            <input type="radio" name="entryTypeDirect" id="entryTypeDirect" value="EL" ng-model="product.subModuleType" ng-change="entryTypeChange('direct')">{{'DIRECT_ENTRY'|translate}}
+                        </label>
+                        <label class="radio-inline" for="entryTypeChoice">
+                            <input type="radio" name="entryTypeChoice" id="entryTypeChoice"  value="EP" ng-model="product.subModuleType" ng-change="entryTypeChange('choice')">{{'CHOICE_ENTRY'|translate}}
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-5 col-sm-offset-3" ng-switch="product.subModuleType">
+                        <div class="sub-module text-center" ng-switch-when="EL">
+                            <span ng-bind-html="'DESCRIPTION_DIRECT_ENTRY' | translate"></span>
+                        </div>
+                        <div class="sub-module" ng-switch-when="EP">
+                            <label>{{'CHOICE_TEXT'|translate}}</label>
+                            <span class="btn btn-default pull-right" ng-click="addNewSubProduct()" title="{{'ADD_CHOICE'|translate}}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+
+                            <table class="table table-bordered table-striped" style="margin-top:15px;" ng-switch="product.subProducts.length">
+                                <thead>
+                                    <tr>
+                                        <th>{{'NO'|translate}}</th>
+                                        <th>{{'LABEL'|translate}}</th>
+                                        <th>{{'VALUE'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-switch-default>
+                                    <tr ng-repeat="subProduct in product.subProducts track by $index">
+                                        <td class="text-center">{{$index+1}}</td>
+                                        <td><input type="text" class="form-control" ng-model="subProduct.label"></td>
+                                        <td><input type="number" class="form-control" ng-model="subProduct.value"></td>
+                                    </tr>
+                                </tbody>
+
+                                <tbody ng-switch-when="0">
+                                    <tr>
+                                        <td colspan="3" class="text-center" style="height:100px;padding-top:25px;">
+                                            {{'DATA_NOT_YET_ADDED'|translate}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <!--Button Save!-->

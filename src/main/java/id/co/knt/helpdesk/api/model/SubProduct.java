@@ -1,8 +1,15 @@
 package id.co.knt.helpdesk.api.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author marlina_kreative
+ */
+@Entity
+@Table(name = "helpdesk_sub_product")
 public class SubProduct implements Serializable {
 
     private static final long serialVersionUID = -1169013840501699745L;

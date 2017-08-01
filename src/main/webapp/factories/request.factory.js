@@ -136,11 +136,17 @@
          */
         function createProduct(product) {
             var formData = {
-                id: null,
-                productName: product.productName,
-                productCode: product.productCode,
-                createdDate: null,
-                deleted: false
+                product: {
+                    id: null,
+                    productName: product.productName,
+                    productCode: product.productCode,
+                    description: product.description,
+                    subModuleType: product.subModuleType,
+                    subModuleLable: product.subModuleLable,
+                    createdDate: null,
+                    deleted: false
+                },
+                subProducts: product.subProducts
             };
 
             return $http.post(baseURL + "/productManagement/createProduct/", formData);
@@ -156,6 +162,7 @@
                 productName: product.productName,
                 productCode: product.productCode,
                 createdDate: product.createdDate,
+                subProducts: product.subProducts,
                 deleted: false
             };
 

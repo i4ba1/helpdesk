@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-07-20 14:40:06
+ * @Last Modified time: 2017-07-31 13:43:59
  * 
  * Application Translate Configuration
  */
@@ -137,7 +137,20 @@
             LICENSE: "Serial number",
             LICENSE_STATUS: "Status serial number",
             GENERATE: "Generate",
-            DESCRIPTION:"Deskripsi"
+            LABEL_TXT: "Label Sub Modul",
+            LABEL_TXT_PLH: "Masukan label sub module",
+            DESCRIPTION: "Deskripsi",
+            DESCRIPTION_PLH: "Masukan deskripsi pengisian data",
+            DESCRIPTION_DIRECT_ENTRY: "Pengisian sub modul akan dilakukan saat melakukan pembuatan serial number baru pada menu '<b><i>GENERATOR</i></b>'",
+            SUB_MODULE_TYPE: "Jenis Sub Modul",
+            DIRECT_ENTRY: "Entri Langsung",
+            CHOICE_ENTRY: "Entri Pilihan",
+            CHOICE_TEXT: "Data Pilihan",
+            ADD_CHOICE: "Tambah Pilihan",
+            LABEL: 'Label',
+            VALUE: 'Value'
+
+>>>>>>> ac53ff517bdf8069f4cde1ab906006b41a856103
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

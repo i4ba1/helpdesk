@@ -10,26 +10,25 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="helpdesk_product")
-public class Product implements Serializable{
+@Table(name = "helpdesk_product")
+public class Product implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	
-	
-	@Column(name="product_name")
+
+	@Column(name = "product_name")
 	private String productName;
-	
-	@Column(name="product_code",unique= true)
+
+	@Column(name = "product_code", unique = true)
 	private Integer productCode;
-	
-	@Column(name="created_date")
+
+	@Column(name = "created_date")
 	private Long createdDate;
 
 	@Column(name = "description")
@@ -40,8 +39,8 @@ public class Product implements Serializable{
 
 	@Column(name = "sub_module_lable")
 	private String subModuleLable;
-	
-	@Column(name="deleted")
+
+	@Column(name = "deleted")
 	private Boolean deleted;
 
 	public String getProductName() {
@@ -72,6 +71,14 @@ public class Product implements Serializable{
 		return id;
 	}
 
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -96,11 +103,4 @@ public class Product implements Serializable{
 		this.subModuleLable = subModuleLable;
 	}
 
-	public Boolean getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
 }
