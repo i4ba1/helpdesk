@@ -19,8 +19,12 @@
         $scope.product = {
             productName: null,
             productCode: null,
+            description: null,
+            subModuleType: "EP",
+            subModuleLable: null,
             subProducts: []
         };
+
         $scope.submitProductForm = submitProductForm;
         $scope.deleteProduct = deleteProduct;
         $scope.entryType = "direct";
@@ -103,6 +107,7 @@
         function entryTypeChange(type) {
             if (type && type === "choice") {
                 $scope.product.subProducts = [{
+                    id: null,
                     label: null,
                     value: null
                 }];
@@ -113,6 +118,7 @@
 
         function addNewSubProduct() {
             var newSubProduct = {
+                id: null,
                 label: null,
                 value: null
             }

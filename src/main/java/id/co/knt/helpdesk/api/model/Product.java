@@ -10,38 +10,37 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="helpdesk_product")
-public class Product implements Serializable{
+@Table(name = "helpdesk_product")
+public class Product implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	
-	
-	@Column(name="product_name")
+
+	@Column(name = "product_name")
 	private String productName;
-	
-	@Column(name="product_code",unique= true)
+
+	@Column(name = "product_code", unique = true)
 	private Integer productCode;
-	
-	@Column(name="created_date")
+
+	@Column(name = "created_date")
 	private Long createdDate;
-	
-	@Column(name="description")
+
+	@Column(name = "description")
 	private String description;
-	
-	@Column(name="sub_module_type")
+
+	@Column(name = "sub_module_type")
 	private String subModuleType;
-	
-	@Column(name="sub_module_lable")
+
+	@Column(name = "sub_module_lable")
 	private String subModuleLable;
-	
-	@Column(name="deleted")
+
+	@Column(name = "deleted")
 	private Boolean deleted;
 
 	public String getProductName() {
@@ -103,5 +102,5 @@ public class Product implements Serializable{
 	public void setSubModuleLable(String subModuleLable) {
 		this.subModuleLable = subModuleLable;
 	}
-	
+
 }

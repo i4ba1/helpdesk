@@ -22,32 +22,32 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"LABEL_TXT"|translate}}</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="labelTxt" placeholder="{{'LABEL_TXT_PLH'|translate}}">
+                        <input type="text" class="form-control" id="labelTxt" placeholder="{{'LABEL_TXT_PLH'|translate}}" ng-model="product.subModuleLable">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"DESCRIPTION"|translate}}</label>
                     <div class="col-sm-5">
-                        <textarea rows="8" cols="10" class="form-control" id="descriptionTxt" placeholder="{{'DESCRIPTION_PLH'|translate}}"></textarea>
+                        <textarea rows="8" cols="10" class="form-control" id="descriptionTxt" placeholder="{{'DESCRIPTION_PLH'|translate}}" ng-model="product.description"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"SUB_MODULE_TYPE"|translate}}</label>
                     <div class="col-sm-5">
                         <label class="radio-inline" for="entryTypeDirect">
-                            <input type="radio" name="entryTypeDirect" id="entryTypeDirect" value="direct" ng-model="entryType" ng-change="entryTypeChange('direct')">{{'DIRECT_ENTRY'|translate}}
+                            <input type="radio" name="entryTypeDirect" id="entryTypeDirect" value="EL" ng-model="product.subModuleType" ng-change="entryTypeChange('direct')">{{'DIRECT_ENTRY'|translate}}
                         </label>
                         <label class="radio-inline" for="entryTypeChoice">
-                            <input type="radio" name="entryTypeChoice" id="entryTypeChoice"  value="choice" ng-model="entryType" ng-change="entryTypeChange('choice')">{{'CHOICE_ENTRY'|translate}}
+                            <input type="radio" name="entryTypeChoice" id="entryTypeChoice"  value="EP" ng-model="product.subModuleType" ng-change="entryTypeChange('choice')">{{'CHOICE_ENTRY'|translate}}
                         </label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-5 col-sm-offset-3" ng-switch="entryType">
-                        <div class="sub-module text-center" ng-switch-when="direct">
+                    <div class="col-sm-5 col-sm-offset-3" ng-switch="product.subModuleType">
+                        <div class="sub-module text-center" ng-switch-when="EL">
                             <span ng-bind-html="'DESCRIPTION_DIRECT_ENTRY' | translate"></span>
                         </div>
-                        <div class="sub-module" ng-switch-when="choice">
+                        <div class="sub-module" ng-switch-when="EP">
                             <label>{{'CHOICE_TEXT'|translate}}</label>
                             <span class="btn btn-default pull-right" ng-click="addNewSubProduct()" title="{{'ADD_CHOICE'|translate}}"><i class="fa fa-plus" aria-hidden="true"></i></span>
 
