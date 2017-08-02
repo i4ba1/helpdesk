@@ -35,7 +35,8 @@
             registerGeneratedSN: registerGeneratedSN,
             viewDetailUnreadLicense: viewDetailUnreadLicense,
             licenseCountByProduct: licenseCountByProduct,
-            fetchSubProduct: fetchSubProduct
+            fetchSubProduct: fetchSubProduct,
+            deleteSubProduct: deleteSubProduct
         };
 
         return service;
@@ -134,39 +135,16 @@
          * Create new of product
          * @param {*} product 
          */
-        function createProduct(product) {
-            var formData = {
-                product: {
-                    id: null,
-                    productName: product.productName,
-                    productCode: product.productCode,
-                    description: product.description,
-                    subModuleType: product.subModuleType,
-                    subModuleLable: product.subModuleLable,
-                    createdDate: null,
-                    deleted: false
-                },
-                subProducts: product.subProducts
-            };
-
-            return $http.post(baseURL + "/productManagement/createProduct/", formData);
+        function createProduct(productDto) {
+            return $http.post(baseURL + "/productManagement/createProduct/", productDto);
         }
 
         /**
          * update current product
          * @param {*} product 
          */
-        function updateProduct(product) {
-            var formData = {
-                id: product.id,
-                productName: product.productName,
-                productCode: product.productCode,
-                createdDate: product.createdDate,
-                subProducts: product.subProducts,
-                deleted: false
-            };
-
-            return $http.put(baseURL + "/productManagement/updateProduct/", formData);
+        function updateProduct(productDto) {
+            return $http.put(baseURL + "/productManagement/updateProduct/", productDto);
         }
 
         /**
@@ -174,7 +152,7 @@
          * @param {*} productId 
          */
         function deleteProduct(productId) {
-            return $http.deleted(baseURL + "/productManagement/deleteProduct/" + productId);
+            return $http.delete(baseURL + "/productManagement/deleteProduct/" + productId);
         }
 
         /**
@@ -231,9 +209,14 @@
             return $http.get(baseURL + "/snManagement/licenseCountByProduct/");
         }
 
-        function fetchSubProduct(productId){
+        function fetchSubProduct(productId) {
             return $http.get("assets/dummy/list-generator-package.dummy.json");
         }
+
+        function deleteSubProduct(subProductId) {
+            return $http.delete(baseURL + "/productManagement/deleteSubProduct/" + subProductId);
+        }
+
     }
 
 })();

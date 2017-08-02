@@ -15,13 +15,18 @@
 
         $scope.products = [];
         $scope.rowCollections = [];
-        $scope.productId = $stateParams.productId;
-        $scope.product = {
-            productName: null,
-            productCode: null,
-            description: null,
-            subModuleType: "EP",
-            subModuleLable: null,
+        $scope.productId = null;
+        $scope.productDto = {
+            product: {
+                id: null,
+                productName: null,
+                productCode: null,
+                description: null,
+                subModuleType: "EL",
+                subModuleLable: null,
+                createdDate: null,
+                deleted: false
+            },
             subProducts: []
         };
 
@@ -30,6 +35,7 @@
         $scope.entryType = "direct";
         $scope.entryTypeChange = entryTypeChange;
         $scope.addNewSubProduct = addNewSubProduct;
+        $scope.deleteSubProduct = deleteSubProduct;
 
         if ($state.is("administrator.product-management")) {
             // get all products
@@ -42,12 +48,15 @@
                     DialogFactory.messageDialog("NOTIFICATION", ["DATA_NOT_FOUND"], "sm");
                 }
             );
+        } else {
+            $scope.productId = $stateParams.productId;
+            $scope.isUpdate = $scope.productId ? true : false;
         }
 
         if ($scope.productId) {
             RequestFactory.viewProductDetail($scope.productId).then(
                 function(response) {
-                    $scope.product = response.data;
+                    $scope.productDto = response.data;
                 },
                 function(error) {
                     DialogFactory.messageDialog("NOTIFICATION", ["DATA_NOT_FOUND"], "sm").then(
@@ -59,13 +68,13 @@
             );
         }
 
-        function submitProductForm(product) {
+        function submitProductForm(productDto) {
             var result = null;
 
             if ($scope.productId) {
-                result = RequestFactory.updateProduct(product);
+                result = RequestFactory.updateProduct(productDto);
             } else {
-                result = RequestFactory.createProduct(product);
+                result = RequestFactory.createProduct(productDto);
             }
 
             result.then(
@@ -105,14 +114,14 @@
         }
 
         function entryTypeChange(type) {
-            if (type && type === "choice") {
-                $scope.product.subProducts = [{
+            if (type && type === "EP") {
+                $scope.productDto.subProducts = [{
                     id: null,
                     label: null,
                     value: null
                 }];
             } else {
-                $scope.product.subProducts = [];
+                $scope.productDto.subProducts = [];
             }
         }
 
@@ -122,7 +131,18 @@
                 label: null,
                 value: null
             }
-            $scope.product.subProducts.push(newSubProduct);
+            $scope.productDto.subProducts.push(newSubProduct);
+        }
+
+        function deleteSubProduct(id, index) {
+            if (id) {
+                RequestFactory.deleteSubProduct(id).then(function(response) {
+                    DialogFactory.messageDialog("DELETE_SUCCESS", ["DELETE_DATA_SUCCESS"], "sm");
+                }, function(error) {
+                    DialogFactory.messageDialog("DELETE_FAILED", ["DELETE_DATA_FAILED"], "sm");
+                });
+            }
+            $scope.productDto.subProducts.splice(index, 1);
         }
     }
 
