@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-07-31 13:43:59
+ * @Last Modified time: 2017-08-02 11:49:28
  * 
  * Application Translate Configuration
  */
@@ -149,8 +149,6 @@
             ADD_CHOICE: "Tambah Pilihan",
             LABEL: 'Label',
             VALUE: 'Value'
-
->>>>>>> ac53ff517bdf8069f4cde1ab906006b41a856103
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
