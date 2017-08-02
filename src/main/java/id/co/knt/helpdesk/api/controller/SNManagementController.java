@@ -100,24 +100,24 @@ public class SNManagementController {
 	 * @return
 	 */
 	@RequestMapping(value = { "/snGenerator/" }, method = RequestMethod.POST)
-	public ResponseEntity<List<TreeMap<String, List<License>>>> snGenerator(@RequestBody LicenseGeneratorDTO licenseGeneratorDTO) {
+	public ResponseEntity<TreeMap<String, List<License>>> snGenerator(@RequestBody LicenseGeneratorDTO licenseGeneratorDTO) {
 
-		List<TreeMap<String, List<License>>> list = snService.serialNumberGenerator(licenseGeneratorDTO);
+		TreeMap<String, List<License>> treeMap = snService.serialNumberGenerator(licenseGeneratorDTO);
 
-		if (list.isEmpty()) {
-			return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST);
+		if (treeMap.isEmpty()) {
+			return new ResponseEntity<>(treeMap, HttpStatus.BAD_REQUEST);
 		}
 
-		return new ResponseEntity<>(list, HttpStatus.OK);
+		return new ResponseEntity<>(treeMap, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
-	public ResponseEntity<String> registerGeneratedSN(@RequestBody List<License> list) {
+	public ResponseEntity<Void> registerGeneratedSN(@RequestBody List<License> list) {
 		for (License license : list) {
 			snService.registerSerialNumber(license);
 		}
 
-		return new ResponseEntity<>(new String(), HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/findUnreadLicenses/", method = RequestMethod.GET)
@@ -156,7 +156,7 @@ public class SNManagementController {
 
 	@RequestMapping(value="/viewDetailUnreadLicense/{licenseId}/{historyId}", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> viewDetailUnreadLicense(@PathVariable Long licenseId, @PathVariable Long historyId){
-		Map<String, Object> object = snService.videDetailLicense(licenseId);
+		Map<String, Object> object = snService.viewDetailLicense(licenseId);
 	
 		if(object.isEmpty()) {
 			return new ResponseEntity<>(object, HttpStatus.NOT_FOUND);

@@ -17,12 +17,12 @@ public interface SNRepo extends JpaRepository<License, Long> {
 	@Query("select sn from License sn where sn.activationKey= :activationKey")
 	License findByActivation(@Param("activationKey") String activationKey);
 
-	@Query("select sn from License sn join fetch sn.product p join fetch sn.school s where sn.id= :licenseId")
+	@Query("select sn from License sn join fetch sn.product p  where sn.id= :licenseId")
 	License findLicenseById(@Param("licenseId") Long licenseId);
 	
     @Query("select p.productName ,count(p.productName) from License l inner join l.product p group by p.productName")
     List<Object> findSnCountByProduct();
     
-    @Query("select l from License l inner join fetch l.product p inner join fetch l.school s ")
+    @Query("select l from License l inner join fetch l.product p")
     List<License> findAllLicense();
 }

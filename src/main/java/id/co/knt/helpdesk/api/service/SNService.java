@@ -27,11 +27,11 @@ public interface SNService{
 
     License manuallyActivate(Long id, String xlock, String activationKey);
 
-    List<TreeMap<String, List<License>>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO);
+    TreeMap<String, List<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO);
     
     List<LicenseGeneratorHistory> findUnreadLicense();
     
-    Map<String, Object> videDetailLicense(Long licenseId);
+    Map<String, Object> viewDetailLicense(Long licenseId);
     
     LicenseGeneratorHistory findDetailHistory(Long id);
     

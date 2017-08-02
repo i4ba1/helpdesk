@@ -112,7 +112,7 @@
             LICENSE_COUNT: "Jumlah Lisensi",
             LICENSE_COUNT_PLH: "Masukan jumlah lisensi",
             SECOND_PARAM: "Parameter",
-            SECOND_PARAM_PLH: "Masukan kelas atau jumlah client",
+            SECOND_PARAM_PLH: "Masukan subProduct atau jumlah client",
             SELECT_PRODUCT: "Pilih Produk",
             SELECT_SCHOOL: "Pilih Sekolah",
             NO: "No.",
@@ -148,7 +148,8 @@
             CHOICE_TEXT: "Data Pilihan",
             ADD_CHOICE: "Tambah Pilihan",
             LABEL: 'Label',
-            VALUE: 'Value'
+            VALUE: 'Value',
+            NUMBER_CLIENT: "Jumlah client"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

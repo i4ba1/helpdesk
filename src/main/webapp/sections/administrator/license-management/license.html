@@ -13,21 +13,20 @@
                         <tr>
                             <th width="50">No.</th>
                             <th st-sort="license">{{'SERIAL_NUMBER' | translate}}</th>
-                            <th st-sort="macAddr">{{'MAC_ADDR' | translate}}</th>
-                            <th st-sort="passKey">{{'PASS_KEY' | translate}}</th>
-                            <th st-sort="xlock">{{'XLOCK' | translate}}</th>
-                            <th st-sort="licenseStatus">{{'SN_STATUS' | translate}}</th>
-                            <th st-sort="createdDate">{{'REGISTRATION_DATE' | translate}}
-                            </th>
+                            <th st-sort="createdDate">{{'CREATED_DATE' | translate}}</th>
+                            <th st-sort="numberOfClient">{{'NUMBER_CLIENT' | translate}}</th>
+                            <th st-sort="product">{{'PRODUCT_NAME' | translate}}</th>
+                            <th st-sort="schoolName">{{'SCHOOL_NAME' | translate}}</th>
                             <!--<th st-sort="typeApp">{{'APP_TYPE' | translate}}</th>-->
                             <th width="100"></th>
                         </tr>
                         <tr>
                             <th></th>
                             <th><input st-search="license" placeholder="{{'FILTER_SERIAL_NUMBER'|translate}}" class="input-sm form-control" type="search" /></th>
-                            <th><input st-search="macAddr" placeholder="{{'FILTER_MAC_ADDR'|translate}}" class="input-sm form-control" type="search" /></th>
-                            <th><input st-search="passKey" placeholder="{{'FILTER_PASS_KEY'|translate}}" class="input-sm form-control" type="search" /></th>
-                            <th><input st-search="xlock" placeholder="{{'FILTER_XLOCK'|translate}}" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="createdDate" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="numberOfClient" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="product" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="schoolName" class="input-sm form-control" type="search" /></th>
                             <th colspan="3"></th>
                             <!--<th>
                                 <input st-search="typeApp" placeholder="{{'FILTER_TYPE_APP'|translate}}" class="input-sm form-control" type="search" />

@@ -128,4 +128,14 @@ public class ProductController {
 		subProductRepo.delete(subProductId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
+	@RequestMapping(value = { "/fetchSubProduct/{productId}" }, method = RequestMethod.GET)
+	public ResponseEntity<List<SubProduct>> fetchSubProduct(@PathVariable("productId") Integer productId){
+		 List<SubProduct> subProducts = subProductRepo.findAllSubProductByProductId(productId);
+		 if (subProducts.size() == 0){
+		 	return new ResponseEntity<>(subProducts, HttpStatus.NOT_FOUND);
+		 }
+
+		return new ResponseEntity<>(subProducts, HttpStatus.OK);
+	}
 }

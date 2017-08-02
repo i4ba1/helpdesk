@@ -6,10 +6,10 @@
     generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "$cookies"];
 
     function generatorController(RequestFactory, DialogFactory, $scope, $state, $cookies) {
-        $scope.generator = {
-            selectedProduct: null,
-            licenseCount: null,
-            subProduct: [],
+        $scope.licenseGeneratorDTO = {
+            product: null,
+            subProducts: [],
+            licenseCount: 0
         };
         //$scope.schools = [];
         $scope.products = [];
@@ -18,15 +18,15 @@
         $scope.submitLicenseGenerator = submitLicenseGenerator;
         $scope.registerGeneratedSN = registerGeneratedSN;
         $scope.listClass = [
-            {id:1, name:"SD kelas 1", value:1},
-            {id:2, name:"SD kelas 2", value:2},
-            {id:3, name:"SD kelas 3", value:3},
-            {id:4, name:"SD kelas 4", value:4},
-            {id:5, name:"SD kelas 5", value:5},
-            {id:6, name:"SD kelas 6", value:6}
+            {id:1, name:"SD subProduct 1", value:1},
+            {id:2, name:"SD subProduct 2", value:2},
+            {id:3, name:"SD subProduct 3", value:3},
+            {id:4, name:"SD subProduct 4", value:4},
+            {id:5, name:"SD subProduct 5", value:5},
+            {id:6, name:"SD subProduct 6", value:6}
         ];
         $scope.switchToSubProduct = null;
-        $scope.subProduct = [];
+        $scope.subProducts = [];
 
         /*RequestFactory.getSchools().then(
             function(response) {
@@ -47,16 +47,26 @@
                 }
             );
         }else if($state.is("administrator.generator.list")){
-            $scope.generatedLicense = $cookies.getObject("listGenerated");
             $scope.switchListGenerator = $cookies.get("type");
+            if($scope.switchListGenerator === "EL"){
+                $scope.generatedLicense = $cookies.getObject("listGenerated").EL;
+            }else{
+                var listGenerated = $cookies.getObject("listGenerated");
+                $scope.generatedLicense = [];
+                for(var i=0; i<$cookies.get("licenseCount"); i++){
+                    $scope.generatedLicense.push(listGenerated["Paket"+(i+1)]);
+                }
+                //console.log("The Object is=============> ",Object.keys($scope.generatedLicense).length);
+            }
         }
 
-        function submitLicenseGenerator(generator) {
-            RequestFactory.licenseGenerator(generator.selectedProduct, generator.licenseCount, generator.subProduct).then(
+        function submitLicenseGenerator(licenseGeneratorDTO) {
+            RequestFactory.licenseGenerator(licenseGeneratorDTO).then(
                 function(response) {
                     $scope.generatedLicense = response.data;
                     $cookies.putObject("listGenerated", $scope.generatedLicense);
-                    $cookies.put("type", $scope.generator.selectedProduct.subProductType);
+                    $cookies.put("licenseCount", licenseGeneratorDTO.licenseCount);
+                    $cookies.put("type", $scope.licenseGeneratorDTO.product.subModuleType);
                     $state.go("administrator.generator.list");
                 },
                 function(error) {
@@ -77,9 +87,9 @@
         }
 
         function getSubProduct(productId){
-            RequestFactory.fetchSubProduct(productId).then(
+            RequestFactory.fetchSubProductByProductId(productId).then(
                 function (response) {
-                    $scope.subProduct = response.data;
+                    $scope.subProducts = response.data;
                     $scope.switchToSubProduct = "switchToSubProduct";
                 },
                 function (error) {
@@ -88,11 +98,15 @@
             );
         }
 
-        $scope.onSelected = function (selectedItem) {
-            //do selectedItem.PropertyName like selectedItem.Name or selectedItem.Key
+        $scope.onSelected = function (selectedProduct) {
+            //do selectedProduct.PropertyName like selectedProduct.Name or selectedProduct.Key
             //whatever property your list has.
-            console.log("selectedItem=========> ", selectedItem);
-            getSubProduct(1);
+            console.log("selectedProduct=========> ", selectedProduct);
+            if(selectedProduct.subModuleType === "EP"){
+                getSubProduct(selectedProduct.id);
+            }else{
+                $scope.licenseGeneratorDTO.subProducts = [{id:null, label:null, value:null}]
+            }
         }
     }
 

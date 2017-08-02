@@ -35,7 +35,7 @@
             registerGeneratedSN: registerGeneratedSN,
             viewDetailUnreadLicense: viewDetailUnreadLicense,
             licenseCountByProduct: licenseCountByProduct,
-            fetchSubProduct: fetchSubProduct,
+            fetchSubProductByProductId: fetchSubProductByProductId,
             deleteSubProduct: deleteSubProduct
         };
 
@@ -197,8 +197,8 @@
          * @param  generator { productId, licenseCount, secondParam}
          * requestType  is GET 
          */
-        function licenseGenerator(lice) {
-            return $http.get(baseURL + "/snManagement/snGenerator/" + productId + "/" + licenseCount + "/" + secondParam);
+        function licenseGenerator(licenseProductDTO) {
+            return $http.post(baseURL + "/snManagement/snGenerator/", licenseProductDTO);
         }
 
         function registerGeneratedSN(snList) {
@@ -209,14 +209,17 @@
             return $http.get(baseURL + "/snManagement/licenseCountByProduct/");
         }
 
+        function fetchSubProductByProductId(productId) {
+            return $http.get(baseURL + "/productManagement/fetchSubProduct/"+ productId);
+        }
+
         function fetchSubProduct(productId) {
-            return $http.get("assets/dummy/list-generator-package.dummy.json");
+            return $http.get(baseURL + "/productManagement/fetchSubProduct/"+ productId);
         }
 
         function deleteSubProduct(subProductId) {
             return $http.delete(baseURL + "/productManagement/deleteSubProduct/" + subProductId);
         }
-
     }
 
 })();

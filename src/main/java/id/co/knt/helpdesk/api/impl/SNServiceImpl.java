@@ -60,7 +60,7 @@ public class SNServiceImpl implements SNService {
                         snNumber.setCreatedDate(new Date().getTime());
                         snNumber.setLicenseStatus(false);
                         snNumber.setProduct(product);
-                        snNumber.setSchool(serialNumber.getSchool());
+                        snNumber.setSchoolName(serialNumber.getSchoolName());
                         snRepo.save(snNumber);
                         snNumber = snRepo.save(snNumber);
                     } else {
@@ -204,17 +204,15 @@ public class SNServiceImpl implements SNService {
     }
 
     /**
-     * @param productId
-     * @param licenseCount
-     * @param secondParam  can be number of client or List of subProduct
+     *
+     * @param licenseGeneratorDTO
      * @return
      */
     @Override
-    public List<TreeMap<String, List<License>>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO) {
+    public TreeMap<String, List<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO) {
         Product product = licenseGeneratorDTO.getProduct();
         List<License> list = new ArrayList<>();
         TreeMap<String, List<License>> sortedData = new TreeMap<>();
-        List<TreeMap<String, List<License>>> treeMapList = new ArrayList<>();
         String generatedSn = "";
 
         /*For Direct Entry*/
@@ -225,6 +223,7 @@ public class SNServiceImpl implements SNService {
 
                     License newLicense = new License();
                     newLicense.setLicense(generatedSn);
+                    newLicense.setNumberOfClient(licenseGeneratorDTO.getSubProducts().get(0).getValue());
                     newLicense.setCreatedDate(System.currentTimeMillis());
                     newLicense.setProduct(product);
 
@@ -244,20 +243,21 @@ public class SNServiceImpl implements SNService {
 
                         License newLicense = new License();
                         newLicense.setLicense(generatedSn);
+                        newLicense.setNumberOfClient(sp.getValue());
                         newLicense.setCreatedDate(System.currentTimeMillis());
                         newLicense.setProduct(product);
                         list.add(newLicense);
                     }
 
                     sortedData.put("Paket"+(i+1), list);
+                    list = new ArrayList<>();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
         }
 
-        treeMapList.add(sortedData);
-        return treeMapList;
+        return sortedData;
     }
 
     @Override
@@ -275,14 +275,14 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public Map<String, Object> videDetailLicense(Long licenseId) {
+    public Map<String, Object> viewDetailLicense(Long licenseId) {
         License license = snRepo.findLicenseById(licenseId);
         Map<String, Object> map = new HashMap<>();
         map.put("licenseKey", license.getLicense());
         map.put("activationKey", license.getActivationKey());
         map.put("createdDate", license.getCreatedDate());
         map.put("licenseStatus", license.isLicenseStatus());
-        map.put("schoolName", license.getSchool().getSchoolName());
+        map.put("schoolName", license.getSchoolName());
         map.put("productName", license.getProduct().getProductName());
 
         return map;

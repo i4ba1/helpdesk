@@ -50,9 +50,8 @@ public class License implements Serializable {
 	@Column(name = "licenseStatus")
 	private boolean licenseStatus;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "school_id", nullable = true)
-	private School school;
+	@Column(name="school_name")
+	private String schoolName;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", nullable = true)
@@ -126,12 +125,12 @@ public class License implements Serializable {
 		this.numberOfClient = numberOfClient;
 	}
 
-	public School getSchool() {
-		return school;
+	public String getSchoolName() {
+		return schoolName;
 	}
 
-	public void setSchool(School school) {
-		this.school = school;
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
 
 	public Product getProduct() {
