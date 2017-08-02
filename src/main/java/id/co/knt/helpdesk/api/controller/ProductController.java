@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import id.co.knt.helpdesk.api.model.Product;
 import id.co.knt.helpdesk.api.model.SubProduct;
-import id.co.knt.helpdesk.api.model.dto.ProductDto;
+import id.co.knt.helpdesk.api.model.dto.ProductDTO;
 import id.co.knt.helpdesk.api.repositories.ProductRepo;
 import id.co.knt.helpdesk.api.repositories.SubProductRepo;
 
@@ -56,7 +56,7 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = { "/createProduct/" }, method = RequestMethod.POST)
-	public ResponseEntity<Void> createProduct(@RequestBody ProductDto productDto) {
+	public ResponseEntity<Void> createProduct(@RequestBody ProductDTO productDto) {
 
 		try {
 			Product newProduct = productRepo.save(productDto.getProduct());
@@ -77,37 +77,55 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = { "/productDetail/{productId}" }, method = RequestMethod.GET)
-	public ResponseEntity<Product> getDetailProduct(@PathVariable Integer productId) {
+	public ResponseEntity<ProductDTO> getDetailProduct(@PathVariable Integer productId) {
 		LOG.info("========" + "/productDetail/{productId}" + "getDetailProduct" + "=========");
-		Product product = productRepo.findOne(productId);
+		ProductDTO productDto = new ProductDTO();
+		productDto.setProduct(productRepo.findOne(productId));
+		productDto.setSubProducts(subProductRepo.findAllSubProductByProductId(productId));
 
-		if (!product.equals(null)) {
-			return new ResponseEntity<Product>(product, HttpStatus.OK);
+		if (!productDto.getProduct().equals(null)) {
+			return new ResponseEntity<ProductDTO>(productDto, HttpStatus.OK);
 		}
 
-		return new ResponseEntity<Product>(product, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<ProductDTO>(productDto, HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = { "/updateProduct/" }, method = RequestMethod.PUT)
-	public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-		LOG.info("========" + "/productDetail/{productId}" + "getDetailProduct" + "=========");
+	public ResponseEntity<Void> updateProduct(@RequestBody ProductDTO productDTO) {
 
-		Product currentProduct = productRepo.findOne(product.getId());
+		Product currentProduct = productRepo.findOne(productDTO.getProduct().getId());
 		if (currentProduct == null) {
-			return new ResponseEntity<Product>(product, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
-		currentProduct.setProductName(product.getProductName());
+		currentProduct.setProductName(productDTO.getProduct().getProductName());
+		currentProduct.setProductCode(productDTO.getProduct().getProductCode());
+		currentProduct.setDescription(productDTO.getProduct().getDescription());
+		currentProduct.setSubModuleLable(productDTO.getProduct().getSubModuleLable());
+		
 
-		if (!productRepo.saveAndFlush(product).equals(null)) {
-			return new ResponseEntity<Product>(product, HttpStatus.OK);
+		if (!productRepo.saveAndFlush(currentProduct).equals(null)) {
+			
+			for (SubProduct subProduct : productDTO.getSubProducts()) {
+				subProduct.setProduct(currentProduct);
+				subProductRepo.saveAndFlush(subProduct);
+			}
+			
+			return new ResponseEntity<Void>( HttpStatus.OK);
 		}
 
-		return new ResponseEntity<Product>(product, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Void>( HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = { "/deleteProduct/{productId}" }, method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Integer productId) {
 		productRepo.delete(productId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+
+	@RequestMapping(value = { "/deleteSubProduct/{subProductId}" }, method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteSubProduct(@PathVariable("subProductId") Integer subProductId) {
+		subProductRepo.delete(subProductId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

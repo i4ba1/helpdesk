@@ -12,7 +12,7 @@ import id.co.knt.helpdesk.api.model.SubProduct;
  * @author marlina_kreative
  *
  */
-public class ProductDto {
+public class ProductDTO {
 	
 	private Product product;
 	
