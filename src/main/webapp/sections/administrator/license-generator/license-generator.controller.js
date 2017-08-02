@@ -92,7 +92,6 @@
             //do selectedItem.PropertyName like selectedItem.Name or selectedItem.Key
             //whatever property your list has.
             console.log("selectedItem=========> ", selectedItem);
-            $scope.generator.selectedProduct["subProductType"] = "EP";
             getSubProduct(1);
         }
     }

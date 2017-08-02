@@ -197,7 +197,7 @@
          * @param  generator { productId, licenseCount, secondParam}
          * requestType  is GET 
          */
-        function licenseGenerator(productId, licenseCount, secondParam) {
+        function licenseGenerator(lice) {
             return $http.get(baseURL + "/snManagement/snGenerator/" + productId + "/" + licenseCount + "/" + secondParam);
         }
 

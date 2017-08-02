@@ -26,7 +26,7 @@
                         <input type="number" ng-model="generator.licenseCount" class="form-control" id="licenseCount" placeholder="{{'LICENSE_COUNT_PLH'|translate}}" min="1">
                     </div>
                 </div>
-                <div class="form-group" ng-switch="generator.selectedProduct.subProductType">
+                <div class="form-group" ng-switch="generator.selectedProduct.subModuleType">
                     <label class="control-label col-sm-2 col-sm-offset-3" for="code">{{"SECOND_PARAM"|translate}}</label>
                     <div class="col-sm-4" ng-switch-default>
                         <input type="number" class="form-control" ng-model="generator.secondParam" id="code" placeholder="{{'SECOND_PARAM_PLH'|translate}}" min="1">
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                {{generator.subProduct}}
+                <!--{{generator.subProduct}}-->
 
                 <!--Description-->
                 <div class="form-group">
