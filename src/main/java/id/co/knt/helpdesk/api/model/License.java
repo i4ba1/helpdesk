@@ -47,8 +47,15 @@ public class License implements Serializable {
 	@Column(name = "number_of_license")
 	private Integer numberOfClient = 0;
 
-	@Column(name = "licenseStatus")
-	private boolean licenseStatus;
+	/**
+	 * 0 is generated
+	 * 1 is registered
+	 * 2 is activated
+	 * 3 is disabled
+	 * 4 is warning
+	 */
+	@Column(name = "license_status")
+	private Byte licenseStatus;
 
 	@Column(name="school_name")
 	private String schoolName;
@@ -59,6 +66,14 @@ public class License implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getLicense() {
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
 	}
 
 	public String getPassKey() {
@@ -85,12 +100,12 @@ public class License implements Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public String getLicense() {
-		return license;
+	public Byte getLicenseStatus() {
+		return licenseStatus;
 	}
 
-	public void setLicense(String license) {
-		this.license = license;
+	public void setLicenseStatus(Byte licenseStatus) {
+		this.licenseStatus = licenseStatus;
 	}
 
 	public void setXlock(String xlock) {
@@ -107,14 +122,6 @@ public class License implements Serializable {
 
 	public void setMacAddr(byte[] macAddr) {
 		this.macAddr = macAddr;
-	}
-
-	public boolean isLicenseStatus() {
-		return licenseStatus;
-	}
-
-	public void setLicenseStatus(boolean serialNumberStatus) {
-		this.licenseStatus = serialNumberStatus;
 	}
 
 	public Integer getNumberOfClient() {

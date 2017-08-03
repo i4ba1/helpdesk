@@ -53,8 +53,10 @@
             }else{
                 var listGenerated = $cookies.getObject("listGenerated");
                 $scope.generatedLicense = [];
+                $scope.schoolList = [];
                 for(var i=0; i<$cookies.get("licenseCount"); i++){
                     $scope.generatedLicense.push(listGenerated["Paket"+(i+1)]);
+                    $scope.schoolList.push({schoolName:null});
                 }
                 //console.log("The Object is=============> ",Object.keys($scope.generatedLicense).length);
             }
@@ -76,7 +78,20 @@
         }
 
         function registerGeneratedSN(generatedSN) {
-            RequestFactory.registerGeneratedSN(generatedSN).then(
+            var licenses = [];
+            if ($scope.switchListGenerator === "EP"){
+                for(var i=0; i<$cookies.get("licenseCount"); i++){
+                    for (var j=0; j<generatedSN[i].length; j++){
+                        var license = generatedSN[i][j];
+                        license.schoolName = $scope.schoolList[i].schoolName;
+                        licenses.push(license);
+                    }
+                }
+            }else{
+                licenses = generatedSN;
+            }
+
+            RequestFactory.registerGeneratedSN(licenses).then(
                 function(response) {
                     $state.go("administrator.license");
                 },

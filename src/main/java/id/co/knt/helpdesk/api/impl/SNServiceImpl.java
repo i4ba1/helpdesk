@@ -36,6 +36,8 @@ public class SNServiceImpl implements SNService {
     @Autowired
     private LicenseGeneratorHistoryRepo historyRepo;
 
+    private byte status= 0;
+
     @Override
     public License registerSerialNumber(License serialNumber) {
         License snNumber = null;
@@ -58,7 +60,7 @@ public class SNServiceImpl implements SNService {
                         snNumber.setMacAddr(serialNumber.getMacAddr());
                         snNumber.setActivationKey("");
                         snNumber.setCreatedDate(new Date().getTime());
-                        snNumber.setLicenseStatus(false);
+                        snNumber.setLicenseStatus(status);
                         snNumber.setProduct(product);
                         snNumber.setSchoolName(serialNumber.getSchoolName());
                         snRepo.save(snNumber);
@@ -129,7 +131,8 @@ public class SNServiceImpl implements SNService {
         try {
             activationKey = generateActivationKey(id, snNumber.getPassKey(), snNumber.getXlock()).getActivationKey();
             snNumber.setActivationKey(activationKey);
-            snNumber.setLicenseStatus(true);
+            byte b = 3;
+            snNumber.setLicenseStatus(b);
             snNumber = snRepo.saveAndFlush(snNumber);
         } catch (Exception e) {
             e.printStackTrace();
@@ -160,7 +163,7 @@ public class SNServiceImpl implements SNService {
                                     snNumber = generateActivationKey(sn.getId(), serialNumber.getPassKey(),
                                             serialNumber.getXlock());
                                     snNumber.setActivationKey(snNumber.getActivationKey());
-                                    snNumber.setLicenseStatus(true);
+                                    snNumber.setLicenseStatus(status);
                                     snNumber = snRepo.saveAndFlush(snNumber);
 
                                     if (snNumber != null) {
@@ -188,7 +191,7 @@ public class SNServiceImpl implements SNService {
             License number = snRepo.findOne(sn.getId());
             if (!sn.getMacAddr().equals(number.getMacAddr())) {
                 number.setActivationKey("");
-                number.setLicenseStatus(false);
+                number.setLicenseStatus(status);
                 number = snRepo.saveAndFlush(number);
                 list.add(number);
             }
@@ -214,6 +217,7 @@ public class SNServiceImpl implements SNService {
         List<License> list = new ArrayList<>();
         TreeMap<String, List<License>> sortedData = new TreeMap<>();
         String generatedSn = "";
+        byte b = 0;
 
         /*For Direct Entry*/
         if (product.getSubModuleType().equals("EL")) {
@@ -225,6 +229,7 @@ public class SNServiceImpl implements SNService {
                     newLicense.setLicense(generatedSn);
                     newLicense.setNumberOfClient(licenseGeneratorDTO.getSubProducts().get(0).getValue());
                     newLicense.setCreatedDate(System.currentTimeMillis());
+                    newLicense.setLicenseStatus(b);
                     newLicense.setProduct(product);
 
                     list.add(newLicense);
@@ -245,6 +250,7 @@ public class SNServiceImpl implements SNService {
                         newLicense.setLicense(generatedSn);
                         newLicense.setNumberOfClient(sp.getValue());
                         newLicense.setCreatedDate(System.currentTimeMillis());
+                        newLicense.setLicenseStatus(b);
                         newLicense.setProduct(product);
                         list.add(newLicense);
                     }
@@ -281,7 +287,7 @@ public class SNServiceImpl implements SNService {
         map.put("licenseKey", license.getLicense());
         map.put("activationKey", license.getActivationKey());
         map.put("createdDate", license.getCreatedDate());
-        map.put("licenseStatus", license.isLicenseStatus());
+        map.put("licenseStatus", license.getLicenseStatus());
         map.put("schoolName", license.getSchoolName());
         map.put("productName", license.getProduct().getProductName());
 
