@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:07:29 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-08-02 11:39:19
+ * @Last Modified time: 2017-08-04 13:30:40
  * 
  * Application Router Configuration
  */
@@ -68,7 +68,7 @@
         })
 
         .state('administrator.license.license-detail', {
-            url: "/detail?:licenseId:historyId",
+            url: "/detail?:licenseId",
             views: {
                 'content@administrator': {
                     templateUrl: "sections/administrator/license-management/license-detail.html",

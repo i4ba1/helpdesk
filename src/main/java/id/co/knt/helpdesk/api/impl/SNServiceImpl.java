@@ -97,7 +97,7 @@ public class SNServiceImpl implements SNService {
 
     @Override
     public License findSN(Long id) {
-        License sn = snRepo.findOne(id);
+        License sn = snRepo.findLicenseById(id);
         return sn;
     }
 

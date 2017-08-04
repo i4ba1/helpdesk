@@ -36,7 +36,8 @@
             viewDetailUnreadLicense: viewDetailUnreadLicense,
             licenseCountByProduct: licenseCountByProduct,
             fetchSubProductByProductId: fetchSubProductByProductId,
-            deleteSubProduct: deleteSubProduct
+            deleteSubProduct: deleteSubProduct,
+            viewLicenseDetail: viewLicenseDetail
         };
 
         return service;
@@ -210,15 +211,19 @@
         }
 
         function fetchSubProductByProductId(productId) {
-            return $http.get(baseURL + "/productManagement/fetchSubProduct/"+ productId);
+            return $http.get(baseURL + "/productManagement/fetchSubProduct/" + productId);
         }
 
         function fetchSubProduct(productId) {
-            return $http.get(baseURL + "/productManagement/fetchSubProduct/"+ productId);
+            return $http.get(baseURL + "/productManagement/fetchSubProduct/" + productId);
         }
 
         function deleteSubProduct(subProductId) {
             return $http.delete(baseURL + "/productManagement/deleteSubProduct/" + subProductId);
+        }
+
+        function viewLicenseDetail(licenseId) {
+            return $http.get(baseURL + "/snManagement/viewDetailSN/" + licenseId);
         }
     }
 

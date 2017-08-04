@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-08-04 11:37:50
+ * @Last Modified time: 2017-08-04 14:41:21
  * 
  * Application Translate Configuration
  */
@@ -101,7 +101,7 @@
             PASSWORD_PLH: "Masukkan kata sandi",
             CREATED_DATE: "Tanggal dibuat",
             ROLE: "Role",
-            KNT_PRODUCT: "Produk",
+            PRODUCT: "Produk",
             PRODUCT_NAME: "Nama Produk",
             PRODUCT_NAME_PLH: "Masukan nama produk",
             PRODUCT_CODE: "Kode Produk",
@@ -150,11 +150,14 @@
             ADD_CHOICE: "Tambah Pilihan",
             LABEL: 'Label',
             VALUE: 'Value',
-            NUMBER_CLIENT: "Jumlah Pengguna",
+            NUMBER_CLIENT: "Jml. Pengguna",
             GENERATE_FAILED: "Generate SN Gagal",
             PRODUCT_MUST_FILLED: "Produk harus dipilih",
             LICENSE_COUNT_GREATER_THAN_ZERO: "Jumlah lisensi minimal 1",
-            SELECT_AT_LEAST_ONE: "Pilihlah minimal 1 dari pilihan sub produk"
+            SELECT_AT_LEAST_ONE: "Pilihlah minimal 1 dari pilihan sub produk",
+            CLASS: "Kelas",
+            ACTIVATION_COUNT: "Jml. Aktivasi"
+
 
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');

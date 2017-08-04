@@ -2,48 +2,98 @@
     <div class="row-fluid">
         <section class="content-header" style="padding:15px">
             <div class="title-brand">
-                <span id="root-title">{{'KNT_PRODUCT'|translate}}</span> / <span class="child-title">{{'LICENSE'|translate}}</span> / <span class="child-title">{{title|translate}}</span>
+                <span id="root-title">{{'PRODUCT_MANAGEMENT'|translate}}</span> / <span class="child-title">{{'LICENSE'|translate}}</span>
             </div>
         </section>
         <section class="content">
-            <div class="form-group">
-                <label class="control-label col-sm-2 col-sm-offset-1" for="licenseLabel">{{"LICENSE" |translate}}</label>
-                <label class="control-label col-sm-9" for="licenseKey">{{object.licenseKey}}</label>
+            <!--Left Panel  -->
+            <div class="col-sm-7 detail-text">
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-3 label-custom">{{"LICENSE" |translate}}</div>
+                    <div class="col-sm-9 value-custom">{{(license.license?license.license:"-")|uppercase}}</div>
+                </div>
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-3 label-custom">{{"PRODUCT_NAME"|translate}}</div>
+                    <div class="col-sm-9 value-custom">{{license.product?license.product.productName:"-"}}</div>
+                </div>
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-3 label-custom">{{"SCHOOL_NAME"|translate}}</div>
+                    <div class="col-sm-9">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" ng-model="license.schoolName" placeholder="{{'SCHOOL_NAME_PLH'|translate}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 group-custom" ng-switch="license.product.subModuleType">
+                    <div class="col-sm-3 label-custom" ng-switch-default>
+                        {{"NUMBER_CLIENT"|translate}}
+                    </div>
+                    <div class="col-sm-3 label-custom" ng-switch-when="EP">
+                        {{"CLASS"|translate}}
+                    </div>
+                    <div class="col-sm-9 value-custom">{{license.numberOfClient>0?license.numberOfClient:"--"}}</div>
+                </div>
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-3 label-custom">{{"ACTIVATION_COUNT"|translate}}</div>
+                    <div class="col-sm-9">
+                        <div class="col-sm-8">
+                            <label for="" class="form-control">{{numberOfActivation +" Of "+license.activationLimit}}</label>
+                        </div>
+                        <div class="col-sm-2">
+                            <span class="btn btn-primary"><i class="fa fa-plus fa-lg"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-offset-3 col-sm-9 value-custom">
+                        <div class="btn btn-primary">{{"ACTIVATION"|translate}}</div>
+                        <div class="btn btn-default">{{"DISABLED"|translate}}</div>
+                    </div>
+                </div>
+
             </div>
-            <br/>
-            <div class="form-group">
-                <label class="control-label col-sm-2 col-sm-offset-1" for="activationLabel">{{"ACTIVATION_KEY"|translate}}</label>
-                <label class="control-label col-sm-9" for="activationKey">{{object.activationKey}}</label>
-            </div>
-            <br/>
-            <div class="form-group">
-                <label class="control-label col-sm-2 col-sm-offset-1" for="datelabel">{{"CREATED_DATE"|translate}}</label>
-                <label class="control-label col-sm-9" for="createdDate">{{object.createdDate | date:"MM-dd-yyyy"}}</label>
-            </div>
-            <br/>
-            <div class="form-group">
-                <label class="control-label col-sm-2 col-sm-offset-1" for="statusLabel">{{"LICENSE_STATUS"|translate}}</label>
-                <label class="control-label col-sm-9" for="licenseStatus">{{object.licenseStatus}}</label>
-            </div>
-            <br/>
-            <div class="form-group">
-                <label class="control-label col-sm-2 col-sm-offset-1" for="schoolLabel">{{"SCHOOL"|translate}}</label>
-                    <label class="control-label col-sm-9" for="schoolName">{{object.schoolName}}</label>
-            </div>
-            <br/>
-            <div class="form-group">
-                <label class="control-label col-sm-2 col-sm-offset-1" for="productLabel">{{"PRODUCT_NAME"|translate}}</label>
-                    <label class="control-label col-sm-9" for="productName">{{object.productName}}</label>
-            </div>
-            <br/>
-            <!--Button Save!
-            <div class="form-group">
-                <div class="col-md-offset-3 clos-md-6">
-                    <button class="btn btn-primary btn-md" type="submit">{{isUpdate?"UPDATE":"SAVE"|translate}}</button>
-                    <a ui-sref="^" class="btn btn-default">{{"CANCEL"|translate}}</a>
+            <!--Right Panel  -->
+            <div class="col-sm-5">
+                <div class="panel panel-default panel-custom">
+                    <div class="panel-body">
+                        <h4>{{"LICENSE_HISTORY"|translate}}</h4>
+                        <table class="table table-bordered table-striped" ng-switch="licenseHistories.length" st-table="licenseHistories">
+                            <thead>
+                                <tr>
+                                    <th>{{"NO"|translate}}</th>
+                                    <th>{{"STATUS"|translate}}</th>
+                                    <th>{{"DATE"|translate}}</th>
+                                    <th>{{"DESCRIPTION"|translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-switch-when="0">
+                                <tr>
+                                    <td colspan="4" class="data-not-found">
+                                        {{"LICENSE_HISTORY_NOT_FOUND"|translate}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody ng-switch-default>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
-            -->
+
         </section>
     </div>
 </div>

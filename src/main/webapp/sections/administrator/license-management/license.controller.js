@@ -20,12 +20,11 @@
         $scope.maxSize = 5;
         $scope.itemPage = 10;
 
-        $scope.object = null;
+        $scope.license = null;
         $scope.rembemberCurrentPage = getCurrentPage;
         $scope.activateSerialNumber = activateSerialNumber;
 
-        // Call getAllSerialNumber
-        getAllSerialNumber();
+
 
         /**------------------------------------------------------*/
 
@@ -64,18 +63,23 @@
 
         if ($state.is("administrator.license.license-detail")) {
             var licenseId = $stateParams.licenseId;
-            var historyId = $stateParams.historyId;
+            $scope.licenseHistories = [];
 
-            RequestFactory.viewDetailUnreadLicense(licenseId, historyId).then(
+            RequestFactory.viewLicenseDetail(licenseId).then(
                 function(response) {
-                    $scope.object = response.data;
+                    $scope.license = response.data;
                 },
                 function(error) {
                     console.log("data not found" + error);
                 }
             );
 
-            function openDialog() {}
+
+        } else {
+            /**
+             *  Call getAllSerialNumber
+             */
+            getAllSerialNumber();
         }
     }
 
