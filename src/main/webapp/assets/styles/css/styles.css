@@ -410,17 +410,23 @@ input.ng-dirty.ng-valid {
   color: rgba(128, 128, 128, 0.5); }
 
 .description-text {
-  border: 1px solid black;
+  border: 1px solid rgba(128, 128, 128, 0.5);
   overflow-y: scroll;
   height: 270px;
-  text-align: justify; }
+  text-align: justify;
+  padding: 25px;
+  border-radius: 3px; }
 
 .sub-product {
-  border: 1px solid black;
+  border: 1px solid rgba(128, 128, 128, 0.5);
   overflow-y: scroll;
   height: 110px;
   width: 100%;
   text-align: justify; }
+  .sub-product > div > .checkbox {
+    padding-left: 15px; }
+    .sub-product > div > .checkbox:hover {
+      background: rgba(128, 128, 128, 0.25); }
 
 .sub-module {
   border: 1px solid rgba(128, 128, 128, 0.5);

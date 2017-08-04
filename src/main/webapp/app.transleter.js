@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-08-02 11:49:28
+ * @Last Modified time: 2017-08-04 11:37:50
  * 
  * Application Translate Configuration
  */
@@ -112,7 +112,7 @@
             LICENSE_COUNT: "Jumlah Lisensi",
             LICENSE_COUNT_PLH: "Masukan jumlah lisensi",
             SECOND_PARAM: "Parameter",
-            SECOND_PARAM_PLH: "Masukan subProduct atau jumlah client",
+            SECOND_PARAM_PLH: "Masukan jumlah client",
             SELECT_PRODUCT: "Pilih Produk",
             SELECT_SCHOOL: "Pilih Sekolah",
             NO: "No.",
@@ -134,6 +134,7 @@
             DELETE_DATA_FAILED: "Gagal menghapus data ini !",
             DATA_ALREADY_EXIST: "Data sudah pernah disimpan !",
             SAVE_LICENSE_FAILED: "Simpan data serial number gagal",
+            SAVE_LICENSE_SUCCESS: "Simpan data serial number berhasil",
             LICENSE: "Serial number",
             LICENSE_STATUS: "Status serial number",
             GENERATE: "Generate",
@@ -149,7 +150,12 @@
             ADD_CHOICE: "Tambah Pilihan",
             LABEL: 'Label',
             VALUE: 'Value',
-            NUMBER_CLIENT: "Jumlah client"
+            NUMBER_CLIENT: "Jumlah Pengguna",
+            GENERATE_FAILED: "Generate SN Gagal",
+            PRODUCT_MUST_FILLED: "Produk harus dipilih",
+            LICENSE_COUNT_GREATER_THAN_ZERO: "Jumlah lisensi minimal 1",
+            SELECT_AT_LEAST_ONE: "Pilihlah minimal 1 dari pilihan sub produk"
+
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

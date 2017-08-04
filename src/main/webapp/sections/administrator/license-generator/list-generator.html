@@ -8,45 +8,36 @@
         <section id="directList" class="content" ng-switch-when="EL">
             <table class="table table-striped" st-table="generatedLicense" st-safe-rc="generatedLicense">
                 <thead>
-                <tr>
-                    <th>{{'NO'|translate}}</th>
-                    <th>{{'SERIAL_NUMBER'|translate}}</th>
-                    <th>{{'CREATED_DATE'|translate}}</th>
-                    <th>{{'PRODUCT_NAME'|translate}}</th>
-                    <th width="400">{{'SCHOOL'|translate}}</th>
-                </tr>
+                    <tr>
+                        <th>{{'NO'|translate}}</th>
+                        <th>{{'SERIAL_NUMBER'|translate}}</th>
+                        <th>{{'PRODUCT_NAME'|translate}}</th>
+                        <th>{{'NUMBER_CLIENT'|translate}}</th>
+                        <th>{{'CREATED_DATE'|translate}}</th>
+                        <th width="400">{{'SCHOOL'|translate}}</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="license in generatedLicense track by $index">
-                    <td>{{($index+1)}}</td>
-                    <td>{{license.license}}</td>
-                    <td>{{license.createdDate|date:'dd/MM/yyyy'}}</td>
-                    <td>{{license.product.productName}}</td>
-                    <td width="400">
-                        <input type="text" class="form-control" for="schoolName" id="schoolName"
-                               ng-model="license.schoolName"/>
-                    </td>
-                    <!--<td width="400">
-                        <ui-select ng-model="license.school">
-                            <ui-select-match placeholder="{{'SELECT_SCHOOL'|translate}}">
-                                <span ng-bind="$select.selected.schoolName"></span>
-                            </ui-select-match>
-                            <ui-select-choices repeat="school in schools |  propsFilter: {schoolName: $select.search}">
-                                <span ng-bind="school.schoolName"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                    </td>-->
-                </tr>
+                    <tr ng-repeat="license in generatedLicense track by $index">
+                        <td>{{($index+1)}}</td>
+                        <td>{{license.license}}</td>
+                        <td>{{license.product.productName}}</td>
+                        <td>{{license.numberOfClient}}</td>
+                        <td>{{license.createdDate| date:'dd/MM/yyyy'}}</td>
+                        <td width="400">
+                            <input type="text" class="form-control" for="schoolName" id="schoolName" ng-model="license.schoolName" />
+                        </td>
+
+                    </tr>
                 </tbody>
             </table>
             <hr>
             <!--Button Save!-->
             <div>
                 <div class="clos-md-12" style="padding-left:15px;">
-                    <button class="btn btn-primary btn-md" type="button"
-                            ng-click="registerGeneratedSN(generatedLicense)">{{"SAVE"|translate}}
+                    <button class="btn btn-primary btn-md" type="button" ng-click="registerGeneratedSN(generatedLicense)">{{"SAVE"|translate}}
                     </button>
-                    <button class="btn btn-default btn-md" type="button">{{"CANCEL"|translate}}</button>
+                    <a ui-sref="^" class="btn btn-default btn-md" type="button">{{"CANCEL"|translate}}</a>
                 </div>
             </div>
         </section>
@@ -54,43 +45,42 @@
         <section id="subProductList" class="content" ng-switch-when="EP">
             <table class="table table-bordered">
                 <tbody>
-                <tr ng-repeat="listGenerated in generatedLicense track by $index">
-                    <td>
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                            <tr>
-                                <th><label class="col-sm-1" style="float: left; margin-bottom: 20px">Paket {{$index+1}}:</label></th>
-                                <th colspan="2"><input type="text" class="form-control" for="schoolName" id="schoolName2" placeholder="{{'SCHOOL_NAME_PLH'|translate}}" ng-model="schoolList[$index].schoolName"/></th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <th>{{'NO'|translate}}</th>
-                                <th>{{'SERIAL_NUMBER'|translate}}</th>
-                                <th>{{'CREATED_DATE'|translate}}</th>
-                                <th>{{'PRODUCT_NAME'|translate}}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="license in listGenerated">
-                                <td>{{($index+1)}}</td>
-                                <td>{{license.license}}</td>
-                                <td>{{license.createdDate|date:'dd/MM/yyyy'}}</td>
-                                <td>{{license.product.productName}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
+                    <tr ng-repeat="listGenerated in generatedLicense track by $index">
+                        <td>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><label for="schoolName{{$index}}">Paket {{$index+1}} :</label></th>
+                                        <th colspan="2"><input type="text" class="form-control" id="schoolName{{$index}}" placeholder="{{'SCHOOL_NAME_PLH'|translate}}" ng-model="schoolList[$index].schoolName" /></th>
+                                        <th></th>
+                                    </tr>
+                                    <tr>
+                                        <th>{{'NO'|translate}}</th>
+                                        <th>{{'SERIAL_NUMBER'|translate}}</th>
+                                        <th>{{'CREATED_DATE'|translate}}</th>
+                                        <th>{{'PRODUCT_NAME'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="license in listGenerated">
+                                        <td>{{($index+1)}}</td>
+                                        <td>{{license.license}}</td>
+                                        <td>{{license.createdDate|date:'dd/MM/yyyy'}}</td>
+                                        <td>{{license.product.productName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <hr>
             <!--Button Save!-->
             <div>
                 <div class="clos-md-12" style="padding-left:15px;">
-                    <button class="btn btn-primary btn-md" type="button"
-                            ng-click="registerGeneratedSN(generatedLicense)">{{"SAVE"|translate}}
+                    <button class="btn btn-primary btn-md" type="button" ng-click="registerGeneratedSN(generatedLicense)">{{"SAVE"|translate}}
                     </button>
-                    <button ui-sref="^" class="btn btn-default btn-md" type="button">{{"CANCEL"|translate}}</button>
+                    <a ui-sref="^" class="btn btn-default btn-md" type="button">{{"CANCEL"|translate}}</a>
                 </div>
             </div>
         </section>

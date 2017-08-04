@@ -583,19 +583,27 @@ input.ng-dirty {
     }
 }
 
-.description-text{
-    border: 1px solid black;
+.description-text {
+    border: 1px solid rgba(grey, .5);
     overflow-y: scroll;
     height: 270px;
     text-align: justify;
+    padding: 25px;
+    border-radius: 3px;
 }
 
 .sub-product {
-    border: 1px solid black;
+    border: 1px solid rgba(grey, .5);
     overflow-y: scroll;
     height: 110px;
     width: 100%;
     text-align: justify;
+    &>div>.checkbox {
+        padding-left: 15px;
+        &:hover {
+            background: rgba(gray, .25);
+        }
+    }
 }
 
 .sub-module {
