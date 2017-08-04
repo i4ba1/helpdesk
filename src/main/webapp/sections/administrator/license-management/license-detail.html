@@ -40,15 +40,15 @@
                             <label for="" class="form-control">{{numberOfActivation +" Of "+license.activationLimit}}</label>
                         </div>
                         <div class="col-sm-2">
-                            <span class="btn btn-primary"><i class="fa fa-plus fa-lg"></i></span>
+                            <span class="btn btn-primary" title="{{'ADD_KUOTA'|translate}}"><i class="fa fa-plus fa-lg"></i></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-sm-12 group-custom">
                     <div class="col-sm-offset-3 col-sm-9 value-custom">
-                        <div class="btn btn-primary">{{"ACTIVATION"|translate}}</div>
-                        <div class="btn btn-default">{{"DISABLED"|translate}}</div>
+                        <div class="btn btn-primary">{{"ACTIVATE"|translate}}</div>
+                        <div class="btn btn-default">{{"BLOCK"|translate}}</div>
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
             <div class="col-sm-5">
                 <div class="panel panel-default panel-custom">
                     <div class="panel-body">
-                        <h4>{{"LICENSE_HISTORY"|translate}}</h4>
+                        <h4>{{"LICENSE_HISTORY"|translate}} : </h4>
                         <table class="table table-bordered table-striped" ng-switch="licenseHistories.length" st-table="licenseHistories">
                             <thead>
                                 <tr>

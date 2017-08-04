@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-08-04 14:41:21
+ * @Last Modified time: 2017-08-04 15:26:22
  * 
  * Application Translate Configuration
  */
@@ -156,9 +156,13 @@
             LICENSE_COUNT_GREATER_THAN_ZERO: "Jumlah lisensi minimal 1",
             SELECT_AT_LEAST_ONE: "Pilihlah minimal 1 dari pilihan sub produk",
             CLASS: "Kelas",
-            ACTIVATION_COUNT: "Jml. Aktivasi"
-
-
+            ACTIVATION_COUNT: "Jml. Aktivasi",
+            LICENSE_HISTORY: "Riwayat Serial Number",
+            LICENSE_HISTORY_NOT_FOUND: "data riwayat serial number tidak ditemukan",
+            STATUS: "Status",
+            DATE: "Tanggal",
+            ACTIVATE: "Aktivasi",
+            BLOCK: "Blokir"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
