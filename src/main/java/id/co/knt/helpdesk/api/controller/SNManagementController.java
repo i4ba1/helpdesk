@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import id.co.knt.helpdesk.api.model.License;
-import id.co.knt.helpdesk.api.model.LicenseGeneratorHistory;
+import id.co.knt.helpdesk.api.model.LicenseHistory;
 import id.co.knt.helpdesk.api.service.SNService;
 
 /**
@@ -34,7 +34,7 @@ public class SNManagementController {
 			return new ResponseEntity<>(serialNumber, HttpStatus.CONFLICT);
 		}
 
-		License number = snService.registerSerialNumber(serialNumber);
+		License number = snService.registerSerialNumber(serialNumber, 1);
 		if (!serialNumber.equals(null)) {
 			return new ResponseEntity<>(number, HttpStatus.OK);
 		}
@@ -85,13 +85,13 @@ public class SNManagementController {
 	}
 
 	@RequestMapping(value = "/viewDetailSN/{id}", method = RequestMethod.GET)
-	public ResponseEntity<License> viewDetailSN(@PathVariable Long id) {
-		License serialNumber = snService.findSN(id);
-		if (serialNumber.equals(null)) {
-			return new ResponseEntity<>(serialNumber, HttpStatus.EXPECTATION_FAILED);
+	public ResponseEntity<Map<String, Object>> viewDetailSN(@PathVariable Long id) {
+		Map<String, Object> objectMap = snService.viewDetailLicense(id);
+		if (objectMap.equals(null)) {
+			return new ResponseEntity<>(objectMap, HttpStatus.EXPECTATION_FAILED);
 		}
 
-		return new ResponseEntity<>(serialNumber, HttpStatus.OK);
+		return new ResponseEntity<>(objectMap, HttpStatus.OK);
 	}
 
 	/**
@@ -114,15 +114,15 @@ public class SNManagementController {
 	@RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
 	public ResponseEntity<Void> registerGeneratedSN(@RequestBody List<License> list) {
 		for (License license : list) {
-			snService.registerSerialNumber(license);
+			snService.registerSerialNumber(license, 0);
 		}
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/findUnreadLicenses/", method = RequestMethod.GET)
-	public ResponseEntity<List<LicenseGeneratorHistory>> findUnreadLicenses() {
-		List<LicenseGeneratorHistory> unreadLicenses = snService.findUnreadLicense();
+	public ResponseEntity<List<LicenseHistory>> findUnreadLicenses() {
+		List<LicenseHistory> unreadLicenses = snService.findUnreadLicense();
 
 		if (unreadLicenses.isEmpty()) {
 			return new ResponseEntity<>(unreadLicenses, HttpStatus.NOT_FOUND);
@@ -162,7 +162,7 @@ public class SNManagementController {
 			return new ResponseEntity<>(object, HttpStatus.NOT_FOUND);
 		}
 		
-		LicenseGeneratorHistory generatorHistory = snService.findDetailHistory(historyId);
+		LicenseHistory generatorHistory = snService.findDetailHistory(historyId);
 		generatorHistory.setIsRead(true);
 		snService.updateReadStatus(generatorHistory);
 		

@@ -13,10 +13,10 @@
                         <tr>
                             <th width="50">No.</th>
                             <th st-sort="license">{{'SERIAL_NUMBER' | translate}}</th>
-                            <th st-sort="createdDate">{{'CREATED_DATE' | translate}}</th>
-                            <th st-sort="numberOfClient">{{'NUMBER_CLIENT' | translate}}</th>
                             <th st-sort="product">{{'PRODUCT_NAME' | translate}}</th>
-                            <th st-sort="schoolName">{{'SCHOOL_NAME' | translate}}</th>
+                            <th st-sort="numberOfClient">{{'NUMBER_CLIENT' | translate}}</th>
+                            <th st-sort="createdDate">{{'CREATED_DATE' | translate}}</th>
+                            <th st-sort="licenseStatus">{{'LICENSE_STATUS' | translate}}</th>
                             <!--<th st-sort="typeApp">{{'APP_TYPE' | translate}}</th>-->
                             <th width="100"></th>
                         </tr>
@@ -38,22 +38,15 @@
                         <tr ng-repeat="row in displayCollection track by $index">
                             <td>{{(currentPage-1)*itemPage+$index+1}}</td>
                             <td>{{row.license}}</td>
-                            <td>{{row.macAddr}}</td>
-                            <td>{{row.passKey}}</td>
-                            <td>{{row.xlock}}</td>
-                            <td class="text-center">
-                                <div ng-hide="row.licenseStatus" ng-show="!row.licenseStatus" style="color: red">
-                                    <i class="fa fa-times fa-lg" aria-hidden="true" title="{{'UNACTIVATED'|translate}}"></i>
-                                </div>
-                                <div ng-hide="!row.licenseStatus" ng-show="row.licenseStatus" style="color: green">
-                                    <i class="fa fa-check fa-lg" aria-hidden="true" title="{{'ACTIVATED'|translate}}"></i>
-                                </div>
-                            </td>
+                            <td>{{row.product.productName}}</td>
+                            <td>{{row.numberOfClient}}</td>
+                            <td>{{row.schoolName}}</td>
                             <td>{{row.createdDate |date:"dd/MM/yyyy"}}</td>
-                            <td>
-                                <div class="btn btn-primary" title="{{'REACTIVATE'|translate}}" ng-hide="row.licenseStatus" ng-show="!row.licenseStatus" ng-click="activateSerialNumber(row)">
-                                    <i class="fa fa-globe fa-lg" aria-hidden="true"></i>
-                                </div>
+                            <td>{{row.licenseStatus}}</td>
+                            <td width="25">
+                                <a ui-sref="administrator.license-management.product-detail({productId:row.id})">
+                                    <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                     </tbody>

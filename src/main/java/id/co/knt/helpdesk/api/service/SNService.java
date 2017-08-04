@@ -1,7 +1,7 @@
 package id.co.knt.helpdesk.api.service;
 
 import id.co.knt.helpdesk.api.model.License;
-import id.co.knt.helpdesk.api.model.LicenseGeneratorHistory;
+import id.co.knt.helpdesk.api.model.LicenseHistory;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 
 import java.util.List;
@@ -9,11 +9,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public interface SNService{
-    License registerSerialNumber(License serialNumber);
+    License registerSerialNumber(License serialNumber, int state);
 
     License onlineActivation(License serialNumber);
-    
-    List<License> findSNNeedActivated(List<License> serialNumbers);
 
     List<License> findAllSN();
 
@@ -21,21 +19,19 @@ public interface SNService{
     
     License findBySerial(String serial);
 
-    void deleteSN(Long id);
-
     License generateActivationKey(Long id, String passKey, String xlock);
 
     License manuallyActivate(Long id, String xlock, String activationKey);
 
     TreeMap<String, List<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO);
     
-    List<LicenseGeneratorHistory> findUnreadLicense();
+    List<LicenseHistory> findUnreadLicense();
     
     Map<String, Object> viewDetailLicense(Long licenseId);
     
-    LicenseGeneratorHistory findDetailHistory(Long id);
+    LicenseHistory findDetailHistory(Long id);
     
-    LicenseGeneratorHistory updateReadStatus(LicenseGeneratorHistory generatorHistory);
+    LicenseHistory updateReadStatus(LicenseHistory generatorHistory);
 
     List<Object> findSnCountByProduct();
 }

@@ -20,8 +20,8 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="helpdesk_license_generator_history")
-public class LicenseGeneratorHistory implements Serializable {
+@Table(name="helpdesk_license_history")
+public class LicenseHistory implements Serializable {
 
 	/**
 	 * 
@@ -41,6 +41,16 @@ public class LicenseGeneratorHistory implements Serializable {
 	@ManyToOne(fetch= FetchType.LAZY)
 	@JoinColumn(name="license_id")
 	private License license;
+
+	/**
+	 * 0 is generated
+	 * 1 is registered
+	 * 2 is activated
+	 * 3 is disabled
+	 * 4 is warning/problem
+	 */
+	@Column(name = "license_status", columnDefinition = "smallint")
+	private Short licenseStatus;
 	
 	@Column(name="is_read")
 	private Boolean isRead;
@@ -71,6 +81,14 @@ public class LicenseGeneratorHistory implements Serializable {
 
 	public void setLicense(License license) {
 		this.license = license;
+	}
+
+	public Short getLicenseStatus() {
+		return licenseStatus;
+	}
+
+	public void setLicenseStatus(Short licenseStatus) {
+		this.licenseStatus = licenseStatus;
 	}
 	
 	public Boolean getIsRead() {

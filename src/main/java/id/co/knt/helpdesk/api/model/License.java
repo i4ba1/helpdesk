@@ -35,6 +35,12 @@ public class License implements Serializable {
 	@Column(name = "activation_key")
 	private String activationKey;
 
+	@Column(name="activation_limit", columnDefinition = "smallint")
+	private Short activationLimit = 3;
+
+	@Column(name="numberof_activation", columnDefinition = "smallint")
+	private Short numberOfActivation = 0;
+
 	@Column(name = "created_date")
 	private Long createdDate;
 
@@ -46,16 +52,6 @@ public class License implements Serializable {
 
 	@Column(name = "number_of_license")
 	private Integer numberOfClient = 0;
-
-	/**
-	 * 0 is generated
-	 * 1 is registered
-	 * 2 is activated
-	 * 3 is disabled
-	 * 4 is warning
-	 */
-	@Column(name = "license_status")
-	private Byte licenseStatus;
 
 	@Column(name="school_name")
 	private String schoolName;
@@ -92,20 +88,28 @@ public class License implements Serializable {
 		this.activationKey = activationKey;
 	}
 
+	public Short getActivationLimit() {
+		return activationLimit;
+	}
+
+	public void setActivationLimit(Short activationLimit) {
+		this.activationLimit = activationLimit;
+	}
+
+	public Short getNumberOfActivation() {
+		return numberOfActivation;
+	}
+
+	public void setNumberOfActivation(Short numberOfActivation) {
+		this.numberOfActivation = numberOfActivation;
+	}
+
 	public Long getCreatedDate() {
 		return createdDate;
 	}
 
 	public void setCreatedDate(Long createdDate) {
 		this.createdDate = createdDate;
-	}
-
-	public Byte getLicenseStatus() {
-		return licenseStatus;
-	}
-
-	public void setLicenseStatus(Byte licenseStatus) {
-		this.licenseStatus = licenseStatus;
 	}
 
 	public void setXlock(String xlock) {

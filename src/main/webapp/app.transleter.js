@@ -136,7 +136,7 @@
             SAVE_LICENSE_FAILED: "Simpan data serial number gagal",
             SAVE_LICENSE_SUCCESS: "Simpan data serial number berhasil",
             LICENSE: "Serial number",
-            LICENSE_STATUS: "Status serial number",
+            LICENSE_STATUS: "Status",
             GENERATE: "Generate",
             LABEL_TXT: "Label Sub Modul",
             LABEL_TXT_PLH: "Masukan label sub module",

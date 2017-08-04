@@ -75,8 +75,6 @@
                     console.log("data not found" + error);
                 }
             );
-
-
         } else {
             /**
              *  Call getAllSerialNumber
