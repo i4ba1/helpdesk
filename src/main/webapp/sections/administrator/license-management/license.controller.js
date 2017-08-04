@@ -64,6 +64,8 @@
         if ($state.is("administrator.license.license-detail")) {
             var licenseId = $stateParams.licenseId;
             $scope.licenseHistories = [];
+            $scope.licenseActivation = licenseActivation;
+            $scope.licenseBlock = licenseBlock;
 
             RequestFactory.viewLicenseDetail(licenseId).then(
                 function(response) {
@@ -80,6 +82,20 @@
              *  Call getAllSerialNumber
              */
             getAllSerialNumber();
+        }
+
+
+        function licenseActivation(licenseId) {
+
+        }
+
+        function licenseBlock(licenseId) {
+            DialogFactory.confirmationDialog("CONFIRMATION", "BLOCK_CONFIRMATION", "sm").then(
+                function(yes) {
+
+                },
+                function(no) {}
+            );
         }
     }
 
