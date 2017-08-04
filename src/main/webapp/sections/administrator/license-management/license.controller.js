@@ -24,10 +24,7 @@
         $scope.rembemberCurrentPage = getCurrentPage;
         $scope.activateSerialNumber = activateSerialNumber;
 
-
-
         /**------------------------------------------------------*/
-
         function getAllSerialNumber() {
             $scope.rowCollection = [];
             $scope.displayCollection = [];
