@@ -183,7 +183,6 @@ public class SNServiceImpl implements SNService {
         List<License> list = new ArrayList<>();
         TreeMap<String, List<License>> sortedData = new TreeMap<>();
         String generatedSn = "";
-        byte b = 0;
 
         /*For Direct Entry*/
         if (product.getSubModuleType().equals("EL")) {

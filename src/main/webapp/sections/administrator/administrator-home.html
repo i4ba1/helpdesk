@@ -47,7 +47,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li class="cst-margin-top">
-                            <a ui-sref="administrator.product-management">{{'KNT_PRODUCT' | translate}}</a>
+                            <a ui-sref="administrator.product-management">{{'PRODUCT' | translate}}</a>
                         </li>
                         <li class="cst-margin-top">
                             <a ui-sref="administrator.license">{{'SERIAL_NUMBER' | translate}}</a>
@@ -58,14 +58,14 @@
                     </ul>
                 </li>
 
-                <li>
+                <li ng-hide="true">
                     <a ui-sref="administrator.school-management">
                         <img class="sidebar-img" src="assets/images/about_us.png" alt="tentang kami">
                         <span class="cst-margin-left">{{'SCHOOL_MANAGEMENT' | translate}}</span>
                     </a>
                 </li>
 
-                <li>
+                <li ng-hide="true">
                     <a ui-sref="administrator.user-management">
                         <img class="sidebar-img" src="assets/images/about_us.png" alt="tentang kami">
                         <span class="cst-margin-left">{{'USER_MANAGEMENT' | translate}}</span>

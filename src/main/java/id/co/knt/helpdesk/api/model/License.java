@@ -38,7 +38,7 @@ public class License implements Serializable {
 	@Column(name="activation_limit", columnDefinition = "smallint")
 	private Short activationLimit = 3;
 
-	@Column(name="numberof_activation", columnDefinition = "smallint")
+	@Column(name="number_of_activation", columnDefinition = "smallint")
 	private Short numberOfActivation = 0;
 
 	@Column(name = "created_date")
