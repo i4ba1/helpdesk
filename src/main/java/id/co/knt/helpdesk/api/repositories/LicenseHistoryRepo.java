@@ -17,9 +17,9 @@ import id.co.knt.helpdesk.api.model.LicenseHistory;
 @Repository
 public interface LicenseHistoryRepo extends JpaRepository<LicenseHistory, Long> {
 
-	@Query("select lh from LicenseHistory lh inner join fetch lh.license where lh.isRead=false")
+	@Query("select lh from LicenseHistory lh inner join fetch lh.license")
 	List<LicenseHistory> fetchUnreadLicenseGenerator();
 
-	@Query("select lh from LicenseHistory lh where lh.license.id= :licenseId")
-	List<LicenseHistory> findAlreadyReadLicence(@Param("licenseId") Long licenseId);
+	@Query("select lh from LicenseHistory lh where lh.license.id= :licenseId order by createdDate desc")
+	List<LicenseHistory> findLicenseHistory(@Param("licenseId") Long licenseId);
 }

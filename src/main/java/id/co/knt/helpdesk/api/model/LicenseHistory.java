@@ -32,7 +32,7 @@ public class LicenseHistory implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name="String")
+	@Column(name="message")
 	private String message;
 	
 	@Column(name="createdDate")
@@ -46,8 +46,8 @@ public class LicenseHistory implements Serializable {
 	 * 0 is generated
 	 * 1 is registered
 	 * 2 is activated
-	 * 3 is disabled
-	 * 4 is warning/problem
+	 * 3 is warning/problem
+	 * 4 is disabled
 	 */
 	@Column(name = "license_status", columnDefinition = "smallint")
 	private Short licenseStatus;

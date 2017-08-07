@@ -36,20 +36,27 @@
 
                     </thead>
                     <tbody>
-                        <tr ng-repeat="row in displayCollection track by $index">
-                            <td>{{(currentPage-1)*itemPage+$index+1}}</td>
-                            <td>{{row.license}}</td>
-                            <td>{{row.product.productName}}</td>
-                            <td>{{row.numberOfClient}}</td>
-                            <td>{{row.schoolName}}</td>
-                            <td>{{row.createdDate |date:"dd/MM/yyyy"}}</td>
-                            <td ng-switch=""><span></span>{{row.licenseStatus}}</td>
-                            <td width="25">
-                                <a ui-sref="administrator.license.license-detail({licenseId:row.id})">
-                                    <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
-                                </a>
-                            </td>
-                        </tr>
+                    <tr ng-repeat="row in displayCollection track by $index">
+                        <td>{{(currentPage-1)*itemPage+$index+1}}</td>
+                        <td>{{row.serialNumber.license}}</td>
+                        <td>{{row.serialNumber.product.productName}}</td>
+                        <td>{{row.serialNumber.numberOfClient}}</td>
+                        <td>{{row.serialNumber.schoolName}}</td>
+                        <td>{{row.serialNumber.createdDate |date:"dd/MM/yyyy"}}</td>
+                        <td ng-switch="row.status">
+                            <span ng-switch-when="0"><img src="assets/images/Generated.png" class="license-status" /></span>
+                            <span ng-switch-when="1"><img src="assets/images/Registered.png" class="license-status" /></span>
+                            <span ng-switch-when="2"><img src="assets/images/Activated.png" class="license-status"></span>
+                            <span ng-switch-when="3"><img src="assets/images/Problem.png" class="license-status"></span>
+                            <span ng-switch-when="4"><img src="assets/images/Disabled.png" class="license-status"></span>
+                        </td>
+                        <td width="25">
+                            <a ui-sref="administrator.license-management.product-detail({productId:row.id})">
+                                <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+>>>>>>> Modify license history
                     </tbody>
                     <tfoot>
                         <tr>

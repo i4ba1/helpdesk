@@ -41,7 +41,6 @@
                     $scope.generatedLicense.push(listGenerated["Paket" + (i + 1)]);
                     $scope.schoolList.push({ schoolName: null });
                 }
-                //console.log("The Object is=============> ",Object.keys($scope.generatedLicense).length);
             }
         }
 

@@ -448,4 +448,8 @@ input.ng-dirty.ng-valid {
   min-height: 70vh;
   max-height: 70vh; }
 
+.license-status {
+  width: 30px;
+  height: auto; }
+
 /*# sourceMappingURL=styles.css.map */
