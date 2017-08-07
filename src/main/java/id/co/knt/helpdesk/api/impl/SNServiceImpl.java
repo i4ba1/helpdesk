@@ -252,22 +252,12 @@ public class SNServiceImpl implements SNService {
     public Map<String, Object> viewDetailLicense(Long licenseId) {
         License license = snRepo.findLicenseById(licenseId);
         List<LicenseHistory> histories = licenseHistoryRepo.findLicenseHistory(licenseId);
-        List<SubProduct> subProducts = subProductRepo.findAllSubProductByProductId(license.getProduct().getId());
-        List<String> listClassName = new ArrayList<>();
-
-        for (SubProduct sp:subProducts) {
-            listClassName.add(sp.getLabel());
-        }
 
         Map<String, Object> map = new HashMap<>();
         map.put("licenseKey", license.getLicense());
         map.put("schoolName", license.getSchoolName());
         map.put("productName", license.getProduct().getProductName());
-        if(license.getProduct().getSubModuleType().equals("EL")){
-            map.put("numberOfClient", license.getNumberOfClient());
-        }else{
-            map.put("listClassName", listClassName);
-        }
+        map.put("numberOfClient", license.getNumberOfClient());
         map.put("numberOfActivation", license.getNumberOfActivation());
         map.put("activationKey", license.getActivationKey());
         map.put("createdDate", license.getCreatedDate());
