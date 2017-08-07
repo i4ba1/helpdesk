@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-08-04 15:43:05
+ * @Last Modified time: 2017-08-07 11:30:45
  * 
  * Application Translate Configuration
  */
@@ -164,7 +164,8 @@
             ACTIVATE: "Aktivasi",
             BLOCK: "Blokir",
             ADD_KUOTA: "Tambah Kuota",
-            BLOCK_CONFIRMATION: "Blokir serial number ini?"
+            BLOCK_CONFIRMATION: "Blokir serial number ini?",
+
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

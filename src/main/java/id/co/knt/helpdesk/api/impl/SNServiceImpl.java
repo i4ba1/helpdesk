@@ -4,7 +4,6 @@ import java.util.*;
 
 import id.co.knt.helpdesk.api.model.SubProduct;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
-import id.co.knt.helpdesk.api.repositories.SubProductRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,287 +21,279 @@ import id.web.pos.integra.gawl.Gawl;
 @Service("snServiceImpl")
 public class SNServiceImpl implements SNService {
 
-    Logger LOG = LoggerFactory.getLogger(SNServiceImpl.class);
+	Logger LOG = LoggerFactory.getLogger(SNServiceImpl.class);
 
-    private Gawl gawl = new Gawl();
+	private Gawl gawl = new Gawl();
 
-    @Autowired
-    private SNRepo snRepo;
+	@Autowired
+	private SNRepo snRepo;
 
-    @Autowired
-    private ProductRepo productRepo;
+	@Autowired
+	private ProductRepo productRepo;
 
-    private LicenseHistory licenseHistory;
+	private LicenseHistory licenseHistory;
 
-    @Autowired
-    private LicenseHistoryRepo licenseHistoryRepo;
+	@Autowired
+	private LicenseHistoryRepo licenseHistoryRepo;
 
-    @Autowired
-    private SubProductRepo subProductRepo;
+	private short status = 0;
+	private String message = "";
 
-    private short status = 0;
+	@Override
+	public License registerSerialNumber(License serialNumber, int state) {
+		License snNumber = null;
+		License sn = snRepo.findByLicense(serialNumber.getLicense());
+		Product product = null;
 
-    @Override
-    public License registerSerialNumber(License serialNumber, int state) {
-        License snNumber = null;
-        License sn = snRepo.findByLicense(serialNumber.getLicense());
-        Product product = null;
+		if (sn == null) {
+			if (gawl.validate(serialNumber.getLicense())) {
+				try {
+					Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
+					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
+						byte Type = extractResult.get(Gawl.TYPE);
 
-        if (sn == null) {
-            if (gawl.validate(serialNumber.getLicense())) {
-                try {
-                    Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
-                    if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
-                        byte Type = extractResult.get(Gawl.TYPE);
+						product = productRepo.findByProductCode(new Integer(Type));
 
-                        product = productRepo.findByProductCode(new Integer(Type));
+						snNumber = new License();
+						snNumber.setLicense(serialNumber.getLicense());
+						snNumber.setActivationKey("");
+						snNumber.setNumberOfClient(serialNumber.getNumberOfClient());
+						snNumber.setCreatedDate(new Date().getTime());
+						snNumber.setProduct(product);
+						snNumber.setSchoolName(serialNumber.getSchoolName());
+						snRepo.save(snNumber);
+						snNumber = snRepo.save(snNumber);
 
-                        snNumber = new License();
-                        snNumber.setLicense(serialNumber.getLicense());
-                        snNumber.setActivationKey("");
-                        snNumber.setNumberOfClient(serialNumber.getNumberOfClient());
-                        snNumber.setCreatedDate(new Date().getTime());
-                        snNumber.setProduct(product);
-                        snNumber.setSchoolName(serialNumber.getSchoolName());
-                        snRepo.save(snNumber);
-                        snNumber = snRepo.save(snNumber);
+						status = (short) state;
+						message = "";
+						setLicenseHistory(snNumber, status, message);
+					} else {
+						return null;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			return sn;
+		}
 
-                        status = (short) state;
-                        setLicenseHistory(snNumber, status);
-                    } else {
-                        return null;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            return sn;
-        }
+		return snNumber;
+	}
 
-        return snNumber;
-    }
+	@Override
+	public List<License> findAllSN() {
+		List<License> serialNumbers = snRepo.findAllLicense();
+		return serialNumbers;
+	}
 
-    @Override
-    public List<License> findAllSN() {
-        List<License> serialNumbers = snRepo.findAllLicense();
-        return serialNumbers;
-    }
+	@Override
+	public License findSN(Long id) {
+		License sn = snRepo.findLicenseById(id);
+		return sn;
+	}
 
-    @Override
-    public License findSN(Long id) {
-        License sn = snRepo.findLicenseById(id);
-        return sn;
-    }
+	@Override
+	public License generateActivationKey(Long id, String passKey, String xlock) {
+		String activationKey = "";
+		License snNumber = snRepo.findOne(id);
+		try {
+			if (passKey.equals(snNumber.getPassKey()) && snNumber.getXlock().equals(xlock)) {
+				activationKey = gawl.activate(snNumber.getPassKey());
+				snNumber.setActivationKey(activationKey);
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    @Override
-    public License generateActivationKey(Long id, String passKey, String xlock) {
-        String activationKey = "";
-        License snNumber = snRepo.findOne(id);
-        try {
-            if (passKey.equals(snNumber.getPassKey()) && snNumber.getXlock().equals(xlock)) {
-                activationKey = gawl.activate(snNumber.getPassKey());
-                snNumber.setActivationKey(activationKey);
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		return snNumber;
+	}
 
-        return snNumber;
-    }
+	@Override
+	public License manuallyActivate(Long id, String xlock, String activationKey) {
+		License snNumber = snRepo.findOne(id);
 
-    @Override
-    public License manuallyActivate(Long id, String xlock, String activationKey) {
-        License snNumber = snRepo.findOne(id);
+		try {
+			activationKey = generateActivationKey(id, snNumber.getPassKey(), snNumber.getXlock()).getActivationKey();
+			snNumber.setActivationKey(activationKey);
+			snNumber = snRepo.saveAndFlush(snNumber);
 
-        try {
-            activationKey = generateActivationKey(id, snNumber.getPassKey(), snNumber.getXlock()).getActivationKey();
-            snNumber.setActivationKey(activationKey);
-            snNumber = snRepo.saveAndFlush(snNumber);
+			status = 2;
+			message = "MANUAL_ACTIVATION";
+			setLicenseHistory(snNumber, status, message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-            status = 2;
-            setLicenseHistory(snNumber, status);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		return snNumber;
+	}
 
-        return snNumber;
-    }
+	@Override
+	public License onlineActivation(License serialNumber) {
 
-    @Override
-    public License onlineActivation(License serialNumber) {
+		License snNumber = null;
+		License sn = snRepo.findByLicense(serialNumber.getLicense());
 
-        License snNumber = null;
-        License sn = snRepo.findByLicense(serialNumber.getLicense());
+		if (sn != null) {
+			if (gawl.validate(serialNumber.getLicense())) {
+				try {
+					Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
+					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
+						byte Type = extractResult.get(Gawl.TYPE);
 
-        if (sn != null) {
-            if (gawl.validate(serialNumber.getLicense())) {
-                try {
-                    Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
-                    if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
-                        byte Type = extractResult.get(Gawl.TYPE);
+						if (Type == 3) {
+							if (serialNumber.getPassKey().compareTo(sn.getPassKey()) == 0
+									&& serialNumber.getXlock().compareTo(sn.getXlock()) == 0) {
+								snNumber = new License();
+								snNumber = generateActivationKey(sn.getId(), serialNumber.getPassKey(),
+										serialNumber.getXlock());
+								snNumber.setActivationKey(snNumber.getActivationKey());
+								snNumber = snRepo.saveAndFlush(snNumber);
+								status = 2;
+								message = "";
+								setLicenseHistory(snNumber, status,message);
+							}
+						}
 
-                        if (Type == 3) {
-                            if (serialNumber.getPassKey().compareTo(sn.getPassKey()) == 0
-                                    && serialNumber.getXlock().compareTo(sn.getXlock()) == 0) {
-                                snNumber = new License();
-                                snNumber = generateActivationKey(sn.getId(), serialNumber.getPassKey(),
-                                        serialNumber.getXlock());
-                                snNumber.setActivationKey(snNumber.getActivationKey());
-                                snNumber = snRepo.saveAndFlush(snNumber);
-                                status = 2;
-                                setLicenseHistory(snNumber, status);
-                            }
-                        }
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+		return snNumber;
+	}
 
-        return snNumber;
-    }
+	@Override
+	public License findBySerial(String serial) {
+		License number = snRepo.findByLicense(serial);
+		return number;
+	}
 
-    @Override
-    public License findBySerial(String serial) {
-        License number = snRepo.findByLicense(serial);
-        return number;
-    }
+	/**
+	 * @param licenseGeneratorDTO
+	 * @return
+	 */
+	@Override
+	public TreeMap<String, List<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO) {
+		Product product = licenseGeneratorDTO.getProduct();
+		List<License> list = new ArrayList<>();
+		TreeMap<String, List<License>> sortedData = new TreeMap<>();
+		String generatedSn = "";
 
-    /**
-     * @param licenseGeneratorDTO
-     * @return
-     */
-    @Override
-    public TreeMap<String, List<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO) {
-        Product product = licenseGeneratorDTO.getProduct();
-        List<License> list = new ArrayList<>();
-        TreeMap<String, List<License>> sortedData = new TreeMap<>();
-        String generatedSn = "";
+		/* For Direct Entry */
+		if (product.getSubModuleType().equals("EL")) {
+			for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
+				try {
+					generatedSn = gawl.generate(product.getProductCode(),
+							licenseGeneratorDTO.getSubProducts().get(0).getValue());
 
-        /*For Direct Entry*/
-        if (product.getSubModuleType().equals("EL")) {
-            for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
-                try {
-                    generatedSn = gawl.generate(product.getProductCode(), licenseGeneratorDTO.getSubProducts().get(0).getValue());
+					License newLicense = new License();
+					newLicense.setLicense(generatedSn);
+					newLicense.setNumberOfClient(licenseGeneratorDTO.getSubProducts().get(0).getValue());
+					newLicense.setCreatedDate(System.currentTimeMillis());
+					newLicense.setProduct(product);
 
-                    License newLicense = new License();
-                    newLicense.setLicense(generatedSn);
-                    newLicense.setNumberOfClient(licenseGeneratorDTO.getSubProducts().get(0).getValue());
-                    newLicense.setCreatedDate(System.currentTimeMillis());
-                    newLicense.setProduct(product);
+					list.add(newLicense);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 
-                    list.add(newLicense);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+			sortedData.put("EL", list);
+		} else {
+			// int lengthData = licenseGeneratorDTO.getLicenseCount() *
+			// licenseGeneratorDTO.getSubProducts().size();
+			for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
+				try {
+					for (SubProduct sp : licenseGeneratorDTO.getSubProducts()) {
+						generatedSn = gawl.generate(product.getProductCode(), sp.getValue());
 
-            sortedData.put("EL", list);
-        } else {
-            //int lengthData = licenseGeneratorDTO.getLicenseCount() * licenseGeneratorDTO.getSubProducts().size();
-            for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
-                try {
-                    for (SubProduct sp : licenseGeneratorDTO.getSubProducts()) {
-                        generatedSn = gawl.generate(product.getProductCode(), sp.getValue());
+						License newLicense = new License();
+						newLicense.setLicense(generatedSn);
+						newLicense.setNumberOfClient(null);
+						newLicense.setCreatedDate(System.currentTimeMillis());
+						newLicense.setProduct(product);
+						list.add(newLicense);
+					}
 
-                        License newLicense = new License();
-                        newLicense.setLicense(generatedSn);
-                        newLicense.setNumberOfClient(sp.getValue());
-                        newLicense.setCreatedDate(System.currentTimeMillis());
-                        newLicense.setProduct(product);
-                        list.add(newLicense);
-                    }
+					sortedData.put("Paket" + (i + 1), list);
+					list = new ArrayList<>();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 
-                    sortedData.put("Paket" + (i + 1), list);
-                    list = new ArrayList<>();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+		return sortedData;
+	}
 
-        return sortedData;
-    }
+	@Override
+	public List<LicenseHistory> findUnreadLicense() {
+		List<LicenseHistory> licenseHistories = licenseHistoryRepo.fetchUnreadLicenseGenerator();
 
-    @Override
-    public List<LicenseHistory> findUnreadLicense() {
-        List<LicenseHistory> licenseHistories = licenseHistoryRepo.fetchUnreadLicenseGenerator();
+		return licenseHistories;
+	}
 
-        return licenseHistories;
-    }
+	@Override
+	public LicenseHistory findDetailHistory(Long id) {
+		LicenseHistory history = licenseHistoryRepo.findOne(id);
 
-    @Override
-    public LicenseHistory findDetailHistory(Long id) {
-        LicenseHistory history = licenseHistoryRepo.findOne(id);
+		return history;
+	}
 
-        return history;
-    }
+	/**
+	 * View detail license
+	 * 
+	 * @param licenseId
+	 * @return
+	 */
+	@Override
+	public Map<String, Object> viewDetailLicense(Long licenseId) {
+		License license = snRepo.findLicenseById(licenseId);
+		List<LicenseHistory> histories = licenseHistoryRepo.findAlreadyReadLicence(licenseId);
 
-    /**
-     * View detail license
-     * @param licenseId
-     * @return
-     */
-    @Override
-    public Map<String, Object> viewDetailLicense(Long licenseId) {
-        License license = snRepo.findLicenseById(licenseId);
-        List<LicenseHistory> histories = licenseHistoryRepo.findAlreadyReadLicence(licenseId);
-        List<SubProduct> subProducts = subProductRepo.findAllSubProductByProductId(license.getProduct().getId());
-        List<String> listClassName = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		map.put("licenseKey", license.getLicense());
+		map.put("schoolName", license.getSchoolName());
+		map.put("productName", license.getProduct().getProductName());
+		map.put("numberOfClient", license.getNumberOfClient());
+		map.put("numberOfActivation", license.getNumberOfActivation());
+		map.put("activationKey", license.getActivationKey());
+		map.put("createdDate", license.getCreatedDate());
+		map.put("licenseHistory", histories);
 
-        for (SubProduct sp:subProducts) {
-            listClassName.add(sp.getLabel());
-        }
+		return map;
+	}
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("licenseKey", license.getLicense());
-        map.put("schoolName", license.getSchoolName());
-        map.put("productName", license.getProduct().getProductName());
-        if(license.getProduct().getSubModuleType().equals("EL")){
-            map.put("numberOfClient", license.getNumberOfClient());
-        }else{
-            map.put("listClassName", listClassName);
-        }
-        map.put("numberOfActivation", license.getNumberOfActivation());
-        map.put("activationKey", license.getActivationKey());
-        map.put("createdDate", license.getCreatedDate());
-        map.put("licenseHistory", histories);
+	@Override
+	public LicenseHistory updateReadStatus(LicenseHistory generatorHistory) {
+		LicenseHistory history = licenseHistoryRepo.saveAndFlush(generatorHistory);
 
-        return map;
-    }
+		return history;
+	}
 
+	@Override
+	public List<Object> findSnCountByProduct() {
+		List<Object> list = snRepo.findSnCountByProduct();
+		if (list.size() > 0) {
+			return list;
+		}
+		return null;
+	}
 
-    @Override
-    public LicenseHistory updateReadStatus(LicenseHistory generatorHistory) {
-        LicenseHistory history = licenseHistoryRepo.saveAndFlush(generatorHistory);
-
-        return history;
-    }
-
-    @Override
-    public List<Object> findSnCountByProduct() {
-        List<Object> list = snRepo.findSnCountByProduct();
-        if (list.size() > 0) {
-            return list;
-        }
-        return null;
-    }
-
-    private void setLicenseHistory(License license, short status) {
-        if (license != null) {
-            licenseHistory = new LicenseHistory();
-            licenseHistory.setLicense(license);
-            licenseHistory.setLicenseStatus(status);
-            licenseHistory
-                    .setMessage("One license for " + license.getProduct().getProductName() + " has been ");
-            licenseHistory.setIsRead(false);
-            licenseHistory.setCreatedDate(new Date().getTime());
-            licenseHistoryRepo.save(licenseHistory);
-        }
-    }
+	private void setLicenseHistory(License license, short status, String message) {
+		if (license != null) {
+			licenseHistory = new LicenseHistory();
+			licenseHistory.setLicense(license);
+			licenseHistory.setLicenseStatus(status);
+			licenseHistory.setMessage(message);
+			licenseHistory.setIsRead(false);
+			licenseHistory.setCreatedDate(new Date().getTime());
+			licenseHistoryRepo.save(licenseHistory);
+		}
+	}
 }
