@@ -141,22 +141,14 @@ public class SNServiceImpl implements SNService {
 				try {
 					Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
 					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
-						byte Type = extractResult.get(Gawl.TYPE);
-
-						if (Type == 3) {
-							if (serialNumber.getPassKey().compareTo(sn.getPassKey()) == 0
-									&& serialNumber.getXlock().compareTo(sn.getXlock()) == 0) {
-								snNumber = new License();
-								snNumber = generateActivationKey(sn.getId(), serialNumber.getPassKey(),
-										serialNumber.getXlock());
-								snNumber.setActivationKey(snNumber.getActivationKey());
-								snNumber = snRepo.saveAndFlush(snNumber);
-								status = 2;
-								message = "User has been activate serial number by Internet";
-								setLicenseHistory(snNumber, status, message);
-							}
-						}
-
+                        if (gawl.challenge(serialNumber.getPassKey(), serialNumber.getActivationKey())) {
+                            snNumber = new License();
+                            snNumber.setActivationKey(serialNumber.getActivationKey());
+                            snNumber = snRepo.saveAndFlush(snNumber);
+                            String message = "One license has been activated";
+                            status = 2;
+                            setLicenseHistory(snNumber, status, message);
+                        }
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
