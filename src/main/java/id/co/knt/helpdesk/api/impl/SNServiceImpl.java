@@ -214,7 +214,7 @@ public class SNServiceImpl implements SNService {
 
 						License newLicense = new License();
 						newLicense.setLicense(generatedSn);
-						newLicense.setNumberOfClient(sp.getValue());
+						newLicense.setNumberOfClient(null);
 						newLicense.setCreatedDate(System.currentTimeMillis());
 						newLicense.setProduct(product);
 						list.add(newLicense);

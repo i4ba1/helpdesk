@@ -16,7 +16,7 @@
                     <div class="col-sm-4 label-custom">{{"PRODUCT_NAME"|translate}}</div>
                     <div class="col-sm-8 value-custom">{{license.productName?license.productName:"-"}}</div>
                 </div>
-                <div class="col-sm-12 group-custom">
+                <div class="col-sm-12 group-custom" ng-hide="!license.numberOfClient" ng-show="license.numberOfClient">
                     <div class="col-sm-4 label-custom">
                         {{"NUMBER_CLIENT"|translate}}
                     </div>
