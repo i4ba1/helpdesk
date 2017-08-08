@@ -41,10 +41,9 @@ public class SNManagementController {
         return new ResponseEntity<>(number, HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/requestActivationKey/{id}/{passKey}/{xlock}", method = RequestMethod.GET)
-    public ResponseEntity<License> requestActivationKey(@PathVariable Long id, @PathVariable String passKey,
-                                                        @PathVariable String xlock) {
-        License serialNumber = snService.generateActivationKey(id, passKey, xlock);
+    @RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
+    public ResponseEntity<License> requestActivationKey(@PathVariable Long id, @PathVariable String passKey) {
+        License serialNumber = snService.generateActivationKey(id, passKey);
         if (serialNumber.equals(null)) {
             return new ResponseEntity<>(serialNumber, HttpStatus.NOT_FOUND);
         }
@@ -52,10 +51,9 @@ public class SNManagementController {
         return new ResponseEntity<>(serialNumber, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/activate/", method = RequestMethod.POST)
-    public ResponseEntity<License> activate(@RequestBody License serialNumber) {
-        License result = snService.manuallyActivate(serialNumber.getId(), serialNumber.getXlock(),
-                serialNumber.getActivationKey());
+    @RequestMapping(value = "/activate/{licenseId}/{passkey}", method = RequestMethod.POST)
+    public ResponseEntity<License> activate(@PathVariable("licenseId") Long licenseId, @PathVariable("passkey")String passkey) {
+        License result = snService.manuallyActivate(licenseId, passkey);
         if (result == null) {
             return new ResponseEntity<>(result, HttpStatus.EXPECTATION_FAILED);
         }
