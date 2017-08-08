@@ -36,4 +36,6 @@ public interface SNService{
     List<Object> findSnCountByProduct();
 
     LicenseHistory fetchLicenseHistory(Long licenseId);
+
+    void setLicenseHistory(License license, short status, String message);
 }

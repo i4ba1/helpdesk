@@ -21,6 +21,8 @@
         $scope.itemPage = 10;
 
         $scope.license = null;
+        $scope.updateSchool = updateSchool;
+        $scope.overrideActivationLimit = overrideActivationLimit;
         $scope.rembemberCurrentPage = getCurrentPage;
         $scope.activateSerialNumber = activateSerialNumber;
         $scope.licenseBlock = licenseBlock;
@@ -80,7 +82,14 @@
         }
 
 
-        function licenseActivation(licenseId) {
+        function licenseActivation(licenseId, passKey) {
+            DialogFactory.confirmationWithMessageDialog("CONFIRMATION", "PASKEY_LABEL", "PASSKEY_PLH").then(
+                function (message) {
+                    RequestFactory.activate($stateParams.licenseId, message);
+                },function (no) {
+
+                }
+            );
 
         }
 
@@ -93,7 +102,32 @@
             );
         }
 
-        function updateSchool(licenseId, schoolName) {
+        function updateSchool(schoolName) {
+            RequestFactory.updateSchool($stateParams.licenseId, schoolName).then(
+                function (response) {
+                    DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_SCHOOL_UPDATE_NOTIFICATION"], "sm");
+                },function (error) {
+                    DialogFactory.messageDialog("NOTIFICATION", ["FAILED_SCHOOL_UPDATE_NOTIFICATION"], "sm");
+                }
+            );
+        }
+
+        function overrideActivationLimit(){
+            DialogFactory.confirmationWithMessageDialog("CONFIRMATION", "OVERRIDE_CONFIRMATION", "OVERRIDE_REASON_TEXT").then(
+                function (message) {
+                    RequestFactory.overrideActivationLimit($stateParams.licenseId, message).then(
+                        function (response) {
+                            DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_OVERRIDE_NOTIFICATION"], "sm");
+                            $scope.license.activationLimit = response.data.activationLimit;
+                        },function (error) {
+                            DialogFactory.messageDialog("NOTIFICATION", ["FAILED_OVERRIDE_NOTIFICATION"], "sm");
+                        }
+                    );
+                },function (no) {
+                    
+                }
+            );
+
 
         }
     }

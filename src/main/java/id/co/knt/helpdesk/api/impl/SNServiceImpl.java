@@ -139,7 +139,8 @@ public class SNServiceImpl implements SNService {
 					Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
 					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
                         snNumber = new License();
-                        snNumber.setActivationKey(serialNumber.getActivationKey());
+                        String activationKey = gawl.activate(serialNumber.getPassKey());
+                        snNumber.setActivationKey(activationKey);
                         snNumber = snRepo.saveAndFlush(snNumber);
                         String message = "One license has been activated";
                         status = 2;
@@ -273,7 +274,8 @@ public class SNServiceImpl implements SNService {
 		return null;
 	}
 
-	private void setLicenseHistory(License license, short status, String message) {
+	@Override
+	public void setLicenseHistory(License license, short status, String message) {
 		if (license != null) {
 			licenseHistory = new LicenseHistory();
 			licenseHistory.setLicense(license);

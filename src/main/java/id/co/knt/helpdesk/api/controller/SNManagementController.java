@@ -3,6 +3,7 @@ package id.co.knt.helpdesk.api.controller;
 import java.util.*;
 
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
+import id.co.knt.helpdesk.api.repositories.SNRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ public class SNManagementController {
 
     @Autowired
     private SNService snService;
+
+    @Autowired
+    private SNRepo snRepo;
 
     @RequestMapping(value = "/register/", method = RequestMethod.POST)
     public ResponseEntity<License> register(@RequestBody License serialNumber) {
@@ -173,5 +177,40 @@ public class SNManagementController {
         snService.updateReadStatus(generatorHistory);
 
         return new ResponseEntity<>(object, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/updateSchool/{licenseId}/{schoolName}", method = RequestMethod.PUT)
+    public ResponseEntity<License> updateSchool(@PathVariable Long licenseId, @PathVariable String schoolName){
+        License license = snRepo.findOne(licenseId);
+        if (license == null) {
+            return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
+        }
+        license.setSchoolName(schoolName);
+
+        return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/overrideActivationLimit/{licenseId}/{message}", method = RequestMethod.PUT)
+    public ResponseEntity<License> overrideActivationLimit(@PathVariable Long licenseId, @PathVariable String message){
+        License license = snRepo.findOne(licenseId);
+        if (license == null) {
+            return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
+        }
+        license.setActivationLimit((short)(license.getActivationLimit()+1));
+        snService.setLicenseHistory(license, (short)3, message);
+
+        return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/blocked/{licenseId}/{message}", method = RequestMethod.PUT)
+    public ResponseEntity<License> blocked(@PathVariable Long licenseId, @PathVariable String message){
+        License license = snRepo.findOne(licenseId);
+        if (license == null) {
+            return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
+        }
+        license.setActivationLimit((short)(license.getActivationLimit()+1));
+        snService.setLicenseHistory(license, (short)4, message);
+
+        return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
     }
 }
