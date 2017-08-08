@@ -12,21 +12,21 @@
                     <thead>
                         <tr>
                             <th width="50">No.</th>
-                            <th st-sort="license">{{'SERIAL_NUMBER' | translate}}</th>
-                            <th st-sort="product">{{'PRODUCT_NAME' | translate}}</th>
-                            <th st-sort="numberOfClient">{{'NUMBER_CLIENT' | translate}}</th>
-                            <th st-sort="createdDate">{{'SCHOOL_NAME' | translate}}</th>
-                            <th st-sort="createdDate">{{'CREATED_DATE' | translate}}</th>
+                            <th st-sort="serialNumber.license">{{'SERIAL_NUMBER' | translate}}</th>
+                            <th st-sort="serialNumber.product.productName">{{'PRODUCT_NAME' | translate}}</th>
+                            <th st-sort="serialNumber.numberOfClient">{{'NUMBER_CLIENT' | translate}}</th>
+                            <th st-sort="serialNumber.schoolName">{{'SCHOOL_NAME' | translate}}</th>
+                            <th st-sort="serialNumber.createdDate">{{'CREATED_DATE' | translate}}</th>
                             <th st-sort="licenseStatus">{{'LICENSE_STATUS' | translate}}</th>
                             <th width="100"></th>
                         </tr>
                         <tr>
                             <th></th>
-                            <th><input st-search="license" placeholder="{{'FILTER_SERIAL_NUMBER'|translate}}" class="input-sm form-control" type="search" /></th>
-                            <th><input st-search="createdDate" class="input-sm form-control" type="search" /></th>
-                            <th><input st-search="numberOfClient" class="input-sm form-control" type="search" /></th>
-                            <th><input st-search="product" class="input-sm form-control" type="search" /></th>
-                            <th><input st-search="schoolName" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="serialNumber.license" placeholder="{{'FILTER_SERIAL_NUMBER'|translate}}" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="serialNumber.product.productName" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="serialNumber.createdDate" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="serialNumber.numberOfClient" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="serialNumber.schoolName" class="input-sm form-control" type="search" /></th>
                             <th colspan="2"></th>
                         </tr>
 

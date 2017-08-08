@@ -92,6 +92,10 @@
                 function(no) {}
             );
         }
+
+        function updateSchool(licenseId, schoolName) {
+
+        }
     }
 
 })();
