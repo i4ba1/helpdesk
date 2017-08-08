@@ -89,6 +89,33 @@
             return modalInstance.result;
         }
 
+        /**
+         * @param {*} title 
+         * @param {*} messsage 
+         * @param {*} size 
+         */
+        function confirmationWithMessageDialog(title, messsage, placeholder) {
+            modalInstance = uibModal.open({
+                animation: true,
+                templateUrl: 'sections/components/confirmation-with-messages-dialog.html',
+                controller: confirmationWithMesssageDialogController,
+                controllerAs: '$ctrl',
+                size: "md",
+                backdrop: 'static',
+                resolve: {
+                    params: function() {
+                        return {
+                            title: title,
+                            messsage: messsage,
+                            placeholder: placeholder
+                        };
+                    }
+                }
+            });
+
+            return modalInstance.result;
+        }
+
         // =======================[END Message Dialog Creator]==============
 
         // =====================[START Message Dialog Controller]===========
@@ -130,12 +157,29 @@
                 $uibModalInstance.dismiss("no");
             }
         }
+
+        function confirmationWithMesssageDialogController($uibModalInstance, params) {
+            var ctrl = this;
+            ctrl.title = params.title;
+            ctrl.message = params.messsage;
+            ctrl.placeholder = params.placeholder;
+            ctrl.reason = "";
+
+            ctrl.ok = function() {
+                $uibModalInstance.close(ctrl.reason);
+            };
+
+            ctrl.dismiss = function() {
+                $uibModalInstance.dismiss("no");
+            }
+        }
         // =======================[END Message Dialog Controller]===========
 
         var dialogContainer = {
             activationDialog: activationDialog,
             messageDialog: messageDialog,
-            confirmationDialog: confirmationDialog
+            confirmationDialog: confirmationDialog,
+            confirmationWithMessageDialog: confirmationWithMessageDialog
         };
 
         return dialogContainer;

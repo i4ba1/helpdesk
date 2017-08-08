@@ -23,7 +23,7 @@
         $scope.license = null;
         $scope.rembemberCurrentPage = getCurrentPage;
         $scope.activateSerialNumber = activateSerialNumber;
-
+        $scope.licenseBlock = licenseBlock;
         /**------------------------------------------------------*/
         function getAllSerialNumber() {
             $scope.rowCollection = [];
@@ -85,7 +85,7 @@
         }
 
         function licenseBlock(licenseId) {
-            DialogFactory.confirmationDialog("CONFIRMATION", "BLOCK_CONFIRMATION", "sm").then(
+            DialogFactory.confirmationWithMessageDialog("CONFIRMATION", "BLOCK_CONFIRMATION", "BLOCK_REASON_TEXT").then(
                 function(yes) {
 
                 },

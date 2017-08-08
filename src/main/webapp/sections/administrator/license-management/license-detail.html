@@ -44,8 +44,8 @@
 
                 <div class="col-sm-12 group-custom">
                     <div class="col-sm-offset-4 col-sm-8 value-custom">
-                        <button class="btn btn-primary" ng-disabled="(license.numberOfActivation>=license.activationLimit)" ng-click="licenseActivation(license.id)">{{"ACTIVATE"|translate}}</button>
-                        <button class="btn btn-danger" ng-click="licenseBlock(license.id)">{{"BLOCK"|translate}}</button>
+                        <button class="btn btn-primary" ng-disabled="(license.numberOfActivation>=license.activationLimit)" ng-click="licenseActivation()">{{"ACTIVATE"|translate}}</button>
+                        <button class="btn btn-danger" ng-click="licenseBlock()">{{"BLOCK"|translate}}</button>
                         <button ui-sref="^" class="btn btn-default">{{'CANCEL'|translate}}</button>
                     </div>
                 </div>
