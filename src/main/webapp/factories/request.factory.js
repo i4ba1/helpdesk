@@ -37,7 +37,8 @@
             licenseCountByProduct: licenseCountByProduct,
             fetchSubProductByProductId: fetchSubProductByProductId,
             deleteSubProduct: deleteSubProduct,
-            viewLicenseDetail: viewLicenseDetail
+            viewLicenseDetail: viewLicenseDetail,
+            overrideActivationLimit: overrideActivationLimit
         };
 
         return service;
@@ -179,15 +180,9 @@
             return $http.post(baseURL + "/schoolManagement/createSchool/", formData);
         }
 
-        function updateSchool(school) {
-            var formData = {
-                id: school.id,
-                schoolName: school.schoolName,
-                schoolAddress: school.schoolAddress,
-                createdDate: school.createdDate,
-                deleted: school.deleted
-            }
-            return $http.put(baseURL + "/schoolManagement/updateSchool/", formData);
+        function updateSchool(licenseId, schoolName) {
+
+            return $http.put(baseURL + "/snManagement/updateSchool/"+ licenseId+"/"+schoolName);
         }
 
         function deleteSchool(schoolId) {
@@ -224,6 +219,10 @@
 
         function viewLicenseDetail(licenseId) {
             return $http.get(baseURL + "/snManagement/viewDetailSN/" + licenseId);
+        }
+
+        function overrideActivationLimit(licenseId) {
+            return $http.put(baseURL + "/snManagement/overrideActivationLimit/" + licenseId);
         }
     }
 

@@ -21,6 +21,8 @@
         $scope.itemPage = 10;
 
         $scope.license = null;
+        $scope.updateSchool = updateSchool;
+        $scope.overrideActivationLimit = overrideActivationLimit;
         $scope.rembemberCurrentPage = getCurrentPage;
         $scope.activateSerialNumber = activateSerialNumber;
         $scope.licenseBlock = licenseBlock;
@@ -93,8 +95,26 @@
             );
         }
 
-        function updateSchool(licenseId, schoolName) {
+        function updateSchool(schoolName) {
+            RequestFactory.updateSchool($stateParams.licenseId, schoolName).then(
+                function (response) {
+                    DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_SCHOOL_UPDATE_NOTIFICATION"], "sm");
+                },function (error) {
+                    DialogFactory.messageDialog("NOTIFICATION", ["FAILED_SCHOOL_UPDATE_NOTIFICATION"], "sm");
+                }
+            );
+        }
 
+        function overrideActivationLimit(){
+
+            RequestFactory.overrideActivationLimit($stateParams.licenseId).then(
+                function (response) {
+                    DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_OVERRIDE_NOTIFICATION"], "sm");
+                    $scope.license.activationLimit = response.data.activationLimit;
+                },function (error) {
+                    DialogFactory.messageDialog("NOTIFICATION", ["FAILED_OVERRIDE_NOTIFICATION"], "sm");
+                }
+            )
         }
     }
 

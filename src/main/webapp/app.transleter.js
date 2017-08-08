@@ -161,12 +161,14 @@
             LICENSE_HISTORY_NOT_FOUND: "data riwayat serial number tidak ditemukan",
             STATUS: "Status",
             DATE: "Tanggal",
-            ACTIVATE: "Aktivasi",
             BLOCK: "Blokir",
             ADD_KUOTA: "Tambah Kuota",
             BLOCK_CONFIRMATION: "Apakah yakin untuk melakukan blokir serial number ?",
-            BLOCK_REASON_TEXT: "masukanlah alasan pemblokiran serial number...!"
-
+            BLOCK_REASON_TEXT: "masukanlah alasan pemblokiran serial number...!",
+            SUCCESS_SCHOOL_UPDATE_NOTIFICATION: "Nama sekolah telah di update",
+            FAILED_SCHOOL_UPDATE_NOTIFICATION: "Nama sekolah gagal di update",
+            SUCCESS_OVERRIDE_NOTIFICATION: "Activation limit telah di override",
+            FAILED_OVERRIDE_NOTIFICATION: "Activation limit gagal di override"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
