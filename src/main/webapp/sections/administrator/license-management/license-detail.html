@@ -7,37 +7,34 @@
         </section>
         <section class="content">
             <!--Left Panel  -->
-            <div class="col-sm-7 detail-text">
+            <div class="col-sm-6 detail-text">
                 <div class="col-sm-12 group-custom">
-                    <div class="col-sm-3 label-custom">{{"LICENSE" |translate}}</div>
-                    <div class="col-sm-9 value-custom">{{(license.license?license.license:"-")|uppercase}}</div>
+                    <div class="col-sm-4 label-custom">{{"LICENSE" |translate}}</div>
+                    <div class="col-sm-8 value-custom">{{(license.licenseKey?license.licenseKey:"-")|uppercase}}</div>
                 </div>
                 <div class="col-sm-12 group-custom">
-                    <div class="col-sm-3 label-custom">{{"PRODUCT_NAME"|translate}}</div>
-                    <div class="col-sm-9 value-custom">{{license.product?license.product.productName:"-"}}</div>
+                    <div class="col-sm-4 label-custom">{{"PRODUCT_NAME"|translate}}</div>
+                    <div class="col-sm-8 value-custom">{{license.productName?license.productName:"-"}}</div>
                 </div>
                 <div class="col-sm-12 group-custom">
-                    <div class="col-sm-3 label-custom">{{"SCHOOL_NAME"|translate}}</div>
-                    <div class="col-sm-9">
+                    <div class="col-sm-4 label-custom">
+                        {{"NUMBER_CLIENT"|translate}}
+                    </div>
+                    <div class="col-sm-8 value-custom">{{license.numberOfClient}}</div>
+                </div>
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-4 label-custom">{{"SCHOOL_NAME"|translate}}</div>
+                    <div class="col-sm-8">
                         <div class="col-sm-10">
                             <input type="text" class="form-control" ng-model="license.schoolName" placeholder="{{'SCHOOL_NAME_PLH'|translate}}">
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12 group-custom" ng-switch="license.product.subModuleType">
-                    <div class="col-sm-3 label-custom" ng-switch-default>
-                        {{"NUMBER_CLIENT"|translate}}
-                    </div>
-                    <div class="col-sm-3 label-custom" ng-switch-when="EP">
-                        {{"CLASS"|translate}}
-                    </div>
-                    <div class="col-sm-9 value-custom">{{license.numberOfClient>0?license.numberOfClient:"--"}}</div>
-                </div>
                 <div class="col-sm-12 group-custom">
-                    <div class="col-sm-3 label-custom">{{"ACTIVATION_COUNT"|translate}}</div>
-                    <div class="col-sm-9">
+                    <div class="col-sm-4 label-custom">{{"ACTIVATION_COUNT"|translate}}</div>
+                    <div class="col-sm-8">
                         <div class="col-sm-8">
-                            <label for="" class="form-control">{{numberOfActivation +" Of "+license.activationLimit}}</label>
+                            <label for="" class="form-control">{{license.numberOfActivation +" Of "+license.activationLimit}}</label>
                         </div>
                         <div class="col-sm-2">
                             <span class="btn btn-primary" title="{{'ADD_KUOTA'|translate}}"><i class="fa fa-plus fa-lg"></i></span>
@@ -46,7 +43,7 @@
                 </div>
 
                 <div class="col-sm-12 group-custom">
-                    <div class="col-sm-offset-3 col-sm-9 value-custom">
+                    <div class="col-sm-offset-4 col-sm-8 value-custom">
                         <div class="btn btn-primary" ng-click="licenseActivation(license.id)">{{"ACTIVATE"|translate}}</div>
                         <div class="btn btn-default" ng-click="licenseBlock(license.id)">{{"BLOCK"|translate}}</div>
                     </div>
@@ -54,11 +51,11 @@
 
             </div>
             <!--Right Panel  -->
-            <div class="col-sm-5">
+            <div class="col-sm-6">
                 <div class="panel panel-default panel-custom">
                     <div class="panel-body">
                         <h4>{{"LICENSE_HISTORY"|translate}} : </h4>
-                        <table class="table table-bordered table-striped" ng-switch="licenseHistories.length" st-table="licenseHistories">
+                        <table class="table table-bordered table-striped" ng-switch="license.licenseHistory.length" st-table="license.licenseHistory">
                             <thead>
                                 <tr>
                                     <th>{{"NO"|translate}}</th>
@@ -75,11 +72,11 @@
                                 </tr>
                             </tbody>
                             <tbody ng-switch-default>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                <tr ng-repeat="history in license.licenseHistory track by $index">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{history.licenseStatus}}</td>
+                                    <td>{{history.createdDate | date :"dd/MM/yyyy hh:mm:ss"}}</td>
+                                    <td>{{history.message}}</td>
                                 </tr>
                             </tbody>
                             <tfoot>

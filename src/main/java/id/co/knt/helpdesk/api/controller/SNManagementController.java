@@ -87,7 +87,7 @@ public class SNManagementController {
         }
 
         if (result.isEmpty()) {
-            return new ResponseEntity<>(result, HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
