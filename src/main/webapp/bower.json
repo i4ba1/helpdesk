@@ -15,7 +15,10 @@
     "angular-smart-table": "^2.1.8",
     "angular-translate": "^2.13.0",
     "angular-ui-select": "^0.19.6",
-    "checklist-model": "^0.11.0"
+    "checklist-model": "^0.11.0",
+    "js-xlsx": "^0.11.1",
+    "alasql": "^0.4.1",
+    "angular-local-storage": "^0.7.1"
   },
   "devDependencies": {},
   "appPath": "knt-helpdesk",

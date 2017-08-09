@@ -3,15 +3,15 @@
     angular.module("application")
         .controller('GeneratorController', generatorController);
 
-    generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "$cookies"];
+    generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "localStorageService"];
 
-    function generatorController(RequestFactory, DialogFactory, $scope, $state, $cookies) {
+    function generatorController(RequestFactory, DialogFactory, $scope, $state, localStorageService) {
         $scope.licenseGeneratorDTO = {
             product: null,
             subProducts: [],
             licenseCount: 1
         };
-        //$scope.schools = [];
+
         $scope.products = [];
         $scope.generatedLicense = [];
         $scope.switchListGenerator = null;
@@ -19,6 +19,7 @@
         $scope.registerGeneratedSN = registerGeneratedSN;
         $scope.switchToSubProduct = null;
         $scope.subProducts = [];
+        $scope.switchPage = "create";
 
         if ($state.is("administrator.generator")) {
             RequestFactory.getProducts().then(
@@ -30,14 +31,14 @@
                 }
             );
         } else if ($state.is("administrator.generator.list")) {
-            $scope.switchListGenerator = $cookies.get("type");
+            $scope.switchListGenerator = localStorageService.get("type");
             if ($scope.switchListGenerator === "EL") {
-                $scope.generatedLicense = $cookies.getObject("listGenerated").EL;
+                $scope.generatedLicense = localStorageService.get("listGenerated").EL;
             } else {
-                var listGenerated = $cookies.getObject("listGenerated");
+                var listGenerated = localStorageService.get("listGenerated");
                 $scope.generatedLicense = [];
                 $scope.schoolList = [];
-                for (var i = 0; i < $cookies.get("licenseCount"); i++) {
+                for (var i = 0; i < localStorageService.get("licenseCount"); i++) {
                     $scope.generatedLicense.push(listGenerated["Paket" + (i + 1)]);
                     $scope.schoolList.push({ schoolName: null });
                 }
@@ -66,9 +67,10 @@
                 RequestFactory.licenseGenerator(licenseGeneratorDTO).then(
                     function(response) {
                         $scope.generatedLicense = response.data;
-                        $cookies.putObject("listGenerated", $scope.generatedLicense);
-                        $cookies.put("licenseCount", licenseGeneratorDTO.licenseCount);
-                        $cookies.put("type", $scope.licenseGeneratorDTO.product.subModuleType);
+                        // $cookies.putObject("listGenerated", $scope.generatedLicense);
+                        localStorageService.set("licenseCount", licenseGeneratorDTO.licenseCount);
+                        localStorageService.set("listGenerated", $scope.generatedLicense);
+                        localStorageService.set("type", $scope.licenseGeneratorDTO.product.subModuleType);
                         $state.go("administrator.generator.list");
                     },
                     function(error) {
@@ -83,7 +85,7 @@
         function registerGeneratedSN(generatedSN) {
             var licenses = [];
             if ($scope.switchListGenerator === "EP") {
-                for (var i = 0; i < $cookies.get("licenseCount"); i++) {
+                for (var i = 0; i < localStorageService.get("licenseCount"); i++) {
                     for (var j = 0; j < generatedSN[i].length; j++) {
                         var license = generatedSN[i][j];
                         license.schoolName = $scope.schoolList[i].schoolName;
@@ -96,11 +98,14 @@
 
             RequestFactory.registerGeneratedSN(licenses).then(
                 function(response) {
-                    DialogFactory.messageDialog("SAVE_SUCCESS", ["SAVE_LICENSE_SUCCESS"], "sm").then(
+                    DialogFactory.confirmationDialog("SAVE_SUCCESS", "SAVE_TO_XLSX_CONFIRMATION", "sm").then(
                         function(result) {
+                            exportData(licenses);
                             $state.go("administrator.license");
                         },
-                        function(dismiss) {}
+                        function(dismiss) {
+                            $state.go("administrator.license");
+                        }
                     );
                 },
                 function(errorResponse) {
@@ -123,14 +128,28 @@
         }
 
         $scope.onSelected = function(selectedProduct) {
-            //do selectedProduct.PropertyName like selectedProduct.Name or selectedProduct.Key
-            //whatever property your list has.
-            console.log("selectedProduct=========> ", selectedProduct);
             if (selectedProduct.subModuleType === "EP") {
                 getSubProduct(selectedProduct.id);
             } else {
                 $scope.licenseGeneratorDTO.subProducts = [{ id: null, label: null, value: null }]
             }
+        }
+
+        function exportData(licenseList) {
+            var dataExport = [];
+
+            angular.forEach(licenseList, function(license, key) {
+                dataExport.push({
+                    "No.": key + 1,
+                    "Serial Number": license.license,
+                    "Produk": license.product.productName,
+                    "Jumlah Pengguna": license.numberOfClient ? license.numberOfClient : " - ",
+                    "Sekolah": license.schoolName,
+                    "Tanggal Dibuat": new Date(license.createdDate).toLocaleDateString()
+                })
+            });
+
+            alasql('SELECT * INTO XLSX("generated_license.xlsx",{headers:true}) FROM ?', [dataExport]);
         }
     }
 
