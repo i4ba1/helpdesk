@@ -168,7 +168,12 @@
             SUCCESS_SCHOOL_UPDATE_NOTIFICATION: "Nama sekolah telah di update",
             FAILED_SCHOOL_UPDATE_NOTIFICATION: "Nama sekolah gagal di update",
             SUCCESS_OVERRIDE_NOTIFICATION: "Activation limit telah di override",
-            FAILED_OVERRIDE_NOTIFICATION: "Activation limit gagal di override"
+            FAILED_OVERRIDE_NOTIFICATION: "Activation limit gagal di override",
+            PASSKEY_LABEL: "Passkey",
+            PASSKEY_PLH: "Masukkan passkey",
+            FAILED_ACTIVATE_NOTIFICATION: "Aktivasi berhasil",
+            SUCCESS_ACTIVATE_NOTIFICATION: "Aktivasi gagal",
+            REASON_ACTIVATE: "Masukkan alasan aktivasi"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
