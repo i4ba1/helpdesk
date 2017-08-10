@@ -13,6 +13,9 @@
         $scope.rowCollections = [];
         $scope.products = [];
         $scope.getBackground = getBackground;
+        $scope.itemPage = 5;
+        $scope.currentPage = 1;
+        $scope.rembemberCurrentPage = getCurrentPage;
 
         //Get all new notification
         RequestFactory.getUnreadLicenses().then(
@@ -24,6 +27,10 @@
                 console.log("notifications not found");
             }
         );
+
+        function getCurrentPage(p) {
+            $scope.currentPage = p
+        }
 
         RequestFactory.licenseCountByProduct().then(
             function(response) {
