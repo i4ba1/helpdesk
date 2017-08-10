@@ -65,10 +65,12 @@
             $scope.licenseHistories = [];
             $scope.licenseActivation = licenseActivation;
             $scope.licenseBlock = licenseBlock;
+            $scope.disableDetail = false;
 
             RequestFactory.viewLicenseDetail(licenseId).then(
                 function(response) {
                     $scope.license = response.data;
+                    $scope.disableDetail = $scope.license.licenseStatus === 4 ? true : false;
                 },
                 function(error) {
                     console.log("data not found" + error);
@@ -104,8 +106,19 @@
 
         function licenseBlock(licenseId) {
             DialogFactory.confirmationWithMessageDialog("CONFIRMATION", "BLOCK_CONFIRMATION", "BLOCK_REASON_TEXT").then(
-                function(yes) {
-
+                function(reason) {
+                    RequestFactory.blockLicense($stateParams.licenseId, reason).then(
+                        function(response) {
+                            DialogFactory.messageDialog("BLOCK_SUCCESS", ["BLOCK_SUCCESS_MESSAGE"], "sm").then(
+                                function() {
+                                    $state.reload();
+                                }
+                            );
+                        },
+                        function(errorResponse) {
+                            DialogFactory.messageDialog("BLOCK_FAILED", ["BLOCK_FAILED_MESSAGE"], "sm");
+                        }
+                    )
                 },
                 function(no) {}
             );

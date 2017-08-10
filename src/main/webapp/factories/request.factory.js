@@ -38,7 +38,8 @@
             fetchSubProductByProductId: fetchSubProductByProductId,
             deleteSubProduct: deleteSubProduct,
             viewLicenseDetail: viewLicenseDetail,
-            overrideActivationLimit: overrideActivationLimit
+            overrideActivationLimit: overrideActivationLimit,
+            blockLicense: blockLicense
         };
 
         return service;
@@ -223,6 +224,10 @@
 
         function overrideActivationLimit(licenseId, message) {
             return $http.put(baseURL + "/snManagement/overrideActivationLimit/" + licenseId + "/" + message);
+        }
+
+        function blockLicense(licenseId, message) {
+            return $http.put(baseURL + "/snManagement/blocked/" + licenseId + "/" + message);
         }
     }
 

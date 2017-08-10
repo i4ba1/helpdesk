@@ -26,7 +26,7 @@
                     <div class="col-sm-4 label-custom">{{"SCHOOL_NAME"|translate}}</div>
                     <div class="col-sm-8">
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" ng-model="license.schoolName" placeholder="{{'SCHOOL_NAME_PLH'|translate}}" ng-change="updateSchool(license.schoolName)" ng-model-options="{updateOn:'blur'}">
+                            <input type="text" class="form-control" ng-model="license.schoolName" placeholder="{{'SCHOOL_NAME_PLH'|translate}}" ng-change="updateSchool(license.schoolName)" ng-model-options="{updateOn:'blur'}" ng-disabled="disableDetail">
                         </div>
                     </div>
                 </div>
@@ -35,19 +35,19 @@
                     <div class="col-sm-8">
                         <div class="col-sm-8">
                             <label for="" class="form-control">{{license.numberOfActivation +" Of "+license.activationLimit}}</label>
-                            <span ng-if="(license.activationLimit - license.numberOfActivation) == 1 "><img
-                                    src="assets/images/Problem.png" class="license-status"/></span>
+                            <span ng-if="(license.activationLimit - license.numberOfActivation) == 1 ">
+                                <img src="assets/images/Problem.png" class="license-status"/></span>
                         </div>
                         <div class="col-sm-2">
-                            <button class="btn btn-primary" title="{{'ADD_KUOTA'|translate}}" ng-click="overrideActivationLimit()"><i class="fa fa-plus fa-lg"></i></button>
+                            <button class="btn btn-primary" title="{{'ADD_KUOTA'|translate}}" ng-click="overrideActivationLimit()" ng-disabled="disableDetail"><i class="fa fa-plus fa-lg"></i></button>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-sm-12 group-custom">
                     <div class="col-sm-offset-4 col-sm-8 value-custom">
-                        <button class="btn btn-primary" ng-disabled="(license.numberOfActivation>=license.activationLimit) && license.licenseStatus === 4" ng-click="licenseActivation()">{{"ACTIVATE"|translate}}</button>
-                        <button class="btn btn-danger" ng-click="licenseBlock()">{{"BLOCK"|translate}}</button>
+                        <button class="btn btn-primary" ng-disabled="(license.numberOfActivation===license.activationLimit) || disableDetail" ng-click="licenseActivation()">{{"ACTIVATE"|translate}}</button>
+                        <button class="btn btn-danger" ng-click="licenseBlock()" ng-disabled="disableDetail">{{"BLOCK"|translate}}</button>
                         <button ui-sref="^" class="btn btn-default">{{'CANCEL'|translate}}</button>
                     </div>
                 </div>

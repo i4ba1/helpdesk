@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-08-10 13:04:51
+ * @Last Modified time: 2017-08-10 14:42:43
  * 
  * Application Translate Configuration
  */
@@ -181,7 +181,11 @@
             SUCCESS_ACTIVATE_NOTIFICATION: "Aktivasi gagal",
             REASON_ACTIVATE: "Masukkan alasan aktivasi",
             OVERRIDE_LIMIT_TEXT: "Apakah yakin untuk menambah limit aktivasi ?",
-            OVERRIDE_LIMIT_REASON_TEXT: "Masukan alasan menambah aktivasi limit !"
+            OVERRIDE_LIMIT_REASON_TEXT: "Masukan alasan menambah aktivasi limit !",
+            BLOCK_SUCCESS: "Blokir Berhasil",
+            BLOCK_FAILED: "Blokir Gagal",
+            BLOCK_SUCCESS_MESSAGE: "Blokir serial number berhasil",
+            BLOCK_FAILED_MESSAGE: "Blokir serial number gagal",
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
