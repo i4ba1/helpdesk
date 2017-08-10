@@ -93,8 +93,8 @@
             }
         }
 
-        function activate(serialNumber) {
-            return $http.post(baseURL + "/snManagement/activate/", serialNumber);
+        function activate(licenseId, passkey, reason) {
+            return $http.post(baseURL + "/snManagement/activate/"+ licenseId+"/"+passkey+"/"+reason);
         }
 
         /**

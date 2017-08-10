@@ -82,8 +82,19 @@
         }
 
 
-        function licenseActivation(licenseId) {
-
+        function licenseActivation() {
+            DialogFactory.activationDialog("ACTIVATION").then(
+                function(yes) {
+                    RequestFactory.activate($stateParams.licenseId, yes.passkey, yes.reason).then(
+                        function (response) {
+                            DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_SCHOOL_UPDATE_NOTIFICATION", "Aktivasi key:"+response.data.activationKey], "sm");
+                        },function (error) {
+                            
+                        }
+                    );
+                },
+                function(no) {}
+            );
         }
 
         function licenseBlock(licenseId) {

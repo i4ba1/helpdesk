@@ -16,19 +16,17 @@
          * @param {*} size 
          * @param {*} contentExtra 
          */
-        function activationDialog(title, content, size, contentExtra) {
+        function activationDialog(title) {
             modalInstance = uibModal.open({
                 animation: true,
                 templateUrl: 'sections/components/activation-dialog.html',
                 controller: activationDialogController,
                 controllerAs: '$ctrl',
-                size: size,
+                size: "md",
                 resolve: {
                     params: function() {
                         return {
-                            title: title,
-                            content: content,
-                            contentExtra: contentExtra
+                            title: title
                         };
                     }
                 }
@@ -122,11 +120,11 @@
         function activationDialogController($uibModalInstance, params) {
             var ctrl = this;
             ctrl.title = params.title;
-            ctrl.content = params.content;
-            ctrl.contentExtra = params.contentExtra;
+            ctrl.passkey = "";
+            ctrl.reason = "";
 
             ctrl.ok = function() {
-                $uibModalInstance.close("close");
+                $uibModalInstance.close({passkey:ctrl.passkey, reason:ctrl.reason});
             };
 
 

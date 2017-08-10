@@ -108,18 +108,17 @@ public class SNServiceImpl implements SNService {
 	}
 
 	@Override
-	public License manuallyActivate(Long licenseId, String passkey) {
+	public License manuallyActivate(Long licenseId, String passkey, String reason) {
 		License snNumber = snRepo.findOne(licenseId);
 
 		try {
 			String activationKey = generateActivationKey(licenseId, passkey).getActivationKey();
 			snNumber.setActivationKey(activationKey);
-			snNumber.setActivationLimit((short)(snNumber.getActivationLimit()+1));
+			snNumber.setNumberOfActivation((short)(snNumber.getNumberOfActivation()+1));
 			snNumber = snRepo.saveAndFlush(snNumber);
 
 			status = 2;
-			message = "User has been activate serial number by Phone";
-			setLicenseHistory(snNumber, status, message);
+			setLicenseHistory(snNumber, status, reason);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -242,6 +241,7 @@ public class SNServiceImpl implements SNService {
 	public Map<String, Object> viewDetailLicense(Long licenseId) {
 		License license = snRepo.findLicenseById(licenseId);
 		List<LicenseHistory> histories = licenseHistoryRepo.findLicenseHistory(licenseId);
+		Object obj = licenseHistoryRepo.findLicenseHistoryByLicenseStatus(licenseId);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("licenseKey", license.getLicense());
@@ -253,6 +253,7 @@ public class SNServiceImpl implements SNService {
 		map.put("activationKey", license.getActivationKey());
 		map.put("createdDate", license.getCreatedDate());
 		map.put("licenseHistory", histories);
+		map.put("licenseStatus", obj);
 
 		return map;
 	}

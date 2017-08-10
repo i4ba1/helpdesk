@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-08-09 14:12:39
+ * @Last Modified time: 2017-08-10 11:01:32
  * 
  * Application Translate Configuration
  */
@@ -170,7 +170,12 @@
             SUCCESS_OVERRIDE_NOTIFICATION: "Activation limit telah di override",
             FAILED_OVERRIDE_NOTIFICATION: "Activation limit gagal di override",
             SAVE_TO_XLSX_CONFIRMATION: "Simpan data berhasil, apakah data akan diekspor ke file XLSX ?",
-            RELOAD_NOTIFICATION: "Data belum tersimpan, apakah yakin keluar dari halaman ini?"
+            RELOAD_NOTIFICATION: "Data belum tersimpan, apakah yakin keluar dari halaman ini?",
+            PASSKEY_LABEL: "Passkey",
+            PASSKEY_PLH: "Masukkan passkey",
+            FAILED_ACTIVATE_NOTIFICATION: "Aktivasi berhasil",
+            SUCCESS_ACTIVATE_NOTIFICATION: "Aktivasi gagal",
+            REASON_ACTIVATE: "Masukkan alasan aktivasi"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
