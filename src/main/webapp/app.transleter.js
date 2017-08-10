@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-08-10 11:54:40
+ * @Last Modified time: 2017-08-10 13:04:51
  * 
  * Application Translate Configuration
  */
@@ -67,7 +67,7 @@
             MAC_ADDR: "MAC",
             XLOCK: "XLock",
             SN_STATUS: "SN Status",
-            ACTIVATE: 'Activasi',
+            ACTIVATE: 'Aktivasi',
             REACTIVATE: 'Activasi Ulang',
             ACTIVATED: "Teraktivasi",
             UNACTIVATED: "Belum Teraktivasi",
@@ -179,7 +179,9 @@
             PASSKEY_PLH: "Masukkan passkey",
             FAILED_ACTIVATE_NOTIFICATION: "Aktivasi berhasil",
             SUCCESS_ACTIVATE_NOTIFICATION: "Aktivasi gagal",
-            REASON_ACTIVATE: "Masukkan alasan aktivasi"
+            REASON_ACTIVATE: "Masukkan alasan aktivasi",
+            OVERRIDE_LIMIT_TEXT: "Apakah yakin untuk menambah limit aktivasi ?",
+            OVERRIDE_LIMIT_REASON_TEXT: "Masukan alasan menambah aktivasi limit !"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

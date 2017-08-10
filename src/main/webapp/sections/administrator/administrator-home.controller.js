@@ -271,7 +271,7 @@
         $scope.logout = logout;
 
         // call push menu for first time when page reload
-        pushMenu();
+        // pushMenu();
 
         /**--------------------------------------- */
 

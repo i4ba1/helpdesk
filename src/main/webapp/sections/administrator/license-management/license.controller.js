@@ -87,7 +87,11 @@
                 function(yes) {
                     RequestFactory.activate($stateParams.licenseId, yes.passkey, yes.reason).then(
                         function(response) {
-                            DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_SCHOOL_UPDATE_NOTIFICATION", "Aktivasi key:" + response.data.activationKey], "sm");
+                            DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_SCHOOL_UPDATE_NOTIFICATION", "Aktivasi key:" + response.data.activationKey], "sm").then(
+                                function() {
+                                    $state.reload();
+                                }
+                            );
                         },
                         function(error) {
 
@@ -119,11 +123,16 @@
         }
 
         function overrideActivationLimit() {
-            DialogFactory.confirmationWithMessageDialog("CONFIRMATION", "OVERRIDE_CONFIRMATION", "OVERRIDE_REASON_TEXT").then(
-                function(message) {
-                    RequestFactory.overrideActivationLimit($stateParams.licenseId, message).then(
+
+            DialogFactory.confirmationWithMessageDialog("CONFIRMATION", "OVERRIDE_LIMIT_TEXT", "OVERRIDE_LIMIT_REASON_TEXT").then(
+                function(reason) {
+                    RequestFactory.overrideActivationLimit($stateParams.licenseId, reason).then(
                         function(response) {
-                            DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_OVERRIDE_NOTIFICATION"], "sm");
+                            DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_OVERRIDE_NOTIFICATION"], "sm").then(
+                                function() {
+                                    $state.reload();
+                                }
+                            );
                             $scope.license.activationLimit = response.data.activationLimit;
                         },
                         function(error) {
@@ -131,10 +140,10 @@
                         }
                     );
                 },
-                function(no) {
-
-                }
+                function(no) {}
             );
+
+
         }
     }
 

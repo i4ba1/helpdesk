@@ -34,8 +34,7 @@
                     <div class="col-sm-4 label-custom">{{"ACTIVATION_COUNT"|translate}}</div>
                     <div class="col-sm-8">
                         <div class="col-sm-8">
-                            <label for="" class="form-control">{{license.numberOfActivation
-                                +" Of "+license.activationLimit}}</label>
+                            <label for="" class="form-control">{{license.numberOfActivation +" Of "+license.activationLimit}}</label>
                             <span ng-if="(license.activationLimit - license.numberOfActivation) == 1 "><img
                                     src="assets/images/Problem.png" class="license-status"/></span>
                         </div>
