@@ -21,7 +21,7 @@ public interface SNService{
 
     License generateActivationKey(Long id, String passKey);
 
-    License manuallyActivate(Long licenseId, String passkey);
+    License manuallyActivate(Long licenseId, String passkey, String reason);
 
     TreeMap<String, List<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO);
     

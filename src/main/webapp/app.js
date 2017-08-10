@@ -14,7 +14,15 @@
             'ui.select',
             'ui.bootstrap',
             'ui.router',
-            "checklist-model"
-        ]);
+            "checklist-model",
+            'LocalStorageModule'
+        ])
+        .config(config);
+
+    function config(localStorageServiceProvider) {
+        localStorageServiceProvider.setPrefix('helpdesk');
+        localStorageServiceProvider.setDefaultToCookie(false);
+        localStorageServiceProvider.setStorageType('localStorage');
+    }
 
 })();

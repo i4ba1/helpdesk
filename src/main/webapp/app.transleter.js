@@ -2,7 +2,7 @@
  * @Author: Marlina_Kreatif 
  * @Date: 2017-07-18 10:06:11 
  * @Last Modified by: Margono Sugeng Purwoko
- * @Last Modified time: 2017-08-08 15:35:34
+ * @Last Modified time: 2017-08-10 11:54:40
  * 
  * Application Translate Configuration
  */
@@ -172,7 +172,14 @@
             OVERRIDE_REASON_TEXT: "Masukkanlah alasan untuk overrid aktivasi limit",
             OVERRIDE_CONFIRMATION: "Apakah yakin untuk melakukan overrid aktivasi limit ?",
             PASSKEY_PLH: "Masukkan passkey",
-            PASKEY_LABEL: "Passkey"
+            PASKEY_LABEL: "Passkey",
+            SAVE_TO_XLSX_CONFIRMATION: "Simpan data berhasil, apakah data akan diekspor ke file XLSX ?",
+            RELOAD_NOTIFICATION: "Data belum tersimpan, apakah yakin keluar dari halaman ini?",
+            PASSKEY_LABEL: "Passkey",
+            PASSKEY_PLH: "Masukkan passkey",
+            FAILED_ACTIVATE_NOTIFICATION: "Aktivasi berhasil",
+            SUCCESS_ACTIVATE_NOTIFICATION: "Aktivasi gagal",
+            REASON_ACTIVATE: "Masukkan alasan aktivasi"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

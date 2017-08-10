@@ -93,8 +93,8 @@
             }
         }
 
-        function activate(licenseId, passKey) {
-            return $http.post(baseURL + "/snManagement/activate/", licenseId+"/"+passKey);
+        function activate(licenseId, passkey, reason) {
+            return $http.post(baseURL + "/snManagement/activate/" + licenseId + "/" + passkey + "/" + reason);
         }
 
         /**
@@ -182,7 +182,7 @@
 
         function updateSchool(licenseId, schoolName) {
 
-            return $http.put(baseURL + "/snManagement/updateSchool/"+ licenseId+"/"+schoolName);
+            return $http.put(baseURL + "/snManagement/updateSchool/" + licenseId + "/" + schoolName);
         }
 
         function deleteSchool(schoolId) {
@@ -222,7 +222,7 @@
         }
 
         function overrideActivationLimit(licenseId, message) {
-            return $http.put(baseURL + "/snManagement/overrideActivationLimit/" + licenseId+"/"+message);
+            return $http.put(baseURL + "/snManagement/overrideActivationLimit/" + licenseId + "/" + message);
         }
     }
 

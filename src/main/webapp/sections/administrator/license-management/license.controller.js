@@ -82,15 +82,20 @@
         }
 
 
-        function licenseActivation(licenseId, passKey) {
-            DialogFactory.confirmationWithMessageDialog("CONFIRMATION", "PASKEY_LABEL", "PASSKEY_PLH").then(
-                function (message) {
-                    RequestFactory.activate($stateParams.licenseId, message);
-                },function (no) {
+        function licenseActivation() {
+            DialogFactory.activationDialog("ACTIVATION").then(
+                function(yes) {
+                    RequestFactory.activate($stateParams.licenseId, yes.passkey, yes.reason).then(
+                        function(response) {
+                            DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_SCHOOL_UPDATE_NOTIFICATION", "Aktivasi key:" + response.data.activationKey], "sm");
+                        },
+                        function(error) {
 
-                }
+                        }
+                    );
+                },
+                function(no) {}
             );
-
         }
 
         function licenseBlock(licenseId) {
@@ -104,31 +109,32 @@
 
         function updateSchool(schoolName) {
             RequestFactory.updateSchool($stateParams.licenseId, schoolName).then(
-                function (response) {
+                function(response) {
                     DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_SCHOOL_UPDATE_NOTIFICATION"], "sm");
-                },function (error) {
+                },
+                function(error) {
                     DialogFactory.messageDialog("NOTIFICATION", ["FAILED_SCHOOL_UPDATE_NOTIFICATION"], "sm");
                 }
             );
         }
 
-        function overrideActivationLimit(){
+        function overrideActivationLimit() {
             DialogFactory.confirmationWithMessageDialog("CONFIRMATION", "OVERRIDE_CONFIRMATION", "OVERRIDE_REASON_TEXT").then(
-                function (message) {
+                function(message) {
                     RequestFactory.overrideActivationLimit($stateParams.licenseId, message).then(
-                        function (response) {
+                        function(response) {
                             DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_OVERRIDE_NOTIFICATION"], "sm");
                             $scope.license.activationLimit = response.data.activationLimit;
-                        },function (error) {
+                        },
+                        function(error) {
                             DialogFactory.messageDialog("NOTIFICATION", ["FAILED_OVERRIDE_NOTIFICATION"], "sm");
                         }
                     );
-                },function (no) {
-                    
+                },
+                function(no) {
+
                 }
             );
-
-
         }
     }
 

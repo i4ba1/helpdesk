@@ -4,6 +4,7 @@ import java.util.*;
 
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
+import id.web.pos.integra.gawl.Gawl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,9 +56,22 @@ public class SNManagementController {
         return new ResponseEntity<>(serialNumber, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/activate/{licenseId}/{passkey}", method = RequestMethod.POST)
-    public ResponseEntity<License> activate(@PathVariable("licenseId") Long licenseId, @PathVariable("passkey")String passkey) {
-        License result = snService.manuallyActivate(licenseId, passkey);
+    @RequestMapping(value = "/activate/{licenseId}/{passkey}/{reason}", method = RequestMethod.POST)
+    public ResponseEntity<License> activate(@PathVariable("licenseId") Long licenseId, @PathVariable("passkey") String passkey, @PathVariable("reason") String reason) {
+        Gawl gawl = new Gawl();
+        License result = snService.findSN(licenseId);
+
+        try {
+            if (result.getActivationKey() == null || result.getActivationKey().length() <= 0) {
+                result = snService.manuallyActivate(licenseId, passkey, reason);
+            } else if (gawl.challenge(passkey, result.getActivationKey())) {
+                result = snService.manuallyActivate(licenseId, passkey, reason);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (result == null) {
             return new ResponseEntity<>(result, HttpStatus.EXPECTATION_FAILED);
         }
@@ -84,7 +98,7 @@ public class SNManagementController {
         for (License license : listSN) {
             objectMap = new TreeMap<>();
             objectMap.put("serialNumber", license);
-            objectMap.put("status", (int)snService.fetchLicenseHistory(license.getId()).getLicenseStatus());
+            objectMap.put("status", (int) snService.fetchLicenseHistory(license.getId()).getLicenseStatus());
             result.add(objectMap);
         }
 
@@ -179,8 +193,8 @@ public class SNManagementController {
         return new ResponseEntity<>(object, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/updateSchool/{licenseId}/{schoolName}", method = RequestMethod.PUT)
-    public ResponseEntity<License> updateSchool(@PathVariable Long licenseId, @PathVariable String schoolName){
+    @RequestMapping(value = "/updateSchool/{licenseId}/{schoolName}", method = RequestMethod.PUT)
+    public ResponseEntity<License> updateSchool(@PathVariable Long licenseId, @PathVariable String schoolName) {
         License license = snRepo.findOne(licenseId);
         if (license == null) {
             return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
