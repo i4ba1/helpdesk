@@ -89,9 +89,10 @@
                 function(yes) {
                     RequestFactory.activate($stateParams.licenseId, yes.passkey, yes.reason).then(
                         function(response) {
-                            DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_SCHOOL_UPDATE_NOTIFICATION", "Aktivasi key:" + response.data.activationKey], "sm").then(
+                            DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_ACTIVATE_NOTIFICATION", "Aktivasi key:" + response.data.activationKey], "sm").then(
                                 function() {
-                                    $state.reload();
+                                    //$state.reload();
+                                    $state.go("administrator.license.license-detail", {}, {reload: 'administrator.license.license-detail'});
                                 }
                             );
                         },

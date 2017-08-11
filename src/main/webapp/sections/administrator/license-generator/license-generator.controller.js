@@ -143,7 +143,7 @@
                     "No.": key + 1,
                     "Serial Number": license.license,
                     "Produk": license.product.productName,
-                    "Jumlah Pengguna": license.numberOfClient ? license.numberOfClient : " - ",
+                    "Jumlah Pengguna": license.numberOfClient ? license.numberOfClient : "1",
                     "Sekolah": license.schoolName,
                     "Tanggal Dibuat": new Date(license.createdDate).toLocaleDateString()
                 })
