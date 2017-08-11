@@ -14,3 +14,4 @@ build
 .idea/**
 src/main/webapp/.idea/workspace.xml
 out/**
+src/main/java/id/co/knt/helpdesk/api/utilities/GeneratePasskey.java
