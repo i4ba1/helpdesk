@@ -23,7 +23,7 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            <i class="fa fa-clock-o fa-fw"> </i> Taks Panel
+                            <i class="fa fa-clock-o fa-fw"> </i>
                         </h3>
                     </div>
                     <div class="panel-body" style="min-height:70vh">
@@ -31,14 +31,17 @@
                             <table st-table="rowCollections" st-safe-src="notifications" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th width="100">No.</th>
-                                        <th colspan="2">{{'NOTIFICATION'|translate}}</th>
+                                        <th width="50">{{"NO"|translate}}</th>
+                                        <th>{{'NOTIFICATION'|translate}}</th>
+                                        <th>{{'DATE'|translate}}</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat='row in rowCollections'>
                                         <td>{{(currentPage-1)*itemPage+$index+1}}</td>
                                         <td>{{row.message}}</td>
+                                        <td>{{row.createdDate|date:"dd/MM/yyyy hh:mm:ss"}}</td>
                                         <td width="25">
                                             <a ui-sref="administrator.license.license-detail({licenseId:row.license.id,historyId:row.id})">
                                                 <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
