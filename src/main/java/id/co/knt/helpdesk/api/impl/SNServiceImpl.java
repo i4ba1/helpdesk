@@ -50,6 +50,7 @@ public class SNServiceImpl implements SNService {
 				try {
 					Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
 					if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
+
 						byte Type = extractResult.get(Gawl.TYPE);
 
 						product = productRepo.findByProductCode(new Integer(Type));

@@ -81,7 +81,20 @@ public class SNManagementController {
 
     @RequestMapping(value = "/activateByInternet/", method = RequestMethod.POST)
     public ResponseEntity<License> activateByInternet(@RequestBody License serialNumber) {
-        License result = snService.onlineActivation(serialNumber);
+        Gawl gawl = new Gawl();
+        License currentLicense = snService.findBySerial(serialNumber.getLicense());
+        License result = null;
+
+        try {
+            if (currentLicense.getActivationKey() == null || currentLicense.getActivationKey().length() <= 0) {
+                result = snService.onlineActivation(serialNumber);
+            } else if (gawl.challenge(serialNumber.getPassKey(), currentLicense.getActivationKey())) {
+                result = snService.onlineActivation(serialNumber);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         if (result == null) {
             return new ResponseEntity<>(result, HttpStatus.EXPECTATION_FAILED);
         }
