@@ -39,11 +39,26 @@
                             <td>{{row.serialNumber.schoolName}}</td>
                             <td>{{row.serialNumber.createdDate |date:"dd/MM/yyyy"}}</td>
                             <td ng-switch="row.status">
-                                <span ng-switch-when="0"><img src="assets/images/Generated.png" class="license-status" /></span>
-                                <span ng-switch-when="1"><img src="assets/images/Registered.png" class="license-status" /></span>
-                                <span ng-switch-when="2"><img src="assets/images/Activated.png" class="license-status"></span>
-                                <span ng-switch-when="3"><img src="assets/images/Problem.png" class="license-status"></span>
-                                <span ng-switch-when="4"><img src="assets/images/Disabled.png" class="license-status"></span>
+                                <span uib-tooltip="License already generated"
+                                      tooltip-placement="bottom"
+                                      tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="assets/images/Generated.png"
+                                                                                             class="license-status"/></span>
+                                <span uib-tooltip="License already registered"
+                                      tooltip-placement="bottom"
+                                      tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="assets/images/Registered.png"
+                                                                                             class="license-status"/></span>
+                                <span uib-tooltip="License already activated"
+                                      tooltip-placement="bottom"
+                                      tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="assets/images/Activated.png"
+                                                                                             class="license-status"></span>
+                                <span uib-tooltip="License have a problem"
+                                      tooltip-placement="bottom"
+                                      tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="assets/images/Problem.png"
+                                                                                             class="license-status"></span>
+                                <span uib-tooltip="License already disabled"
+                                      tooltip-placement="bottom"
+                                      tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="assets/images/Disabled.png"
+                                                                                             class="license-status"></span>
                             </td>
                             <td width="25">
                                 <a ui-sref="administrator.license.license-detail({licenseId:row.serialNumber.id})">

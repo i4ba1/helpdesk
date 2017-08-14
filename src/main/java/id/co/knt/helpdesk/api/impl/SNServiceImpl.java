@@ -64,7 +64,10 @@ public class SNServiceImpl implements SNService {
 						snRepo.save(snNumber);
 						snNumber = snRepo.save(snNumber);
 
-						message = "One license for " + product.getProductName() + " has been ";
+						if (state == 0)
+							message = "One license for " + product.getProductName() + " has been generated";
+						else
+							message = "One license for " + product.getProductName() + " has been registered";
 						status = (short) state;
 						setLicenseHistory(snNumber, status, message);
 					} else {
