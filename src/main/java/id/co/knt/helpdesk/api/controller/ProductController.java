@@ -49,10 +49,21 @@ public class ProductController {
 		List<Product> products = productRepo.findAll();
 
 		if (products.size() > 0) {
-			return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+			return new ResponseEntity<>(products, HttpStatus.OK);
 		}
 
-		return new ResponseEntity<List<Product>>(products, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(products, HttpStatus.NOT_FOUND);
+	}
+
+	@RequestMapping(value = { "/findProduct/{productCode}" }, method = RequestMethod.GET)
+	public ResponseEntity<Product> getProductByCode(@PathVariable Integer productCode){
+		Product product = productRepo.findByProductCode(productCode);
+
+		if (product != null) {
+			return new ResponseEntity<>(product, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<>(product, HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = { "/createProduct/" }, method = RequestMethod.POST)
@@ -67,11 +78,11 @@ public class ProductController {
 				subProductRepo.save(subProduct);
 			}
 
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
@@ -84,10 +95,10 @@ public class ProductController {
 		productDto.setSubProducts(subProductRepo.findAllSubProductByProductId(productId));
 
 		if (!productDto.getProduct().equals(null)) {
-			return new ResponseEntity<ProductDTO>(productDto, HttpStatus.OK);
+			return new ResponseEntity<>(productDto, HttpStatus.OK);
 		}
 
-		return new ResponseEntity<ProductDTO>(productDto, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(productDto, HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = { "/updateProduct/" }, method = RequestMethod.PUT)
@@ -110,10 +121,10 @@ public class ProductController {
 				subProductRepo.saveAndFlush(subProduct);
 			}
 			
-			return new ResponseEntity<Void>( HttpStatus.OK);
+			return new ResponseEntity<>( HttpStatus.OK);
 		}
 
-		return new ResponseEntity<Void>( HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>( HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = { "/deleteProduct/{productId}" }, method = RequestMethod.DELETE)

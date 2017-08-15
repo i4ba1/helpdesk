@@ -91,7 +91,7 @@ public class SNManagementController {
             } else if (gawl.challenge(serialNumber.getPassKey(), currentLicense.getActivationKey())) {
                 result = snService.onlineActivation(serialNumber);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -217,26 +217,26 @@ public class SNManagementController {
         return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/overrideActivationLimit/{licenseId}/{message}", method = RequestMethod.PUT)
-    public ResponseEntity<License> overrideActivationLimit(@PathVariable Long licenseId, @PathVariable String message){
+    @RequestMapping(value = "/overrideActivationLimit/{licenseId}/{message}", method = RequestMethod.PUT)
+    public ResponseEntity<License> overrideActivationLimit(@PathVariable Long licenseId, @PathVariable String message) {
         License license = snRepo.findOne(licenseId);
         if (license == null) {
             return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
         }
-        license.setActivationLimit((short)(license.getActivationLimit()+1));
-        snService.setLicenseHistory(license, (short)3, message);
+        license.setActivationLimit((short) (license.getActivationLimit() + 1));
+        snService.setLicenseHistory(license, (short) 3, message);
 
         return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/blocked/{licenseId}/{message}", method = RequestMethod.PUT)
-    public ResponseEntity<License> blocked(@PathVariable Long licenseId, @PathVariable String message){
+    @RequestMapping(value = "/blocked/{licenseId}/{message}", method = RequestMethod.PUT)
+    public ResponseEntity<License> blocked(@PathVariable Long licenseId, @PathVariable String message) {
         License license = snRepo.findOne(licenseId);
         if (license == null) {
             return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
         }
-        license.setActivationLimit((short)(license.getActivationLimit()+1));
-        snService.setLicenseHistory(license, (short)4, message);
+        license.setActivationLimit((short) (license.getActivationLimit() + 1));
+        snService.setLicenseHistory(license, (short) 4, message);
 
         return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
     }

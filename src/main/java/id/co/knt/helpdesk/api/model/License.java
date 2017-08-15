@@ -47,9 +47,6 @@ public class License implements Serializable {
 	@Column(name = "xlock")
 	private String xlock;
 
-	@Column(name = "mac_addr")
-	private byte[] macAddr;
-
 	@Column(name = "number_of_license")
 	private Integer numberOfClient = 0;
 
@@ -118,14 +115,6 @@ public class License implements Serializable {
 
 	public String getXlock() {
 		return this.xlock;
-	}
-
-	public byte[] getMacAddr() {
-		return macAddr;
-	}
-
-	public void setMacAddr(byte[] macAddr) {
-		this.macAddr = macAddr;
 	}
 
 	public Integer getNumberOfClient() {
