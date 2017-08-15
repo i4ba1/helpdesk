@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public interface SNService{
-    License registerSerialNumber(License serialNumber, int state);
+    int registerSerialNumber(License serialNumber, int state);
 
-    License onlineActivation(License serialNumber);
+    int onlineActivation(License serialNumber);
 
     List<License> findAllSN();
 

@@ -1,7 +1,9 @@
 package id.co.knt.helpdesk.api.controller;
 
+import java.io.IOException;
 import java.util.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.web.pos.integra.gawl.Gawl;
@@ -32,18 +34,23 @@ public class SNManagementController {
     private SNRepo snRepo;
 
     @RequestMapping(value = "/register/", method = RequestMethod.POST)
-    public ResponseEntity<License> register(@RequestBody License serialNumber) {
-        if (snService.findBySerial(serialNumber.getLicense()) != null) {
-            serialNumber = null;
-            return new ResponseEntity<>(serialNumber, HttpStatus.CONFLICT);
+    public ResponseEntity<Integer> register(@RequestBody String jsonLicense) {
+        ObjectMapper mapper = new ObjectMapper();
+        License license = null;
+        try {
+            license = mapper.readValue(jsonLicense, License.class);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        License number = snService.registerSerialNumber(serialNumber, 1);
-        if (!serialNumber.equals(null)) {
-            return new ResponseEntity<>(number, HttpStatus.OK);
+        int error = snService.registerSerialNumber(license, 1);
+        if (error == 1) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }else if(error == 2){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        return new ResponseEntity<>(number, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
@@ -80,26 +87,34 @@ public class SNManagementController {
     }
 
     @RequestMapping(value = "/activateByInternet/", method = RequestMethod.POST)
-    public ResponseEntity<License> activateByInternet(@RequestBody License serialNumber) {
+    public ResponseEntity<Integer> activateByInternet(@RequestBody String jsonLicense) {
         Gawl gawl = new Gawl();
+        ObjectMapper mapper = new ObjectMapper();
+        License serialNumber = null;
+        try {
+            serialNumber = mapper.readValue(jsonLicense, License.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         License currentLicense = snService.findBySerial(serialNumber.getLicense());
-        License result = null;
+        int error  = 0;
 
         try {
             if (currentLicense.getActivationKey() == null || currentLicense.getActivationKey().length() <= 0) {
-                result = snService.onlineActivation(serialNumber);
+                error = snService.onlineActivation(serialNumber);
             } else if (gawl.challenge(serialNumber.getPassKey(), currentLicense.getActivationKey())) {
-                result = snService.onlineActivation(serialNumber);
+                error = snService.onlineActivation(serialNumber);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (result == null) {
-            return new ResponseEntity<>(result, HttpStatus.EXPECTATION_FAILED);
+        if (error > 0) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = {""}, method = RequestMethod.GET)
