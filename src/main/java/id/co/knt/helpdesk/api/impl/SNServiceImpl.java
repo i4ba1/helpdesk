@@ -79,7 +79,7 @@ public class SNServiceImpl implements SNService {
             return 1;
         }
 
-        return 0r;
+        return 0;
     }
 
     @Override

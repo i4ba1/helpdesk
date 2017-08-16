@@ -34,23 +34,23 @@ public class SNManagementController {
     private SNRepo snRepo;
 
     @RequestMapping(value = "/register/", method = RequestMethod.POST)
-    public ResponseEntity<Integer> register(@RequestBody String jsonLicense) {
-        ObjectMapper mapper = new ObjectMapper();
+    public ResponseEntity<Integer> register(@RequestBody License license) {
+        /*ObjectMapper mapper = new ObjectMapper();
         License license = null;
         try {
             license = mapper.readValue(jsonLicense, License.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+*/
         int error = snService.registerSerialNumber(license, 1);
         if (error == 1) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(error, HttpStatus.CONFLICT);
         }else if(error == 2){
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(error, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
@@ -64,7 +64,7 @@ public class SNManagementController {
     }
 
     @RequestMapping(value = "/activate/{licenseId}/{passkey}/{reason}", method = RequestMethod.POST)
-    public ResponseEntity<License> activate(@PathVariable("licenseId") Long licenseId, @PathVariable("passkey") String passkey, @PathVariable("reason") String reason) {
+    public ResponseEntity<License> activateByPhone(@PathVariable("licenseId") Long licenseId, @PathVariable("passkey") String passkey, @PathVariable("reason") String reason) {
         Gawl gawl = new Gawl();
         License result = snService.findSN(licenseId);
 
@@ -87,16 +87,8 @@ public class SNManagementController {
     }
 
     @RequestMapping(value = "/activateByInternet/", method = RequestMethod.POST)
-    public ResponseEntity<Integer> activateByInternet(@RequestBody String jsonLicense) {
+    public ResponseEntity<Integer> activateByInternet(@RequestBody License serialNumber) {
         Gawl gawl = new Gawl();
-        ObjectMapper mapper = new ObjectMapper();
-        License serialNumber = null;
-        try {
-            serialNumber = mapper.readValue(jsonLicense, License.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         License currentLicense = snService.findBySerial(serialNumber.getLicense());
         int error  = 0;
 
