@@ -128,13 +128,10 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public int onlineActivation(License serialNumber) {
+    public License onlineActivation(License serialNumber) {
 
         License snNumber = null;
         License sn = snRepo.findByLicense(serialNumber.getLicense());
-        if (sn.getNumberOfActivation() <= sn.getActivationLimit()) {
-            return 1;
-        }
 
         if (sn != null) {
             if (gawl.validate(serialNumber.getLicense())) {
@@ -155,7 +152,7 @@ public class SNServiceImpl implements SNService {
             }
         }
 
-        return 0;
+        return snNumber;
     }
 
     @Override

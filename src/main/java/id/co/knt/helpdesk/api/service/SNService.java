@@ -11,7 +11,7 @@ import java.util.TreeMap;
 public interface SNService{
     int registerSerialNumber(License serialNumber, int state);
 
-    int onlineActivation(License serialNumber);
+    License onlineActivation(License serialNumber);
 
     List<License> findAllSN();
 
