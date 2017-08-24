@@ -115,6 +115,7 @@ public class SNServiceImpl implements SNService {
         try {
             String activationKey = generateActivationKey(licenseId, passkey).getActivationKey();
             snNumber.setActivationKey(activationKey);
+            snNumber.setActivationKey(activationKey);
             snNumber.setNumberOfActivation((short) (snNumber.getNumberOfActivation() + 1));
             snNumber = snRepo.saveAndFlush(snNumber);
 
@@ -140,7 +141,9 @@ public class SNServiceImpl implements SNService {
                     if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
                         snNumber = new License();
                         String activationKey = gawl.activate(serialNumber.getPassKey());
+                        snNumber.setPassKey(serialNumber.getPassKey());
                         snNumber.setActivationKey(activationKey);
+                        snNumber.setNumberOfActivation((short)(sn.getNumberOfActivation()+1));
                         snNumber = snRepo.saveAndFlush(snNumber);
                         String message = "One license has been activated";
                         status = 2;
