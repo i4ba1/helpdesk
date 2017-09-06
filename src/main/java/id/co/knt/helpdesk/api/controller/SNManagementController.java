@@ -1,9 +1,7 @@
 package id.co.knt.helpdesk.api.controller;
 
-import java.io.IOException;
 import java.util.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.web.pos.integra.gawl.Gawl;
@@ -35,17 +33,9 @@ public class SNManagementController {
 
     @RequestMapping(value = "/register/", method = RequestMethod.POST)
     public ResponseEntity<Integer> register(@RequestBody License license) {
-        /*ObjectMapper mapper = new ObjectMapper();
-        License license = null;
-        try {
-            license = mapper.readValue(jsonLicense, License.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-*/
         int error = snService.registerSerialNumber(license, 1);
         if (error == 1) {
-            return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(error, HttpStatus.ACCEPTED);
         }else if(error == 2){
             return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
         }

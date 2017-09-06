@@ -58,7 +58,7 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:5.2.9.Final'
     compile 'org.hibernate:hibernate-core:5.2.9.Final'
     compile 'org.javassist:javassist:3.21.0-GA'
-    compile 'id.web.post.integra.gawl:gawl12:1.2'
+    compile 'id.web.pos.integra.gawl:gawl12:1.2'
     compile 'com.jsoniter:jsoniter:0.9.8'
     compile 'com.fasterxml.jackson.core:jackson-core:2.8.8'
     compile 'org.postgresql:postgresql:9.4-1200-jdbc41'

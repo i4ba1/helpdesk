@@ -45,8 +45,8 @@ public class SNServiceImpl implements SNService {
         License sn = snRepo.findByLicense(serialNumber.getLicense());
         Product product = null;
 
-        if (sn == null) {
-            if (gawl.validate(serialNumber.getLicense())) {
+        if (gawl.validate(serialNumber.getLicense())) {
+            if (sn == null) {
                 try {
                     Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
                     byte Type = extractResult.get(Gawl.TYPE);
@@ -71,12 +71,13 @@ public class SNServiceImpl implements SNService {
                     setLicenseHistory(snNumber, status, message);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    return 2;
                 }
-            }else{
-                return 2;
+            } else {
+                return 1;
             }
         } else {
-            return 1;
+            return 2;
         }
 
         return 0;
@@ -143,7 +144,7 @@ public class SNServiceImpl implements SNService {
                         String activationKey = gawl.activate(serialNumber.getPassKey());
                         snNumber.setPassKey(serialNumber.getPassKey());
                         snNumber.setActivationKey(activationKey);
-                        snNumber.setNumberOfActivation((short)(sn.getNumberOfActivation()+1));
+                        snNumber.setNumberOfActivation((short) (sn.getNumberOfActivation() + 1));
                         snNumber = snRepo.saveAndFlush(snNumber);
                         String message = "One license has been activated";
                         status = 2;
