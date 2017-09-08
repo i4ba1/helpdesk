@@ -13,7 +13,7 @@ apply plugin: 'com.bmuschko.tomcat'
 
 war{
     baseName = 'helpdesk'
-    version = '1.0.0-release'
+    //  version = '1.0.0-release'
 }
 
 // JDK 8
