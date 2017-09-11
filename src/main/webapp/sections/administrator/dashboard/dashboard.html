@@ -3,23 +3,19 @@
     <section class="content">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-            <div class="col-lg-6">
-                <div class="col-lg-6 col-xs-6" ng-repeat="product in products track by $index">
+            <div class="col-lg-6 col-md-6 col-sm-12  col-xs-12 ">
+                <div class="col-lg-6 col-md-6 col-sm-12  col-xs-12 " ng-repeat="product in products track by $index">
                     <!-- small box -->
                     <div class="small-box" ng-class="getBackground($index)">
-                        <div class="inner">
+                        <div class="inner text-center">
                             <h3>{{product.licenseCount}}</h3>
-                            <p>{{product.productName}}</p>
                         </div>
-                        <div class="icon">
-                            <i class="ion ion-bag"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i
-                            class="fa fa-arrow-circle-right"></i></a>
+
+                        <span class="small-box-footer" style="min-height:50px">{{product.productName}}</span>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 col-md-6 col-sm-12  col-xs-12 ">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title">
