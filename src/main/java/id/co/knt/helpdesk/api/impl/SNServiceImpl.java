@@ -4,6 +4,8 @@ import java.util.*;
 
 import id.co.knt.helpdesk.api.model.SubProduct;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
+import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
+import id.co.knt.helpdesk.api.repositories.SubProductRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +36,18 @@ public class SNServiceImpl implements SNService {
     private LicenseHistory licenseHistory;
 
     @Autowired
+    private SubProductRepo subProductRepo;
+
+    @Autowired
     private LicenseHistoryRepo licenseHistoryRepo;
 
     private short status = 0;
     private String message = "";
+
+    private enum productTypeChoice{
+        EL,
+        EP
+    }
 
     @Override
     public int registerSerialNumber(License serialNumber, int state) {
@@ -84,9 +94,28 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public List<License> findAllSN() {
+    public List<ListLicenseDTO> findAllSN() {
         List<License> serialNumbers = snRepo.findAllLicense();
-        return serialNumbers;
+        List<ListLicenseDTO> dtoList = new ArrayList<>();
+        ListLicenseDTO listLicenseDTO;
+
+        for (License sn:serialNumbers) {
+            listLicenseDTO = new ListLicenseDTO();
+            listLicenseDTO.setSerialId(sn.getId());
+            listLicenseDTO.setSerial(sn.getLicense());
+            if(sn.getProduct().getSubModuleType().equals(productTypeChoice.EP)) {
+                List<SubProduct> subProducts = subProductRepo.findAllSubProductByProductId(sn.getProduct().getId());
+                for (SubProduct sp:subProducts) {
+                    listLicenseDTO.setProductName(sn.getProduct().getProductName()+"-"+sp.getLabel()); ;
+                }
+            }
+            listLicenseDTO.setCreatedDate(sn.getCreatedDate());
+            listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
+            listLicenseDTO.setSchoolName(sn.getSchoolName());
+            dtoList.add(listLicenseDTO);
+        }
+
+        return dtoList;
     }
 
     @Override

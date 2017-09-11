@@ -3,6 +3,7 @@ package id.co.knt.helpdesk.api.controller;
 import java.util.*;
 
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
+import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.web.pos.integra.gawl.Gawl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,14 +104,14 @@ public class SNManagementController {
 
     @RequestMapping(value = {""}, method = RequestMethod.GET)
     public ResponseEntity<List<Map<String, Object>>> findAllSN() {
-        List<License> listSN = snService.findAllSN();
+        List<ListLicenseDTO> listSN = snService.findAllSN();
         List<Map<String, Object>> result = new ArrayList<>();
         Map<String, Object> objectMap = null;
 
-        for (License license : listSN) {
+        for (ListLicenseDTO data : listSN) {
             objectMap = new TreeMap<>();
-            objectMap.put("serialNumber", license);
-            objectMap.put("status", (int) snService.fetchLicenseHistory(license.getId()).getLicenseStatus());
+            objectMap.put("serialNumber", data);
+            objectMap.put("status", (int) snService.fetchLicenseHistory(data.getSerialId()).getLicenseStatus());
             result.add(objectMap);
         }
 

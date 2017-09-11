@@ -3,6 +3,7 @@ package id.co.knt.helpdesk.api.service;
 import id.co.knt.helpdesk.api.model.License;
 import id.co.knt.helpdesk.api.model.LicenseHistory;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
+import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ public interface SNService{
 
     License onlineActivation(License serialNumber);
 
-    List<License> findAllSN();
+    List<ListLicenseDTO> findAllSN();
 
     License findSN(Long id);
     
