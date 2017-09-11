@@ -9,11 +9,7 @@ import id.web.pos.integra.gawl.Gawl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import id.co.knt.helpdesk.api.model.License;
 import id.co.knt.helpdesk.api.model.LicenseHistory;
@@ -239,5 +235,15 @@ public class SNManagementController {
         snService.setLicenseHistory(license, (short) 4, message);
 
         return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/validateActivationKey", method = RequestMethod.POST)
+    public ResponseEntity<License> checkActivationCode(@RequestBody License license){
+        License currentLicense = snRepo.findOne(license.getId());
+        if(!currentLicense.getActivationKey().equals(license.getLicense())){
+            return new ResponseEntity<>(currentLicense, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity<>(currentLicense, HttpStatus.OK);
     }
 }
