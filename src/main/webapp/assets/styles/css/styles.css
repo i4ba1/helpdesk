@@ -133,10 +133,13 @@
   border: 1px dotted rgba(0, 0, 255, 0.5); }
 
 .admin-dash {
-  background: url("../../images/main-bg.jpg") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
+  background: white;
+  background: -moz-linear-gradient(left, white 0%, #f6f6f6 47%, #ededed 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, white), color-stop(47%, #f6f6f6), color-stop(100%, #ededed));
+  background: -webkit-linear-gradient(left, white 0%, #f6f6f6 47%, #ededed 100%);
+  background: -o-linear-gradient(left, white 0%, #f6f6f6 47%, #ededed 100%);
+  background: -ms-linear-gradient(left, white 0%, #f6f6f6 47%, #ededed 100%);
+  background: linear-gradient(to right, white 0%, #f6f6f6 47%, #ededed 100%);
   min-height: 100vh;
   padding: 2.5% 1.5% 10px 1.5%; }
   .admin-dash-menu {

@@ -8,32 +8,32 @@
         <section class="content">
             <form class="form-horizontal" id="registerForm" name="registerForm" ng-submit="submitProductForm(productDto)">
                 <div class="form-group">
-                    <label class="control-label col-sm-2 col-sm-offset-1" for="productName">{{"PRODUCT_NAME" |translate}}</label>
-                    <div class="col-sm-5">
+                    <label class="control-label col-lg-2 col-md-4 col-sm-4 col-sm-offset-1" for="productName">{{"PRODUCT_NAME" |translate}}</label>
+                    <div class="col-lg-6 col-md-7 col-sm-7">
                         <input type="text" class="form-control" id="productName" placeholder="{{'PRODUCT_NAME_PLH'|translate}}" ng-model="productDto.product.productName" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"PRODUCT_CODE"|translate}}</label>
-                    <div class="col-sm-5">
+                    <label class="control-label col-lg-2 col-md-4 col-sm-4 col-sm-offset-1" for="productCode">{{"PRODUCT_CODE"|translate}}</label>
+                    <div class="col-lg-6 col-md-7 col-sm-7">
                         <input type="number" class="form-control" id="productCode" placeholder="{{'PRODUCT_CODE_PLH'|translate}}" ng-model="productDto.product.productCode" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"LABEL_TXT"|translate}}</label>
-                    <div class="col-sm-5">
+                    <label class="control-label col-lg-2 col-md-4 col-sm-4 col-sm-offset-1" for="productCode">{{"LABEL_TXT"|translate}}</label>
+                    <div class="col-lg-6 col-md-7 col-sm-7">
                         <input type="text" class="form-control" id="labelTxt" placeholder="{{'LABEL_TXT_PLH'|translate}}" ng-model="productDto.product.subModuleLable" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"DESCRIPTION"|translate}}</label>
-                    <div class="col-sm-5">
+                    <label class="control-label col-lg-2 col-md-4 col-sm-4 col-sm-offset-1" for="productCode">{{"DESCRIPTION"|translate}}</label>
+                    <div class="col-lg-6 col-md-7 col-sm-7">
                         <textarea rows="8" cols="10" class="form-control" id="descriptionTxt" placeholder="{{'DESCRIPTION_PLH'|translate}}" ng-model="productDto.product.description" required></textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2 col-sm-offset-1" for="productCode">{{"SUB_MODULE_TYPE"|translate}}</label>
-                    <div class="col-sm-5">
+                    <label class="control-label col-lg-2 col-md-4 col-sm-4 col-sm-offset-1" for="productCode">{{"SUB_MODULE_TYPE"|translate}}</label>
+                    <div class="col-lg-6 col-md-7 col-sm-7">
                         <label class="radio-inline" for="entryTypeDirect">
                             <input type="radio" name="entryTypeDirect" id="entryTypeDirect" value="EL" ng-model="productDto.product.subModuleType" ng-change="entryTypeChange('EL')" ng-disabled="isUpdate">{{'DIRECT_ENTRY'|translate}}
                         </label>
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-5 col-sm-offset-3" ng-switch="productDto.product.subModuleType">
+                    <div class="col-lg-6 col-md-7 col-sm-7 col-lg-offset-3 col-md-offset-5 col-sm-offset-5" ng-switch="productDto.product.subModuleType">
                         <div class="sub-module text-center" ng-switch-when="EL">
                             <span ng-bind-html="'DESCRIPTION_DIRECT_ENTRY' | translate"></span>
                         </div>
@@ -86,7 +86,7 @@
                 </div>
                 <!--Button Save!-->
                 <div class="form-group">
-                    <div class="col-md-offset-3 clos-md-6">
+                    <div class="col-lg-offset-3 col-md-offset-5 col-sm-offset-5">
                         <button class="btn btn-primary btn-md" type="submit" ng-disabled="registerForm.$invalid ||registerForm.$pristine ">{{isUpdate?"UPDATE":"SAVE"|translate}}</button>
                         <a ui-sref="^" class="btn btn-default">{{"CANCEL"|translate}}</a>
                     </div>

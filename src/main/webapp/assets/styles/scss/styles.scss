@@ -188,13 +188,13 @@ $color-default:#44C2EA;
 // This is Admin SCSS
 .admin {
     &-dash {
-        background: url('../../images/main-bg.jpg') no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        background-size: cover;
-        // -webkit-background-size: 100% 100%;
-        // -moz-background-size: 100% 100%;
-        // background-size: 100% 100%;
+        background: rgba(255, 255, 255, 1);
+        background: -moz-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(47%, rgba(246, 246, 246, 1)), color-stop(100%, rgba(237, 237, 237, 1)));
+        background: -webkit-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%);
+        background: -o-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%);
+        background: -ms-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%);
+        background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%);
         min-height: 100vh;
         padding: 2.5% 1.5% 10px 1.5%;
         &-menu {
@@ -632,7 +632,7 @@ input.ng-dirty {
     max-height: 70vh;
 }
 
-.license-status{
+.license-status {
     width: 30px;
     height: auto;
 }
