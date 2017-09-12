@@ -107,7 +107,7 @@ public class SNManagementController {
         for (ListLicenseDTO data : listSN) {
             objectMap = new TreeMap<>();
             objectMap.put("serialNumber", data);
-            objectMap.put("status", (int) snService.fetchLicenseHistory(data.getSerialId()).getLicenseStatus());
+            objectMap.put("status", (int) snService.fetchLicenseHistory(data.getId()).getLicenseStatus());
             result.add(objectMap);
         }
 

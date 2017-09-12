@@ -2,27 +2,27 @@ package id.co.knt.helpdesk.api.model.dto;
 
 
 public class ListLicenseDTO {
-    private Long serialId;
-    private String serial;
+    private Long id;
+    private String license;
     private String productName;
     private Integer numberOfClient;
     private String schoolName;
     private Long createdDate;
 
-    public Long getSerialId() {
-        return serialId;
+    public Long getId() {
+        return id;
     }
 
-    public void setSerialId(Long serialId) {
-        this.serialId = serialId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getSerial() {
-        return serial;
+    public String getLicense() {
+        return license;
     }
 
-    public void setSerial(String serial) {
-        this.serial = serial;
+    public void setLicense(String license) {
+        this.license = license;
     }
 
     public String getProductName() {

@@ -101,14 +101,20 @@ public class SNServiceImpl implements SNService {
 
         for (License sn:serialNumbers) {
             listLicenseDTO = new ListLicenseDTO();
-            listLicenseDTO.setSerialId(sn.getId());
-            listLicenseDTO.setSerial(sn.getLicense());
-            if(sn.getProduct().getSubModuleType().equals(productTypeChoice.EP)) {
-                List<SubProduct> subProducts = subProductRepo.findAllSubProductByProductId(sn.getProduct().getId());
-                for (SubProduct sp:subProducts) {
-                    listLicenseDTO.setProductName(sn.getProduct().getProductName()+"-"+sp.getLabel()); ;
+            listLicenseDTO.setId(sn.getId());
+            listLicenseDTO.setLicense(sn.getLicense());
+            if(sn.getProduct().getSubModuleType().equals(productTypeChoice.EP.name())) {
+                try {
+                    Map<String, Byte> extractResult = gawl.extract(sn.getLicense());
+                    byte module = extractResult.get(Gawl.MODULE);
+                    listLicenseDTO.setProductName(sn.getProduct().getProductName()+"- kelas"+new Integer(module)); ;
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
+            }else{
+                listLicenseDTO.setProductName(sn.getProduct().getProductName());
             }
+
             listLicenseDTO.setCreatedDate(sn.getCreatedDate());
             listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
             listLicenseDTO.setSchoolName(sn.getSchoolName());
