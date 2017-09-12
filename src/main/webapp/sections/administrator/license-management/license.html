@@ -4,8 +4,8 @@
             <div class="title-brand">
                 <span id="root-title">{{'PRODUCT_MANAGEMENT'|translate|uppercase}}</span> / <span class="child-title">{{'SERIAL_NUMBER'|translate}}</span>
                 <div class="pull-right">
-                    <a ng-click="exportFile('ALL')"><i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> {{'EXPORT_ALL_PAGE'|translate}}</a>
-                    <a ng-click="exportFile('CURRENT')"><i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> {{'EXPORT_CURRENT_PAGE'|translate}}</a>
+                    <a ng-click="exportFile('ALL')" tooltip-placement="top" uib-tooltip="{{'EXPORT_ALL_PAGE'|translate}}"><img src="assets/images/export_all.png" alt="export all" class="export-file"></a>
+                    <a ng-click="exportFile('CURRENT')" tooltip-placement="top" uib-tooltip="{{'EXPORT_CURRENT_PAGE'|translate}}"><img src="assets/images/export_current_page.png" alt="export current" class="export-file"></a>
                 </div>
             </div>
         </section>

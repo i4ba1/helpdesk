@@ -15,10 +15,9 @@
         $scope.displayCollection = [];
         $scope.search = "";
 
-        $scope.totalItems = 64;
         $scope.currentPage = 1;
         $scope.maxSize = 5;
-        $scope.itemPage = 10;
+        $scope.itemPage = 20;
 
         $scope.license = null;
         $scope.updateSchool = updateSchool;

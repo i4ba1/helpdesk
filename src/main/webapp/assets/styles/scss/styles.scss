@@ -636,3 +636,19 @@ input.ng-dirty {
     width: 30px;
     height: auto;
 }
+
+.export-file {
+    width: 25px;
+    height: auto;
+    margin-left: 10px;
+    -webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.5));
+    &:hover {
+        cursor: pointer;
+        cursor: hand;
+        transform: scale(1.2, 1.2);
+    }
+    &:active {
+        transform: scale(1, 1);
+    }
+}

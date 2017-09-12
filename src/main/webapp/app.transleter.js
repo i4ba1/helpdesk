@@ -185,8 +185,8 @@
             BLOCK_FAILED: "Blokir Gagal",
             BLOCK_SUCCESS_MESSAGE: "Blokir serial number berhasil",
             BLOCK_FAILED_MESSAGE: "Blokir serial number gagal",
-            EXPORT_CURRENT_PAGE: "EXPORT CURRENT",
-            EXPORT_ALL_PAGE: "EXPORT ALL"
+            EXPORT_CURRENT_PAGE: "Ekspor Lisensei 1 Halaman",
+            EXPORT_ALL_PAGE: "Ekspor Semua Lisense "
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');
