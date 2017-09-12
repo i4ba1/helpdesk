@@ -185,6 +185,8 @@
             BLOCK_FAILED: "Blokir Gagal",
             BLOCK_SUCCESS_MESSAGE: "Blokir serial number berhasil",
             BLOCK_FAILED_MESSAGE: "Blokir serial number gagal",
+            EXPORT_CURRENT_PAGE: "EXPORT CURRENT",
+            EXPORT_ALL_PAGE: "EXPORT ALL"
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

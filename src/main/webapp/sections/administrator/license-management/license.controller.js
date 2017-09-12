@@ -26,6 +26,7 @@
         $scope.rembemberCurrentPage = getCurrentPage;
         $scope.activateSerialNumber = activateSerialNumber;
         $scope.licenseBlock = licenseBlock;
+        $scope.exportFile = exportFile;
         /**------------------------------------------------------*/
         function getAllSerialNumber() {
             $scope.rowCollection = [];
@@ -92,7 +93,7 @@
                             DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_ACTIVATE_NOTIFICATION", "Aktivasi key:" + response.data.activationKey], "sm").then(
                                 function() {
                                     //$state.reload();
-                                    $state.go("administrator.license.license-detail", {}, {reload: 'administrator.license.license-detail'});
+                                    $state.go("administrator.license.license-detail", {}, { reload: 'administrator.license.license-detail' });
                                 }
                             );
                         },
@@ -156,8 +157,30 @@
                 },
                 function(no) {}
             );
+        }
 
+        function exportFile(exportType) {
 
+            var dataExport = [];
+            var data = [];
+            if (exportType === 'ALL') {
+                data = data.concat($scope.rowCollection);
+            } else {
+                data = data.concat($scope.displayCollection);
+            }
+
+            angular.forEach(data, function(row, key) {
+                dataExport.push({
+                    "No.": key + 1,
+                    "Serial Number": row.serialNumber.license,
+                    "Produk": row.serialNumber.productName,
+                    "Jumlah Pengguna": row.serialNumber.numberOfClient ? row.serialNumber.numberOfClient : 1,
+                    "Sekolah": row.serialNumber.schoolName,
+                    "Tanggal Dibuat": new Date(row.serialNumber.createdDate).toLocaleDateString()
+                })
+            });
+
+            RequestFactory.exportData(dataExport);
         }
     }
 

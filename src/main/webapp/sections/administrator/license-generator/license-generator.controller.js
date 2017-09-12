@@ -143,13 +143,13 @@
                     "No.": key + 1,
                     "Serial Number": license.license,
                     "Produk": license.product.productName,
-                    "Jumlah Pengguna": license.numberOfClient ? license.numberOfClient : "1",
+                    "Jumlah Pengguna": license.numberOfClient ? license.numberOfClient : 1,
                     "Sekolah": license.schoolName,
                     "Tanggal Dibuat": new Date(license.createdDate).toLocaleDateString()
                 })
             });
 
-            alasql('SELECT * INTO XLSX("generated_license.xlsx",{headers:true}) FROM ?', [dataExport]);
+            RequestFactory.exportData(dataExport);
         }
     }
 

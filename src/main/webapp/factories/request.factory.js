@@ -39,7 +39,8 @@
             deleteSubProduct: deleteSubProduct,
             viewLicenseDetail: viewLicenseDetail,
             overrideActivationLimit: overrideActivationLimit,
-            blockLicense: blockLicense
+            blockLicense: blockLicense,
+            exportData: exportData
         };
 
         return service;
@@ -228,6 +229,10 @@
 
         function blockLicense(licenseId, message) {
             return $http.put(baseURL + "/snManagement/blocked/" + licenseId + "/" + message);
+        }
+
+        function exportData(dataExport) {
+            alasql('SELECT * INTO XLSX("licenses.xlsx",{headers:true}) FROM ?', [dataExport, dataExport]);
         }
     }
 
