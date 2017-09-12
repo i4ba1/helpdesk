@@ -238,12 +238,12 @@ public class SNManagementController {
     }
 
     @RequestMapping(value = "/validateActivationKey", method = RequestMethod.POST)
-    public ResponseEntity<License> checkActivationCode(@RequestBody License license){
-        License currentLicense = snRepo.findOne(license.getId());
+    public ResponseEntity<Integer> checkActivationCode(@RequestBody License license){
+        License currentLicense = snRepo.findByLicense(license.getLicense());
         if(!currentLicense.getActivationKey().equals(license.getLicense())){
-            return new ResponseEntity<>(currentLicense, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(-1, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity<>(currentLicense, HttpStatus.OK);
+        return new ResponseEntity<>(0, HttpStatus.OK);
     }
 }
