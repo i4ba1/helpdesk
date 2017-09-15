@@ -44,7 +44,7 @@ public class SNServiceImpl implements SNService {
     private short status = 0;
     private String message = "";
 
-    private enum productTypeChoice{
+    private enum productTypeChoice {
         EL,
         EP
     }
@@ -56,13 +56,18 @@ public class SNServiceImpl implements SNService {
         Product product = null;
 
         if (gawl.validate(serialNumber.getLicense())) {
-            if (sn == null) {
-                try {
-                    Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
-                    byte Type = extractResult.get(Gawl.TYPE);
+            try {
+                Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
+                byte Type = extractResult.get(Gawl.TYPE);
 
-                    product = productRepo.findByProductCode(new Integer(Type));
+                product = productRepo.findByProductCode(new Integer(Type));
+                if (state == 0)
+                    message = "One license: " + serialNumber.getLicense() + "for " + product.getProductName() + " has been generated";
+                else
+                    message = "One license: " + serialNumber.getLicense() + "for " + product.getProductName() + " has been registered";
+                status = (short) state;
 
+                if (sn == null) {
                     snNumber = new License();
                     snNumber.setLicense(serialNumber.getLicense());
                     snNumber.setActivationKey("");
@@ -72,20 +77,16 @@ public class SNServiceImpl implements SNService {
                     snNumber.setSchoolName(serialNumber.getSchoolName());
                     snRepo.save(snNumber);
                     snNumber = snRepo.save(snNumber);
-
-                    if (state == 0)
-                        message = "One license: "+ serialNumber.getLicense()+"for " + product.getProductName() + " has been generated";
-                    else
-                        message = "One license: "+ serialNumber.getLicense()+"for " + product.getProductName() + " has been generated";
-                    status = (short) state;
                     setLicenseHistory(snNumber, status, message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 2;
+                } else {
+                    setLicenseHistory(sn, status, message);
                 }
-            } else {
-                return 1;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 2;
             }
+
         } else {
             return 2;
         }
@@ -99,19 +100,20 @@ public class SNServiceImpl implements SNService {
         List<ListLicenseDTO> dtoList = new ArrayList<>();
         ListLicenseDTO listLicenseDTO;
 
-        for (License sn:serialNumbers) {
+        for (License sn : serialNumbers) {
             listLicenseDTO = new ListLicenseDTO();
             listLicenseDTO.setId(sn.getId());
             listLicenseDTO.setLicense(sn.getLicense());
-            if(sn.getProduct().getSubModuleType().equals(productTypeChoice.EP.name())) {
+            if (sn.getProduct().getSubModuleType().equals(productTypeChoice.EP.name())) {
                 try {
                     Map<String, Byte> extractResult = gawl.extract(sn.getLicense());
                     byte module = extractResult.get(Gawl.MODULE);
-                    listLicenseDTO.setProductName(sn.getProduct().getProductName()+"- kelas"+new Integer(module)); ;
-                }catch(Exception e){
+                    listLicenseDTO.setProductName(sn.getProduct().getProductName() + "- kelas" + new Integer(module));
+                    ;
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else{
+            } else {
                 listLicenseDTO.setProductName(sn.getProduct().getProductName());
             }
 
@@ -178,7 +180,7 @@ public class SNServiceImpl implements SNService {
                         sn.setActivationKey(activationKey);
                         sn.setNumberOfActivation((short) (sn.getNumberOfActivation() + 1));
                         sn = snRepo.saveAndFlush(sn);
-                        String message = "The license "+sn.getLicense()+" has been activated";
+                        String message = "The license " + sn.getLicense() + " has been activated";
                         status = 2;
                         setLicenseHistory(sn, status, message);
                     }
