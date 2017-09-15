@@ -58,49 +58,44 @@
                 <div class="panel panel-default panel-custom">
                     <div class="panel-body">
                         <h4>{{"LICENSE_HISTORY"|translate}} : </h4>
-                        <table class="table table-bordered table-striped" ng-switch="license.licenseHistory.length" st-table="license.licenseHistory">
-                            <thead>
-                                <tr>
-                                    <th>{{"NO"|translate}}</th>
-                                    <th>{{"STATUS"|translate}}</th>
-                                    <th>{{"DATE"|translate}}</th>
-                                    <th>{{"DESCRIPTION"|translate}}</th>
-                                </tr>
-                            </thead>
-                            <tbody ng-switch-when="0">
-                                <tr>
-                                    <td colspan="4" class="data-not-found">
-                                        {{"LICENSE_HISTORY_NOT_FOUND"|translate}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tbody ng-switch-default>
-                                <tr ng-repeat="history in license.licenseHistory track by $index">
-                                    <td>{{$index+1}}</td>
-                                    <td ng-switch="history.licenseStatus">
-                                        <span uib-tooltip="License already generated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="assets/images/Generated.png"
-                                                                  class="license-status"/></span>
-                                        <span uib-tooltip="License already registered" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="assets/images/Registered.png"
-                                                                  class="license-status"/></span>
-                                        <span uib-tooltip="License already activated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="assets/images/Activated.png"
-                                                                  class="license-status"></span>
-                                        <span uib-tooltip="License have a problem" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="assets/images/Problem.png"
-                                                                  class="license-status"></span>
-                                        <span uib-tooltip="License already disabled" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="assets/images/Disabled.png"
-                                                                  class="license-status"></span>
-                                    </td>
-                                    <td>{{history.createdDate | date :"dd/MM/yyyy hh:mm:ss"}}</td>
-                                    <td>{{history.message}}</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="4" class="text-center">
-                                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                        <div style="overflow-y:scroll;height:50vh;">
+                            <table class="table table-bordered table-striped" ng-switch="license.licenseHistory.length" st-table="license.licenseHistory" style="min-height:50vh;">
+                                <thead>
+                                    <tr>
+                                        <th>{{"NO"|translate}}</th>
+                                        <th>{{"STATUS"|translate}}</th>
+                                        <th>{{"DATE"|translate}}</th>
+                                        <th>{{"DESCRIPTION"|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-switch-when="0">
+                                    <tr>
+                                        <td colspan="4" class="data-not-found">
+                                            {{"LICENSE_HISTORY_NOT_FOUND"|translate}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody ng-switch-default>
+                                    <tr ng-repeat="history in license.licenseHistory track by $index">
+                                        <td>{{$index+1}}</td>
+                                        <td ng-switch="history.licenseStatus">
+                                            <span uib-tooltip="License already generated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="assets/images/Generated.png"
+                                                                      class="license-status"/></span>
+                                            <span uib-tooltip="License already registered" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="assets/images/Registered.png"
+                                                                      class="license-status"/></span>
+                                            <span uib-tooltip="License already activated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="assets/images/Activated.png"
+                                                                      class="license-status"></span>
+                                            <span uib-tooltip="License have a problem" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="assets/images/Problem.png"
+                                                                      class="license-status"></span>
+                                            <span uib-tooltip="License already disabled" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="assets/images/Disabled.png"
+                                                                      class="license-status"></span>
+                                        </td>
+                                        <td>{{history.createdDate | date :"dd/MM/yyyy hh:mm:ss"}}</td>
+                                        <td>{{history.message}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
