@@ -70,6 +70,7 @@ public class SNServiceImpl implements SNService {
                 if (sn == null) {
                     snNumber = new License();
                     snNumber.setLicense(serialNumber.getLicense());
+                    snNumber.setPassKey(serialNumber.getPassKey());
                     snNumber.setActivationKey("");
                     snNumber.setNumberOfClient(serialNumber.getNumberOfClient());
                     snNumber.setCreatedDate(new Date().getTime());
@@ -79,6 +80,9 @@ public class SNServiceImpl implements SNService {
                     snNumber = snRepo.save(snNumber);
                     setLicenseHistory(snNumber, status, message);
                 } else {
+                    sn.setPassKey(serialNumber.getPassKey());
+                    snRepo.saveAndFlush(sn);
+
                     setLicenseHistory(sn, status, message);
                 }
 
@@ -153,7 +157,6 @@ public class SNServiceImpl implements SNService {
         try {
             String activationKey = generateActivationKey(licenseId, passkey).getActivationKey();
             snNumber.setActivationKey(activationKey);
-            snNumber.setActivationKey(activationKey);
             snNumber.setNumberOfActivation((short) (snNumber.getNumberOfActivation() + 1));
             snNumber = snRepo.saveAndFlush(snNumber);
 
@@ -176,7 +179,6 @@ public class SNServiceImpl implements SNService {
                     Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
                     if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
                         String activationKey = gawl.activate(serialNumber.getPassKey());
-                        sn.setPassKey(serialNumber.getPassKey());
                         sn.setActivationKey(activationKey);
                         sn.setNumberOfActivation((short) (sn.getNumberOfActivation() + 1));
                         sn = snRepo.saveAndFlush(sn);

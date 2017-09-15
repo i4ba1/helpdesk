@@ -75,16 +75,17 @@ public class SNManagementController {
 
     @RequestMapping(value = "/activateByInternet/", method = RequestMethod.POST)
     public ResponseEntity<License> activateByInternet(@RequestBody License serialNumber) {
-        Gawl gawl = new Gawl();
         License currentLicense = snService.findBySerial(serialNumber.getLicense());
-        int error  = 0;
 
         try {
             if (currentLicense.getActivationKey() == null || currentLicense.getActivationKey().length() <= 0) {
                 currentLicense = snService.onlineActivation(serialNumber);
-            } else if (gawl.challenge(serialNumber.getPassKey(), currentLicense.getActivationKey())) {
-                currentLicense = snService.onlineActivation(serialNumber);
+            } else {
+                if (currentLicense.getNumberOfActivation() <= currentLicense.getActivationLimit()) {
+                    currentLicense = snService.onlineActivation(serialNumber);
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -240,8 +241,13 @@ public class SNManagementController {
     @RequestMapping(value = "/validateActivationKey", method = RequestMethod.POST)
     public ResponseEntity<Integer> checkActivationCode(@RequestBody License license){
         License currentLicense = snRepo.findByLicense(license.getLicense());
-        if(!currentLicense.getActivationKey().equals(license.getActivationKey())){
-            return new ResponseEntity<>(-1, HttpStatus.NOT_ACCEPTABLE);
+
+        try {
+            if(!currentLicense.getActivationKey().equals(license.getActivationKey())){
+                return new ResponseEntity<>(-1, HttpStatus.NOT_ACCEPTABLE);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         return new ResponseEntity<>(0, HttpStatus.OK);
