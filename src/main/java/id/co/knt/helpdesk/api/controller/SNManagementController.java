@@ -55,6 +55,13 @@ public class SNManagementController {
         Gawl gawl = new Gawl();
         License result = snService.findSN(licenseId);
 
+        /*
+         * if passkey client is not same on the Helpdesk
+         */
+        if(!passkey.equals(result.getPassKey())){
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+
         try {
             if (result.getActivationKey() == null || result.getActivationKey().length() <= 0) {
                 result = snService.manuallyActivate(licenseId, passkey, reason);
@@ -83,6 +90,8 @@ public class SNManagementController {
             } else {
                 if (currentLicense.getNumberOfActivation() <= currentLicense.getActivationLimit()) {
                     currentLicense = snService.onlineActivation(serialNumber);
+                }else{
+                    return new ResponseEntity<>(currentLicense, HttpStatus.FORBIDDEN);
                 }
             }
 
@@ -90,10 +99,8 @@ public class SNManagementController {
             e.printStackTrace();
         }
 
-        if (currentLicense.equals(null)) {
+        if (currentLicense == null) {
             return new ResponseEntity<>(currentLicense, HttpStatus.EXPECTATION_FAILED);
-        }else if (currentLicense.getNumberOfActivation() > currentLicense.getActivationLimit()) {
-            return new ResponseEntity<>(currentLicense, HttpStatus.FORBIDDEN);
         }
 
         return new ResponseEntity<>(currentLicense, HttpStatus.OK);
