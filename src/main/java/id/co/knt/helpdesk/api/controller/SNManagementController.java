@@ -63,10 +63,14 @@ public class SNManagementController {
         }
 
         try {
-            if (result.getActivationKey() == null || result.getActivationKey().length() <= 0) {
-                result = snService.manuallyActivate(licenseId, passkey, reason);
-            } else if (gawl.challenge(passkey, result.getActivationKey())) {
-                result = snService.manuallyActivate(licenseId, passkey, reason);
+            if (result.getNumberOfActivation() < result.getActivationLimit()) {
+                if (result.getActivationKey() == null || result.getActivationKey().length() <= 0) {
+                    result = snService.manuallyActivate(licenseId, passkey, reason);
+                } else {
+                    result = snService.manuallyActivate(licenseId, passkey, reason);
+                }
+            }else{
+                return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
             }
 
         } catch (Exception e) {
@@ -88,7 +92,7 @@ public class SNManagementController {
             if (currentLicense.getActivationKey() == null || currentLicense.getActivationKey().length() <= 0) {
                 currentLicense = snService.onlineActivation(serialNumber);
             } else {
-                if (currentLicense.getNumberOfActivation() <= currentLicense.getActivationLimit()) {
+                if (currentLicense.getNumberOfActivation() < currentLicense.getActivationLimit()) {
                     currentLicense = snService.onlineActivation(serialNumber);
                 }else{
                     return new ResponseEntity<>(currentLicense, HttpStatus.FORBIDDEN);
