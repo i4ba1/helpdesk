@@ -6,12 +6,13 @@ var $ = require('gulp-load-plugins')();
 var openURL = require('open');
 var lazypipe = require('lazypipe');
 var rimraf = require('rimraf');
+var ignore = require('gulp-ignore');
 var wiredep = require('wiredep').stream;
 var runSequence = require('run-sequence');
 
 var yeoman = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: '../src/main/webapp'
 };
 
 var paths = {
@@ -149,7 +150,9 @@ gulp.task('bower', function() {
 ///////////
 
 gulp.task('clean:dist', function(cb) {
-    rimraf('./dist', cb);
+    gulp.src(yeoman.dist)
+        .pipe(ignore('WEB-INF/**'))
+        .pipe(rimraf(yeoman.dist, cb));
 });
 
 gulp.task('client:build', ['html', 'styles'], function() {
