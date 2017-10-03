@@ -1,0 +1,65 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <section class="content-header" style="padding:15px">
+            <div class="title-brand">
+                <span id="root-title">{{'PRODUCT_MANAGEMENT'|translate|uppercase}}</span> / <span class="child-title">{{'GENERATOR'|translate}}</span>
+            </div>
+        </section>
+        <section class="content">
+            <form class="form-horizontal" name="licenseGeneratorForm" ng-submit="submitLicenseGenerator(licenseGeneratorDTO)">
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-sm-offset-3" for="productName">{{"PRODUCT_NAME" |translate}}</label>
+                    <div class="col-sm-4">
+                        <ui-select ng-model="licenseGeneratorDTO.product" on-select="onSelected($item)">
+                            <ui-select-match placeholder="{{'SELECT_PRODUCT'|translate}}">
+                                <span ng-bind="$select.selected.productName"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="product in products |  propsFilter: {productName: $select.search}">
+                                <span ng-bind="product.productName"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-sm-offset-3" for="licenseCount">{{"LICENSE_COUNT"|translate}}</label>
+                    <div class="col-sm-4">
+                        <input type="number" ng-model="licenseGeneratorDTO.licenseCount" class="form-control" id="licenseCount" placeholder="{{'LICENSE_COUNT_PLH'|translate}}" required>
+                    </div>
+                </div>
+                <div class="form-group" ng-switch="licenseGeneratorDTO.product.subModuleType" ng-hide="!licenseGeneratorDTO.product" ng-show="licenseGeneratorDTO.product">
+                    <label class="control-label col-sm-2 col-sm-offset-3" for="code">{{licenseGeneratorDTO.product.subModuleLable}}</label>
+                    <div class="col-sm-4" ng-switch-default>
+                        <input type="number" class="form-control" ng-model="licenseGeneratorDTO.subProducts[0].value" id="code" placeholder="{{'SECOND_PARAM_PLH'|translate}}" min="1">
+                    </div>
+                    <div class="col-sm-4" ng-switch-when="EP">
+                        <div class="sub-product">
+                            <div ng-repeat="subProduct in subProducts">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" checklist-model="licenseGeneratorDTO.subProducts" checklist-value="subProduct">{{subProduct.label}}
+                                </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--{{licenseGeneratorDTO.subProduct}}-->
+
+                <!--Description-->
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-sm-offset-2" for="licenseCount">{{"DESCRIPTION"|translate}}</label>
+                    <div class="col-sm-9 col-sm-offset-2 description-text">
+                        {{licenseGeneratorDTO.product.description}}
+                    </div>
+                </div>
+
+                <!--Button Save!-->
+                <div class="form-group">
+                    <div class="col-md-offset-4 cos-md-7" style="padding-left:15px;">
+                        <button class="btn btn-primary btn-md" type="submit">{{"GENERATE"|translate}}</button>
+                        <a ui-sref="administrator.license" class="btn btn-default">{{"CANCEL"|translate}}</a>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

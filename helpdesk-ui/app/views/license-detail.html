@@ -1,0 +1,105 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <section class="content-header" style="padding:15px">
+            <div class="title-brand">
+                <span id="root-title">{{'PRODUCT_MANAGEMENT'|translate}}</span> / <span class="child-title">{{'LICENSE'|translate}}</span>
+            </div>
+        </section>
+        <section class="content">
+            <!--Left Panel  -->
+            <div class="col-lg-6 col-md-12 col-sm-12 detail-text">
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-4 label-custom">{{"LICENSE" |translate}}</div>
+                    <div class="col-sm-8 value-custom">{{(license.licenseKey?license.licenseKey:"-")|uppercase}}</div>
+                </div>
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-4 label-custom">{{"PRODUCT_NAME"|translate}}</div>
+                    <div class="col-sm-8 value-custom">{{license.productName?license.productName:"-"}}</div>
+                </div>
+                <div class="col-sm-12 group-custom" ng-hide="!license.numberOfClient" ng-show="license.numberOfClient">
+                    <div class="col-sm-4 label-custom">
+                        {{"NUMBER_CLIENT"|translate}}
+                    </div>
+                    <div class="col-sm-8 value-custom">{{license.numberOfClient}}</div>
+                </div>
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-4 label-custom">{{"SCHOOL_NAME"|translate}}</div>
+                    <div class="col-sm-8">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" ng-model="license.schoolName" placeholder="{{'SCHOOL_NAME_PLH'|translate}}" ng-change="updateSchool(license.schoolName)" ng-model-options="{updateOn:'blur'}" ng-disabled="disableDetail">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-4 label-custom">{{"ACTIVATION_COUNT"|translate}}</div>
+                    <div class="col-sm-8">
+                        <div class="col-sm-8">
+                            <label for="" class="form-control">{{license.numberOfActivation +" Of "+license.activationLimit}}</label>
+                            <span ng-if="(license.activationLimit - license.numberOfActivation) == 1 ">
+                                <img src="assets/images/Problem.png" class="license-status"/></span>
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary" title="{{'ADD_KUOTA'|translate}}" ng-click="overrideActivationLimit()" ng-disabled="disableDetail"><i class="fa fa-plus fa-lg"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 group-custom">
+                    <div class="col-sm-offset-4 col-sm-8 value-custom">
+                        <button class="btn btn-primary" ng-disabled="(license.numberOfActivation===license.activationLimit) || disableDetail" ng-click="licenseActivation()">{{"ACTIVATE"|translate}}</button>
+                        <button class="btn btn-danger" ng-click="licenseBlock()" ng-disabled="disableDetail">{{"BLOCK"|translate}}</button>
+                        <button ui-sref="^" class="btn btn-default">{{'CANCEL'|translate}}</button>
+                    </div>
+                </div>
+
+            </div>
+            <!--Right Panel  -->
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="panel panel-default panel-custom">
+                    <div class="panel-body">
+                        <h4>{{"LICENSE_HISTORY"|translate}} : </h4>
+                        <div style="overflow-y:scroll;height:50vh;">
+                            <table class="table table-bordered table-striped" ng-switch="license.licenseHistory.length" st-table="license.licenseHistory" style="min-height:50vh;">
+                                <thead>
+                                    <tr>
+                                        <th>{{"NO"|translate}}</th>
+                                        <th>{{"STATUS"|translate}}</th>
+                                        <th>{{"DATE"|translate}}</th>
+                                        <th>{{"DESCRIPTION"|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-switch-when="0">
+                                    <tr>
+                                        <td colspan="4" class="data-not-found">
+                                            {{"LICENSE_HISTORY_NOT_FOUND"|translate}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody ng-switch-default>
+                                    <tr ng-repeat="history in license.licenseHistory track by $index">
+                                        <td>{{$index+1}}</td>
+                                        <td ng-switch="history.licenseStatus">
+                                            <span uib-tooltip="License already generated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="assets/images/Generated.png"
+                                                                      class="license-status"/></span>
+                                            <span uib-tooltip="License already registered" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="assets/images/Registered.png"
+                                                                      class="license-status"/></span>
+                                            <span uib-tooltip="License already activated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="assets/images/Activated.png"
+                                                                      class="license-status"></span>
+                                            <span uib-tooltip="License have a problem" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="assets/images/Problem.png"
+                                                                      class="license-status"></span>
+                                            <span uib-tooltip="License already disabled" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="assets/images/Disabled.png"
+                                                                      class="license-status"></span>
+                                        </td>
+                                        <td>{{history.createdDate | date :"dd/MM/yyyy hh:mm:ss"}}</td>
+                                        <td>{{history.message}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</div>

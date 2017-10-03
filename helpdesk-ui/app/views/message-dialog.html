@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">{{$ctrl.title|translate}}</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <div class="error-message">
+        <ul>
+            <li ng-repeat="message in $ctrl.messages track by $index">
+                {{message|translate}}
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+</div>
