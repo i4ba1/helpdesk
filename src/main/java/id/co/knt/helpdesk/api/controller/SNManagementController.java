@@ -253,6 +253,10 @@ public class SNManagementController {
     public ResponseEntity<Integer> checkActivationCode(@RequestBody License license){
         License currentLicense = snRepo.findByLicense(license.getLicense());
 
+        if (currentLicense == null) {
+            return new ResponseEntity<Integer>(-1, HttpStatus.NOT_FOUND);
+        }
+
         try {
             if(!currentLicense.getActivationKey().equals(license.getActivationKey())){
                 return new ResponseEntity<>(-1, HttpStatus.NOT_ACCEPTABLE);
