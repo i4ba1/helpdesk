@@ -9,6 +9,7 @@ var rimraf = require('rimraf');
 var ignore = require('gulp-ignore');
 var wiredep = require('wiredep').stream;
 var runSequence = require('run-sequence');
+const del = require('del');
 
 var yeoman = {
     app: require('./bower.json').appPath || 'app',
@@ -150,9 +151,10 @@ gulp.task('bower', function() {
 ///////////
 
 gulp.task('clean:dist', function(cb) {
-    gulp.src(yeoman.dist)
-        .pipe(ignore('WEB-INF/**'))
-        .pipe(rimraf(yeoman.dist, cb));
+    return del([yeoman.dist + '/**',
+        '!' + yeoman.dist,
+        '!' + yeoman.dist + '/WEB-INF/**'
+    ], { force: true });
 });
 
 gulp.task('client:build', ['html', 'styles'], function() {
