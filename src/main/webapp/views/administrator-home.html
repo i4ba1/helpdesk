@@ -1,0 +1,93 @@
+<div class="wrapper">
+
+    <header class="main-header">
+
+        <nav class="navbar navbar-static-top" role="navigation">
+            <ul class="nav navbar-nav">
+                <li class="knt-logo">
+                    <img src="images/helpdesk_log.png">
+                </li>
+            </ul>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a class="click-able" ng-click="logout()"><i class="fa fa-sign-out fa-lg"></i> {{'LOGOUT' | translate}}</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="main-sidebar">
+
+        <section class="sidebar">
+
+            <div class="user-panel">
+                <a ng-click="pushMenu()" role="button" class="pull-right">
+                    <img src="images/navigasi.png">
+                </a>
+            </div>
+            <!-- Sidebar Menu -->
+            <ul class="sidebar-menu">
+
+                <!-- BERANDA-->
+                <li>
+                    <a ui-sref="administrator.dashboard">
+                        <img class="sidebar-img" src="images/beranda.png" alt="beranda">
+                        <span class="cst-margin-left">{{'DASHBOARD' | translate}}</span>
+                    </a>
+                </li>
+
+                <li class="treeview">
+                    <a href="">
+                        <i class="fa fa-archive fa-lg" aria-hidden="true"></i>
+                        <span class="cst-margin-left">{{'PRODUCT_MANAGEMENT' | translate}}</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="cst-margin-top">
+                            <a ui-sref="administrator.product-management">{{'PRODUCT' | translate}}</a>
+                        </li>
+                        <li class="cst-margin-top">
+                            <a ui-sref="administrator.license">{{'SERIAL_NUMBER' | translate}}</a>
+                        </li>
+                        <li class="cst-margin-top">
+                            <a ui-sref="administrator.generator">{{'GENERATOR' | translate}}</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li ng-hide="true">
+                    <a ui-sref="administrator.school-management">
+                        <img class="sidebar-img" src="images/about_us.png" alt="tentang kami">
+                        <span class="cst-margin-left">{{'SCHOOL_MANAGEMENT' | translate}}</span>
+                    </a>
+                </li>
+
+                <li ng-hide="true">
+                    <a ui-sref="administrator.user-management">
+                        <img class="sidebar-img" src="images/about_us.png" alt="tentang kami">
+                        <span class="cst-margin-left">{{'USER_MANAGEMENT' | translate}}</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a ui-sref="administrator.about-us">
+                        <img class="sidebar-img" src="images/about_us.png" alt="tentang kami">
+                        <span class="cst-margin-left">{{'ABOUT_US' | translate}}</span>
+                    </a>
+                </li>
+
+            </ul>
+            <!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <div class="content-wrapper" style="min-height:92.5vh;">
+        <div ui-view="content"></div>
+    </div>
+
+
+</div>

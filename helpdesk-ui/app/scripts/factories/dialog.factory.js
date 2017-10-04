@@ -20,7 +20,7 @@
             modalInstance = uibModal.open({
                 animation: true,
                 templateUrl: 'views/activation-dialog.html',
-                controller: activationDialogController,
+                controller: ['$uibModalInstance', 'params', activationDialogController],
                 controllerAs: '$ctrl',
                 size: "md",
                 resolve: {
@@ -45,7 +45,7 @@
             modalInstance = uibModal.open({
                 animation: true,
                 templateUrl: 'views/message-dialog.html',
-                controller: messageDialogController,
+                controller: ['$uibModalInstance', 'params', messageDialogController],
                 controllerAs: '$ctrl',
                 size: size,
                 resolve: {
@@ -70,7 +70,7 @@
             modalInstance = uibModal.open({
                 animation: true,
                 templateUrl: 'views/confirmation-dialog.html',
-                controller: confirmationDialogController,
+                controller: ['$uibModalInstance', 'params', confirmationDialogController],
                 controllerAs: '$ctrl',
                 size: size,
                 backdrop: 'static',
@@ -96,7 +96,7 @@
             modalInstance = uibModal.open({
                 animation: true,
                 templateUrl: 'views/confirmation-with-messages-dialog.html',
-                controller: confirmationWithMesssageDialogController,
+                controller: ['$uibModalInstance', 'params', confirmationWithMesssageDialogController],
                 controllerAs: '$ctrl',
                 size: "md",
                 backdrop: 'static',

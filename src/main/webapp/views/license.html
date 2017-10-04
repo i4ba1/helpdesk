@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <section class="content-header" style="padding: 15px;">
+            <div class="title-brand">
+                <span id="root-title">{{'PRODUCT_MANAGEMENT'|translate|uppercase}}</span> / <span class="child-title">{{'SERIAL_NUMBER'|translate}}</span>
+                <div class="pull-right">
+                    <a ng-click="exportFile('ALL')" tooltip-placement="top" uib-tooltip="{{'EXPORT_ALL_PAGE'|translate}}"><img src="images/export_all.png" alt="export all" class="export-file"></a>
+                    <a ng-click="exportFile('CURRENT')" tooltip-placement="top" uib-tooltip="{{'EXPORT_CURRENT_PAGE'|translate}}"><img src="images/export_current_page.png" alt="export current" class="export-file"></a>
+                </div>
+            </div>
+        </section>
+        <div class="content">
+
+            <div class="col-md-12 col-sm-12 col-lg-12">
+                <table st-safe-src="rowCollection" st-table="displayCollection" class="table table-striped" ng-switch="displayCollection.length">
+                    <thead>
+                        <tr>
+                            <th width="50">No.</th>
+                            <th st-sort="serialNumber.license">{{'SERIAL_NUMBER' | translate}}</th>
+                            <th st-sort="serialNumber.productName">{{'PRODUCT_NAME' | translate}}</th>
+                            <th st-sort="serialNumber.numberOfClient">{{'NUMBER_CLIENT' | translate}}</th>
+                            <th st-sort="serialNumber.schoolName">{{'SCHOOL_NAME' | translate}}</th>
+                            <th st-sort="serialNumber.createdDate">{{'CREATED_DATE' | translate}}</th>
+                            <th st-sort="licenseStatus">{{'LICENSE_STATUS' | translate}}</th>
+                            <th width="100"></th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th><input st-search="serialNumber.license" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="serialNumber.productName" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="serialNumber.numberOfClient" class="input-sm form-control" type="search" /></th>
+                            <th><input st-search="serialNumber.schoolName" class="input-sm form-control" type="search" /></th>
+                            <th colspan="3"></th>
+                        </tr>
+
+                    </thead>
+                    <tbody ng-switch-default>
+                        <tr ng-repeat="row in displayCollection track by $index">
+                            <td>{{(currentPage-1)*itemPage+$index+1}}</td>
+                            <td>{{row.serialNumber.license}}</td>
+                            <td>{{row.serialNumber.productName}}</td>
+                            <td>{{row.serialNumber.numberOfClient}}</td>
+                            <td>{{row.serialNumber.schoolName}}</td>
+                            <td>{{row.serialNumber.createdDate |date:"dd/MM/yyyy"}}</td>
+                            <td ng-switch="row.status">
+                                <span uib-tooltip="License already generated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="images/Generated.png"
+                                                                                             class="license-status"/></span>
+                                <span uib-tooltip="License already registered" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="images/Registered.png"
+                                                                                             class="license-status"/></span>
+                                <span uib-tooltip="License already activated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="images/Activated.png"
+                                                                                             class="license-status"></span>
+                                <span uib-tooltip="License have a problem" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="images/Problem.png"
+                                                                                             class="license-status"></span>
+                                <span uib-tooltip="License already disabled" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="images/Disabled.png"
+                                                                                             class="license-status"></span>
+                            </td>
+                            <td width="25">
+                                <a ui-sref="administrator.license.license-detail({licenseId:row.serialNumber.id})">
+                                    <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody ng-switch-when="0">
+                        <tr>
+                            <td colspan="8" class="data-not-found">
+                                {{'DATA_NOT_FOUND'|translate}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                <div st-pagination="" st-items-by-page="itemPage" st-displayed-pages="5" st-page-change="rembemberCurrentPage(newPage)"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>

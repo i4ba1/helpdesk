@@ -1,0 +1,65 @@
+<div class="container-fluid admin-dash">
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-6 col-md-4 col-sm-12  col-xs-12 ">
+                <div class="col-lg-6 col-md-12 col-sm-12  col-xs-12 " ng-repeat="product in products track by $index">
+                    <!-- small box -->
+                    <div class="small-box" ng-class="getBackground($index)">
+                        <div class="inner text-center">
+                            <h3>{{product.licenseCount}}</h3>
+                        </div>
+
+                        <span class="small-box-footer" style="min-height:50px">{{product.productName}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-8 col-sm-12  col-xs-12 ">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-clock-o fa-fw"> </i>
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="min-height:70vh;">
+                        <div class="col-lg-12 col-xs-12">
+                            <table st-table="rowCollections" st-safe-src="notifications" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th width="50">{{"NO"|translate}}</th>
+                                        <th>{{'NOTIFICATION'|translate}}</th>
+                                        <th>{{'DATE'|translate}}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat='row in rowCollections'>
+                                        <td>{{(currentPage-1)*itemPage+$index+1}}</td>
+                                        <td>{{row.message}}</td>
+                                        <td>{{row.createdDate|date:"dd/MM/yyyy hh:mm:ss"}}</td>
+                                        <td width="25">
+                                            <a ui-sref="administrator.license.license-detail({licenseId:row.license.id,historyId:row.id})">
+                                                <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-center">
+                                            <div st-pagination="" st-items-by-page="itemPage" st-displayed-pages="5" st-page-change="rembemberCurrentPage(newPage)"></div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main row -->
+    </section>
+    <!-- /.content -->
+</div>
+<footer-directive></footer-directive>
