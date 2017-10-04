@@ -8,7 +8,7 @@
 
         var directive = {
             restrict: 'E',
-            templateUrl: "sections/components/footer.html",
+            templateUrl: "views/footer.html",
             replace: true
         };
 

@@ -36,7 +36,7 @@
                         <div class="col-sm-8">
                             <label for="" class="form-control">{{license.numberOfActivation +" Of "+license.activationLimit}}</label>
                             <span ng-if="(license.activationLimit - license.numberOfActivation) == 1 ">
-                                <img src="assets/images/Problem.png" class="license-status"/></span>
+                                <img src="images/Problem.png" class="license-status"/></span>
                         </div>
                         <div class="col-sm-2">
                             <button class="btn btn-primary" title="{{'ADD_KUOTA'|translate}}" ng-click="overrideActivationLimit()" ng-disabled="disableDetail"><i class="fa fa-plus fa-lg"></i></button>
@@ -79,15 +79,15 @@
                                     <tr ng-repeat="history in license.licenseHistory track by $index">
                                         <td>{{$index+1}}</td>
                                         <td ng-switch="history.licenseStatus">
-                                            <span uib-tooltip="License already generated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="assets/images/Generated.png"
+                                            <span uib-tooltip="License already generated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="images/Generated.png"
                                                                       class="license-status"/></span>
-                                            <span uib-tooltip="License already registered" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="assets/images/Registered.png"
+                                            <span uib-tooltip="License already registered" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="images/Registered.png"
                                                                       class="license-status"/></span>
-                                            <span uib-tooltip="License already activated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="assets/images/Activated.png"
+                                            <span uib-tooltip="License already activated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="images/Activated.png"
                                                                       class="license-status"></span>
-                                            <span uib-tooltip="License have a problem" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="assets/images/Problem.png"
+                                            <span uib-tooltip="License have a problem" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="images/Problem.png"
                                                                       class="license-status"></span>
-                                            <span uib-tooltip="License already disabled" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="assets/images/Disabled.png"
+                                            <span uib-tooltip="License already disabled" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="images/Disabled.png"
                                                                       class="license-status"></span>
                                         </td>
                                         <td>{{history.createdDate | date :"dd/MM/yyyy hh:mm:ss"}}</td>
