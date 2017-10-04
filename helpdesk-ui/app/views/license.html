@@ -4,8 +4,8 @@
             <div class="title-brand">
                 <span id="root-title">{{'PRODUCT_MANAGEMENT'|translate|uppercase}}</span> / <span class="child-title">{{'SERIAL_NUMBER'|translate}}</span>
                 <div class="pull-right">
-                    <a ng-click="exportFile('ALL')" tooltip-placement="top" uib-tooltip="{{'EXPORT_ALL_PAGE'|translate}}"><img src="assets/images/export_all.png" alt="export all" class="export-file"></a>
-                    <a ng-click="exportFile('CURRENT')" tooltip-placement="top" uib-tooltip="{{'EXPORT_CURRENT_PAGE'|translate}}"><img src="assets/images/export_current_page.png" alt="export current" class="export-file"></a>
+                    <a ng-click="exportFile('ALL')" tooltip-placement="top" uib-tooltip="{{'EXPORT_ALL_PAGE'|translate}}"><img src="images/export_all.png" alt="export all" class="export-file"></a>
+                    <a ng-click="exportFile('CURRENT')" tooltip-placement="top" uib-tooltip="{{'EXPORT_CURRENT_PAGE'|translate}}"><img src="images/export_current_page.png" alt="export current" class="export-file"></a>
                 </div>
             </div>
         </section>
@@ -43,15 +43,15 @@
                             <td>{{row.serialNumber.schoolName}}</td>
                             <td>{{row.serialNumber.createdDate |date:"dd/MM/yyyy"}}</td>
                             <td ng-switch="row.status">
-                                <span uib-tooltip="License already generated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="assets/images/Generated.png"
+                                <span uib-tooltip="License already generated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="images/Generated.png"
                                                                                              class="license-status"/></span>
-                                <span uib-tooltip="License already registered" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="assets/images/Registered.png"
+                                <span uib-tooltip="License already registered" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="images/Registered.png"
                                                                                              class="license-status"/></span>
-                                <span uib-tooltip="License already activated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="assets/images/Activated.png"
+                                <span uib-tooltip="License already activated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="images/Activated.png"
                                                                                              class="license-status"></span>
-                                <span uib-tooltip="License have a problem" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="assets/images/Problem.png"
+                                <span uib-tooltip="License have a problem" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="images/Problem.png"
                                                                                              class="license-status"></span>
-                                <span uib-tooltip="License already disabled" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="assets/images/Disabled.png"
+                                <span uib-tooltip="License already disabled" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="images/Disabled.png"
                                                                                              class="license-status"></span>
                             </td>
                             <td width="25">
