@@ -153,7 +153,8 @@ gulp.task('bower', function() {
 gulp.task('clean:dist', function(cb) {
     return del([yeoman.dist + '/**',
         '!' + yeoman.dist,
-        '!' + yeoman.dist + '/WEB-INF/**'
+        '!' + yeoman.dist + '/WEB-INF/**',
+        '!' + yeoman.dist + '.gitignore'
     ], { force: true });
 });
 
