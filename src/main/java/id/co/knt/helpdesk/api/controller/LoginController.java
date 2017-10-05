@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,13 @@ public class LoginController {
 
     @Autowired
     UserService userService;
+
+    @Value("${user.name}")
+    String userName;
+
+    @Value("${pass}")
+    String pass;
+
 
     /**
      * Logging in
@@ -77,10 +85,9 @@ public class LoginController {
 
 		try {
 			if (adminUser == null) {
-				newUser.setUserName("a4m1n");
+				newUser.setUserName(userName);
 				newUser.setName("admin");
 				newUser.setCreatedDate(new Date());
-				String pass = "aDmin123!";
 
 				newUser.setPassword(pass);
 				u = userService.registerUser(newUser);

@@ -4,13 +4,14 @@ import id.co.knt.helpdesk.api.model.License;
 import id.co.knt.helpdesk.api.model.LicenseHistory;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public interface SNService{
-    int registerSerialNumber(License serialNumber, int state);
+    List<ListLicenseDTO> registerSerialNumber(License serialNumber, int state);
 
     License onlineActivation(License serialNumber);
 

@@ -50,10 +50,12 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public int registerSerialNumber(License serialNumber, int state) {
+    public List<ListLicenseDTO> registerSerialNumber(License serialNumber, int state) {
         License snNumber = null;
         License sn = snRepo.findByLicense(serialNumber.getLicense());
         Product product = null;
+        List<License> licenses = new ArrayList<>();
+        List<ListLicenseDTO> dtoList = null;
 
         if (gawl.validate(serialNumber.getLicense())) {
             try {
@@ -87,41 +89,48 @@ public class SNServiceImpl implements SNService {
                     setLicenseHistory(sn, status, message);
                 }
 
+                licenses.add(sn);
+                dtoList = generateListLicenseDTO(licenses);
             } catch (Exception e) {
                 e.printStackTrace();
-                return 2;
             }
 
-        } else {
-            return 2;
         }
 
-        return 0;
+        return dtoList;
     }
 
     @Override
     public List<ListLicenseDTO> findAllSN() {
         List<License> serialNumbers = snRepo.findAllLicense();
         List<ListLicenseDTO> dtoList = new ArrayList<>();
+
+        dtoList = generateListLicenseDTO(serialNumbers);
+        return dtoList;
+    }
+
+    private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses){
+        List<ListLicenseDTO> dtoList = new ArrayList<>();
         ListLicenseDTO listLicenseDTO;
 
-        for (License sn : serialNumbers) {
+
+        if(licenses.size() > 0){
+            for (License sn : licenses) {
+                listLicenseDTO = new ListLicenseDTO();
+                listLicenseDTO.setId(sn.getId());
+                listLicenseDTO.setLicense(sn.getLicense());
+                listLicenseDTO.setProductName(modifyProductName(sn));
+                listLicenseDTO.setCreatedDate(sn.getCreatedDate());
+                listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
+                listLicenseDTO.setSchoolName(sn.getSchoolName());
+                dtoList.add(listLicenseDTO);
+            }
+        }else{
+            License sn = licenses.get(0);
             listLicenseDTO = new ListLicenseDTO();
             listLicenseDTO.setId(sn.getId());
             listLicenseDTO.setLicense(sn.getLicense());
-            if (sn.getProduct().getSubModuleType().equals(productTypeChoice.EP.name())) {
-                try {
-                    Map<String, Byte> extractResult = gawl.extract(sn.getLicense());
-                    byte module = extractResult.get(Gawl.MODULE);
-                    listLicenseDTO.setProductName(sn.getProduct().getProductName() + "- kelas" + new Integer(module));
-                    ;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                listLicenseDTO.setProductName(sn.getProduct().getProductName());
-            }
-
+            listLicenseDTO.setProductName(modifyProductName(sn));
             listLicenseDTO.setCreatedDate(sn.getCreatedDate());
             listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
             listLicenseDTO.setSchoolName(sn.getSchoolName());
@@ -129,6 +138,22 @@ public class SNServiceImpl implements SNService {
         }
 
         return dtoList;
+    }
+
+    private String modifyProductName(License sn){
+        byte module = 0;
+        if (sn.getProduct().getSubModuleType().equals(productTypeChoice.EP.name())) {
+            try {
+                Map<String, Byte> extractResult = gawl.extract(sn.getLicense());
+                module = extractResult.get(Gawl.MODULE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return sn.getProduct().getProductName() + "- kelas" + new Integer(module);
+        } else {
+            return sn.getProduct().getProductName();
+        }
     }
 
     @Override
