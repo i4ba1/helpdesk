@@ -29,15 +29,14 @@ public class SNManagementController {
     private SNRepo snRepo;
 
     @RequestMapping(value = "/register/", method = RequestMethod.POST)
-    public ResponseEntity<Integer> register(@RequestBody License license) {
-        int error = snService.registerSerialNumber(license, 1);
-        if (error == 1) {
-            return new ResponseEntity<>(error, HttpStatus.ACCEPTED);
-        }else if(error == 2){
-            return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
-        }
+    public ResponseEntity<List<ListLicenseDTO>> register(@RequestBody License license) {
+        List<ListLicenseDTO> dtoList = snService.registerSerialNumber(license, 1);
 
-        return new ResponseEntity<>(error, HttpStatus.OK);
+        if(dtoList == null){
+            return new ResponseEntity<>(dtoList, HttpStatus.FORBIDDEN);
+        }else{
+            return new ResponseEntity<>(dtoList, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
