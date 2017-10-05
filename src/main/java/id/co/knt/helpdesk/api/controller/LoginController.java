@@ -33,12 +33,12 @@ public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
     
     @Autowired
-    LoginService loginService;
+    private LoginService loginService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    @Value("${user.name}")
+    @Value("${userName}")
     String userName;
 
     @Value("${pass}")
