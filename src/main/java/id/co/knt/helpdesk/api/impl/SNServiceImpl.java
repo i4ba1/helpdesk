@@ -50,7 +50,7 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public List<ListLicenseDTO> registerSerialNumber(License serialNumber, int state) {
+    public List<ListLicenseDTO> saveGeneratedSN(License serialNumber) {
         License snNumber = null;
         License sn = snRepo.findByLicense(serialNumber.getLicense());
         Product product = null;
@@ -63,11 +63,8 @@ public class SNServiceImpl implements SNService {
                 byte Type = extractResult.get(Gawl.TYPE);
 
                 product = productRepo.findByProductCode(new Integer(Type));
-                if (state == 0)
-                    message = "One license: " + serialNumber.getLicense() + "for " + product.getProductName() + " has been generated";
-                else
-                    message = "One license: " + serialNumber.getLicense() + "for " + product.getProductName() + " has been registered";
-                status = (short) state;
+                message = "One license: " + serialNumber.getLicense() + "for " + product.getProductName() + " has been generated";
+                status = 0;
 
                 if (sn == null) {
                     snNumber = new License();
@@ -78,15 +75,9 @@ public class SNServiceImpl implements SNService {
                     snNumber.setProduct(product);
                     snNumber.setSchoolName(serialNumber.getSchoolName());
                     snRepo.save(snNumber);
-                    snNumber = snRepo.save(snNumber);
-                    setLicenseHistory(snNumber, status, message);
-                } else {
-                    sn.setPassKey(serialNumber.getPassKey());
-                    sn.setCreatedDate(new Date().getTime());
-                    sn.setPassKey(serialNumber.getPassKey());
-                    snRepo.saveAndFlush(sn);
 
-                    setLicenseHistory(sn, status, message);
+                    setLicenseHistory(snNumber, status, message);
+                    sn = snRepo.findByLicense(serialNumber.getLicense());
                 }
 
                 licenses.add(sn);
@@ -101,12 +92,44 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public List<ListLicenseDTO> findAllSN() {
-        List<License> serialNumbers = snRepo.findAllLicense();
-        List<ListLicenseDTO> dtoList = new ArrayList<>();
+    public int registerSN(License serialNumber) {
+        License snNumber = null;
+        License sn = snRepo.findByLicense(serialNumber.getLicense());
+        Product product = null;
 
-        dtoList = generateListLicenseDTO(serialNumbers);
-        return dtoList;
+        if (gawl.validate(serialNumber.getLicense())) {
+            try {
+                Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
+                byte Type = extractResult.get(Gawl.TYPE);
+
+                product = productRepo.findByProductCode(new Integer(Type));
+                message = "One license: " + serialNumber.getLicense() + "for " + product.getProductName() + " has been registered";
+                status = 1;
+
+                sn.setPassKey(serialNumber.getPassKey());
+                sn.setCreatedDate(new Date().getTime());
+                sn.setPassKey(serialNumber.getPassKey());
+                snRepo.saveAndFlush(sn);
+
+                setLicenseHistory(sn, status, message);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 2;
+            }
+
+        } else {
+            return 2;
+        }
+
+        return 0;
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllSN() {
+        List<License> serialNumbers = snRepo.findAllLicense();
+        List<ListLicenseDTO> dtoList = generateListLicenseDTO(serialNumbers);
+        return licenseDTOResult(dtoList);
     }
 
     private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses){
@@ -154,6 +177,29 @@ public class SNServiceImpl implements SNService {
         } else {
             return sn.getProduct().getProductName();
         }
+    }
+
+    private List<Map<String, Object>> licenseDTOResult(List<ListLicenseDTO> dtoList){
+        Map<String, Object> objectMap = null;
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (ListLicenseDTO data : dtoList) {
+            objectMap = new TreeMap<>();
+            objectMap.put("serialNumber", data);
+            objectMap.put("status", (int) fetchLicenseHistory(data.getId()).getLicenseStatus());
+            result.add(objectMap);
+        }
+
+        return result;
+    }
+
+    public Map<String, Object> generateLicenseDTOResult(ListLicenseDTO data){
+        Map<String, Object> objectMap = null;
+        objectMap = new TreeMap<>();
+        objectMap.put("serialNumber", data);
+        objectMap.put("status", (int) fetchLicenseHistory(data.getId()).getLicenseStatus());
+
+        return objectMap;
     }
 
     @Override

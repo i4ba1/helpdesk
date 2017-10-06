@@ -11,11 +11,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public interface SNService{
-    List<ListLicenseDTO> registerSerialNumber(License serialNumber, int state);
+    List<ListLicenseDTO> saveGeneratedSN(License serialNumber);
+
+    int registerSN(License serialNumber);
 
     License onlineActivation(License serialNumber);
 
-    List<ListLicenseDTO> findAllSN();
+    List<Map<String, Object>> findAllSN();
 
     License findSN(Long id);
     
@@ -40,4 +42,6 @@ public interface SNService{
     LicenseHistory fetchLicenseHistory(Long licenseId);
 
     void setLicenseHistory(License license, short status, String message);
+
+    Map<String, Object> generateLicenseDTOResult(ListLicenseDTO data);
 }
