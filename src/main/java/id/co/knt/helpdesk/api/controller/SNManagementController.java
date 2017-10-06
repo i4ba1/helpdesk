@@ -29,14 +29,15 @@ public class SNManagementController {
     private SNRepo snRepo;
 
     @RequestMapping(value = "/register/", method = RequestMethod.POST)
-    public ResponseEntity<List<ListLicenseDTO>> register(@RequestBody License license) {
-        List<ListLicenseDTO> dtoList = snService.registerSerialNumber(license, 1);
-
-        if(dtoList == null){
-            return new ResponseEntity<>(dtoList, HttpStatus.FORBIDDEN);
-        }else{
-            return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    public ResponseEntity<Integer> register(@RequestBody License license) {
+        int error = snService.registerSN(license);
+        if (error == 1) {
+            return new ResponseEntity<>(error, HttpStatus.ACCEPTED);
+        }else if(error == 2){
+            return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
         }
+
+        return new ResponseEntity<>(error, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
@@ -111,16 +112,7 @@ public class SNManagementController {
 
     @RequestMapping(value = {""}, method = RequestMethod.GET)
     public ResponseEntity<List<Map<String, Object>>> findAllSN() {
-        List<ListLicenseDTO> listSN = snService.findAllSN();
-        List<Map<String, Object>> result = new ArrayList<>();
-        Map<String, Object> objectMap = null;
-
-        for (ListLicenseDTO data : listSN) {
-            objectMap = new TreeMap<>();
-            objectMap.put("serialNumber", data);
-            objectMap.put("status", (int) snService.fetchLicenseHistory(data.getId()).getLicenseStatus());
-            result.add(objectMap);
-        }
+        List<Map<String, Object>> result = snService.findAllSN();
 
         if (result.isEmpty()) {
             return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
@@ -156,12 +148,23 @@ public class SNManagementController {
     }
 
     @RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
-    public ResponseEntity<Void> registerGeneratedSN(@RequestBody List<License> list) {
+    public ResponseEntity<List<Map<String, Object>>> registerGeneratedSN(@RequestBody List<License> list) {
+        List<List<ListLicenseDTO>> listList = new ArrayList<>();
+        Map<String, Object> objectMap = null;
+        List<Map<String, Object>> result = new ArrayList<>();
+
         for (License license : list) {
-            snService.registerSerialNumber(license, 0);
+            listList.add(snService.saveGeneratedSN(license));
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        for (List<ListLicenseDTO> dtoList: listList) {
+            for (ListLicenseDTO data : dtoList) {
+              objectMap = snService.generateLicenseDTOResult(data);
+              result.add(objectMap);
+            }
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/findUnreadLicenses/", method = RequestMethod.GET)

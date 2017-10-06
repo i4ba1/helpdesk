@@ -11,7 +11,7 @@ import id.co.knt.helpdesk.api.model.License;
 @Repository
 public interface SNRepo extends JpaRepository<License, Long> {
 
-	@Query("select sn from License sn where sn.license= :serialNumber")
+	@Query("select sn from License sn join fetch sn.product p where sn.license= :serialNumber")
 	License findByLicense(@Param("serialNumber") String serialNumber);
 
 	@Query("select sn from License sn where sn.activationKey= :activationKey")

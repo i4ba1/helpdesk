@@ -100,7 +100,7 @@
                 function(response) {
                     DialogFactory.confirmationDialog("SAVE_SUCCESS", "SAVE_TO_XLSX_CONFIRMATION", "sm").then(
                         function(result) {
-                            exportData(licenses);
+                            exportData(response.data);
                             $state.go("administrator.license");
                         },
                         function(dismiss) {
@@ -138,14 +138,14 @@
         function exportData(licenseList) {
             var dataExport = [];
 
-            angular.forEach(licenseList, function(license, key) {
+            angular.forEach(licenseList, function(row, key) {
                 dataExport.push({
                     "No.": key + 1,
-                    "Serial Number": license.license,
-                    "Produk": license.product.productName,
-                    "Jumlah Pengguna": license.numberOfClient ? license.numberOfClient : 1,
-                    "Sekolah": license.schoolName,
-                    "Tanggal Dibuat": new Date(license.createdDate).toLocaleDateString()
+                    "Serial Number": row.serialNumber.license,
+                    "Produk": row.serialNumber.productName,
+                    "Jumlah Pengguna": row.serialNumber.numberOfClient ? row.serialNumber.numberOfClient : 1,
+                    "Sekolah": row.serialNumber.schoolName,
+                    "Tanggal Dibuat": new Date(row.serialNumber.createdDate).toLocaleDateString()
                 })
             });
 
