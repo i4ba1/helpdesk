@@ -24,5 +24,5 @@ public interface LicenseHistoryRepo extends JpaRepository<LicenseHistory, Long> 
 	List<LicenseHistory> findLicenseHistory(@Param("licenseId") Long licenseId);
 
 	@Query("select lh.licenseStatus from LicenseHistory lh where lh.license.id= :licenseId and lh.licenseStatus=4 order by createdDate desc")
-	Object findLicenseHistoryByLicenseStatus(@Param("licenseId") Long licenseId);
+	Short findLicenseHistoryByLicenseStatus(@Param("licenseId") Long licenseId);
 }

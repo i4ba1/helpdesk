@@ -99,14 +99,17 @@ public class SNServiceImpl implements SNService {
     public int registerSN(License serialNumber) {
         Product product = null;
         License license =  snRepo.findByLicense(serialNumber.getLicense());
-        boolean isBlocked = false;
+        Short licenseStatus = 0;
 
         if(license != null) {
-            isBlocked = (boolean)licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId());
+            if(licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId()) != null) {
+                licenseStatus = licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId());
+            }
         }
 
         String strSN = serialNumber.getLicense().toLowerCase();
-        if (gawl.validate(strSN) && !isBlocked) {
+        if (gawl.validate(strSN) && licenseStatus < 4) {
+            if(licenseStatus < 4)
             try {
                 Map<String, Byte> extractResult = gawl.extract(strSN);
                 byte Type = extractResult.get(Gawl.TYPE);
@@ -148,7 +151,6 @@ public class SNServiceImpl implements SNService {
         List<ListLicenseDTO> dtoList = new ArrayList<>();
         ListLicenseDTO listLicenseDTO;
 
-
         if(licenses.size() > 0){
             for (License sn : licenses) {
                 listLicenseDTO = new ListLicenseDTO();
@@ -161,15 +163,17 @@ public class SNServiceImpl implements SNService {
                 dtoList.add(listLicenseDTO);
             }
         }else{
-            License sn = licenses.get(0);
-            listLicenseDTO = new ListLicenseDTO();
-            listLicenseDTO.setId(sn.getId());
-            listLicenseDTO.setLicense(sn.getLicense().toLowerCase());
-            listLicenseDTO.setProductName(modifyProductName(sn));
-            listLicenseDTO.setCreatedDate(sn.getCreatedDate());
-            listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
-            listLicenseDTO.setSchoolName(sn.getSchoolName());
-            dtoList.add(listLicenseDTO);
+            if(!licenses.isEmpty()) {
+                License sn = licenses.get(0);
+                listLicenseDTO = new ListLicenseDTO();
+                listLicenseDTO.setId(sn.getId());
+                listLicenseDTO.setLicense(sn.getLicense().toLowerCase());
+                listLicenseDTO.setProductName(modifyProductName(sn));
+                listLicenseDTO.setCreatedDate(sn.getCreatedDate());
+                listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
+                listLicenseDTO.setSchoolName(sn.getSchoolName());
+                dtoList.add(listLicenseDTO);
+            }
         }
 
         return dtoList;
@@ -369,7 +373,7 @@ public class SNServiceImpl implements SNService {
     public Map<String, Object> viewDetailLicense(Long licenseId) {
         License license = snRepo.findLicenseById(licenseId);
         List<LicenseHistory> histories = licenseHistoryRepo.findLicenseHistory(licenseId);
-        Object obj = licenseHistoryRepo.findLicenseHistoryByLicenseStatus(licenseId);
+        Short licenseStatus = licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId());;
 
         Map<String, Object> map = new HashMap<>();
         map.put("licenseKey", license.getLicense());
@@ -381,7 +385,7 @@ public class SNServiceImpl implements SNService {
         map.put("activationKey", license.getActivationKey());
         map.put("createdDate", license.getCreatedDate());
         map.put("licenseHistory", histories);
-        map.put("licenseStatus", obj);
+        map.put("licenseStatus", licenseStatus);
 
         return map;
     }
