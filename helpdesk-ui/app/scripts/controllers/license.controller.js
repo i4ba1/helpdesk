@@ -45,6 +45,10 @@
             $scope.currentPage = p
         }
 
+        /**
+         * this function is no longer used, consider for removing
+         * @param {*} serialNumber 
+         */
         function activateSerialNumber(serialNumber) {
             RequestFactory.activate(serialNumber).then(
                 function(response) {

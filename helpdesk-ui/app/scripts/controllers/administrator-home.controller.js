@@ -10,7 +10,7 @@
     AdministratorController.$inject = ['$scope', '$state', '$cookies', 'RequestFactory'];
 
     function AdministratorController($scope, $state, $cookies, RequestFactory) {
-        // RequestFactory.isAlreadyAuthenticated();
+        RequestFactory.isAlreadyAuthenticated();
 
         $(document).ready(function() {
 
