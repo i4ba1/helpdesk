@@ -102,7 +102,8 @@
                             );
                         },
                         function(error) {
-
+                            DialogFactory.messageDialog("ACTIVATION_FAILED", ["ACTIVATION_FAILED_MESSAGES"], "md");
+                            console.error(error);
                         }
                     );
                 },
