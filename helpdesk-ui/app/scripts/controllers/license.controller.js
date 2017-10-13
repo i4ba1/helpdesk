@@ -6,9 +6,9 @@
     angular.module('application')
         .controller("ProjectSerialNumberController", ProjectSerialNumberController);
 
-    ProjectSerialNumberController.$inject = ['$scope', 'RequestFactory', '$state', "$stateParams", 'DialogFactory'];
+    ProjectSerialNumberController.$inject = ['$scope', 'RequestFactory', '$state', "$stateParams", 'DialogFactory', 'FileSaver', 'Blob'];
 
-    function ProjectSerialNumberController($scope, RequestFactory, $state, $stateParams, DialogFactory) {
+    function ProjectSerialNumberController($scope, RequestFactory, $state, $stateParams, DialogFactory, FileSaver, Blob) {
         RequestFactory.isAlreadyAuthenticated();
 
         $scope.rowCollection = [];
@@ -26,6 +26,7 @@
         $scope.activateSerialNumber = activateSerialNumber;
         $scope.licenseBlock = licenseBlock;
         $scope.exportFile = exportFile;
+        $scope.exportAttachment = exportAttachment;
         /**------------------------------------------------------*/
         function getAllSerialNumber() {
             $scope.rowCollection = [];
@@ -142,9 +143,9 @@
 
         function overrideActivationLimit() {
 
-            DialogFactory.confirmationWithMessageDialog("CONFIRMATION", "OVERRIDE_LIMIT_TEXT", "OVERRIDE_LIMIT_REASON_TEXT").then(
-                function(reason) {
-                    RequestFactory.overrideActivationLimit($stateParams.licenseId, reason).then(
+            DialogFactory.confirmationWithMessageDialog("CONFIRMATION", "OVERRIDE_LIMIT_TEXT", "OVERRIDE_LIMIT_REASON_TEXT", true).then(
+                function(result) {
+                    RequestFactory.overrideActivationLimit($stateParams.licenseId, result.reason, result.file).then(
                         function(response) {
                             DialogFactory.messageDialog("NOTIFICATION", ["SUCCESS_OVERRIDE_NOTIFICATION"], "sm").then(
                                 function() {
@@ -184,6 +185,16 @@
             });
 
             RequestFactory.exportData(dataExport);
+        }
+
+        function exportAttachment(history) {
+            var dataUri = "data:" + history.fileContentType + ";base64," + history.fileData;
+            fetch(dataUri)
+                .then(function(response) {
+                    return response.blob();
+                }).then(function(blobData) {
+                    FileSaver.saveAs(blobData, history.fileName);
+                });
         }
     }
 

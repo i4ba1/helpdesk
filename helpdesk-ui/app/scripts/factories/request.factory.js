@@ -223,8 +223,18 @@
             return $http.get(baseURL + "/snManagement/viewDetailSN/" + licenseId);
         }
 
-        function overrideActivationLimit(licenseId, message) {
-            return $http.put(baseURL + "/snManagement/overrideActivationLimit/" + licenseId + "/" + message);
+        function overrideActivationLimit(licenseId, message, file) {
+            var formdata = new FormData();
+            formdata.append("licenseId", licenseId);
+            formdata.append("message", message);
+            formdata.append("file", file)
+
+            return $http.post(baseURL + "/snManagement/overrideActivationLimit/", formdata, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            });
         }
 
         function blockLicense(licenseId, message) {

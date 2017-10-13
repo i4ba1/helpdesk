@@ -167,10 +167,10 @@
             BLOCK_REASON_TEXT: "masukanlah alasan pemblokiran serial number...!",
             SUCCESS_SCHOOL_UPDATE_NOTIFICATION: "Nama sekolah telah di update",
             FAILED_SCHOOL_UPDATE_NOTIFICATION: "Nama sekolah gagal di update",
-            SUCCESS_OVERRIDE_NOTIFICATION: "Activation limit telah di override",
-            FAILED_OVERRIDE_NOTIFICATION: "Activation limit gagal di override",
-            OVERRIDE_REASON_TEXT: "Masukkanlah alasan untuk overrid aktivasi limit",
-            OVERRIDE_CONFIRMATION: "Apakah yakin untuk melakukan overrid aktivasi limit ?",
+            SUCCESS_OVERRIDE_NOTIFICATION: "Limit aktivasi berhasil ditambahkan",
+            FAILED_OVERRIDE_NOTIFICATION: "Limit aktivasi gagal ditambahkan",
+            OVERRIDE_REASON_TEXT: "Masukkanlah alasan untuk menambah limit aktivasi",
+            OVERRIDE_CONFIRMATION: "Apakah yakin untuk melakukan menambah limit aktivasi ?",
             PASSKEY_PLH: "Masukkan passkey",
             PASKEY_LABEL: "Passkey",
             SAVE_TO_XLSX_CONFIRMATION: "Simpan data berhasil, apakah data akan diekspor ke file XLSX ?",
@@ -186,7 +186,15 @@
             BLOCK_SUCCESS_MESSAGE: "Blokir serial number berhasil",
             BLOCK_FAILED_MESSAGE: "Blokir serial number gagal",
             EXPORT_CURRENT_PAGE: "Ekspor Lisensei 1 Halaman",
-            EXPORT_ALL_PAGE: "Ekspor Semua Lisense "
+            EXPORT_ALL_PAGE: "Ekspor Semua Lisense ",
+            UPLOAD_FILE: "Unggah tanda bukti permintaan!",
+            DOWNLOAD_ATTACHMENT: "Unduh Lampiran",
+            BLOCKED_ST: "Lisensi diblokir",
+            GENERATED_ST: "Lisensi dibuat",
+            ACTIVATED_ST: "Lisensi diaktivasi",
+            OVERRIDED_ST: "Lisensi tambah limit",
+            REGISTERED_ST: "Lisensi didaftarkan"
+
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
         $translateProvider.preferredLanguage('id');

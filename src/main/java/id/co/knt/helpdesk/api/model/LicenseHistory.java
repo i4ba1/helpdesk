@@ -20,7 +20,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="helpdesk_license_history")
+@Table(name = "helpdesk_license_history")
 public class LicenseHistory implements Serializable {
 
 	/**
@@ -29,30 +29,36 @@ public class LicenseHistory implements Serializable {
 	private static final long serialVersionUID = 5245897062416509792L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@Column(name="message")
+
+	@Column(name = "message")
 	private String message;
-	
-	@Column(name="createdDate")
+
+	@Column(name = "createdDate")
 	private Long createdDate;
-	
-	@ManyToOne(fetch= FetchType.LAZY)
-	@JoinColumn(name="license_id")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "license_id")
 	private License license;
 
+	@Column(name = "file_name", nullable = true)
+	private String fileName;
+
+	@Column(name = "file_content_type", nullable = true)
+	private String fileContentType;
+
+	@Column(name = "file_data", nullable = true)
+	private byte[] fileData;
+
 	/**
-	 * 0 is generated
-	 * 1 is registered
-	 * 2 is activated
-	 * 3 is warning/problem
-	 * 4 is disabled
+	 * 0 is generated 1 is registered 2 is activated 3 is warning/problem 4 is
+	 * disabled
 	 */
 	@Column(name = "license_status", columnDefinition = "smallint")
 	private Short licenseStatus;
-	
-	@Column(name="is_read")
+
+	@Column(name = "is_read")
 	private Boolean isRead;
 
 	public String getMessage() {
@@ -90,7 +96,7 @@ public class LicenseHistory implements Serializable {
 	public void setLicenseStatus(Short licenseStatus) {
 		this.licenseStatus = licenseStatus;
 	}
-	
+
 	public Boolean getIsRead() {
 		return isRead;
 	}
@@ -98,4 +104,29 @@ public class LicenseHistory implements Serializable {
 	public void setIsRead(Boolean isRead) {
 		this.isRead = isRead;
 	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public byte[] getFileData() {
+		return fileData;
+	}
+
+	public void setFileData(byte[] fileData) {
+		this.fileData = fileData;
+	}
+
+	public String getFileContentType() {
+		return fileContentType;
+	}
+
+	public void setFileContentType(String fileContentType) {
+		this.fileContentType = fileContentType;
+	}
+
 }

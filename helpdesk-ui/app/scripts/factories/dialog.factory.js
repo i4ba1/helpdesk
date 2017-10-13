@@ -92,10 +92,14 @@
          * @param {*} messsage 
          * @param {*} size 
          */
-        function confirmationWithMessageDialog(title, messsage, placeholder) {
+        function confirmationWithMessageDialog(title, messsage, placeholder, extra) {
+            var template = 'views/confirmation-with-messages-dialog.html';
+            if (extra) {
+                template = 'views/override-dialog.html'
+            }
             modalInstance = uibModal.open({
                 animation: true,
-                templateUrl: 'views/confirmation-with-messages-dialog.html',
+                templateUrl: template,
                 controller: ['$uibModalInstance', 'params', confirmationWithMesssageDialogController],
                 controllerAs: '$ctrl',
                 size: "md",
@@ -105,7 +109,8 @@
                         return {
                             title: title,
                             messsage: messsage,
-                            placeholder: placeholder
+                            placeholder: placeholder,
+                            extra: extra
                         };
                     }
                 }
@@ -162,9 +167,14 @@
             ctrl.message = params.messsage;
             ctrl.placeholder = params.placeholder;
             ctrl.reason = "";
+            ctrl.file;
 
             ctrl.ok = function() {
-                $uibModalInstance.close(ctrl.reason);
+                if (params.extra) {
+                    $uibModalInstance.close({ file: ctrl.file, reason: ctrl.reason });
+                } else {
+                    $uibModalInstance.close(ctrl.reason);
+                }
             };
 
             ctrl.dismiss = function() {

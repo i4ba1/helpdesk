@@ -4,7 +4,7 @@ import id.co.knt.helpdesk.api.model.License;
 import id.co.knt.helpdesk.api.model.LicenseHistory;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -41,7 +41,7 @@ public interface SNService{
 
     LicenseHistory fetchLicenseHistory(Long licenseId);
 
-    void setLicenseHistory(License license, short status, String message);
+    void setLicenseHistory(License license, short status, String message, MultipartFile file);
 
     Map<String, Object> generateLicenseDTOResult(ListLicenseDTO data);
 }

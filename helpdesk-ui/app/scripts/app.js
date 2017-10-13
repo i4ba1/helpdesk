@@ -15,7 +15,8 @@
             'ui.bootstrap',
             'ui.router',
             "checklist-model",
-            'LocalStorageModule'
+            'LocalStorageModule',
+            'ngFileSaver'
         ])
         .config(config);
 

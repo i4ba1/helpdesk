@@ -166,7 +166,7 @@ gulp.task('client:build', ['html', 'styles'], function() {
         .pipe($.useref({ searchPath: [yeoman.app, '.tmp'] }))
         .pipe(jsFilter)
         .pipe($.ngAnnotate())
-        .pipe($.uglify())
+        // .pipe($.uglify())
         .pipe(jsFilter.restore())
         .pipe(cssFilter)
         .pipe($.minifyCss({ cache: true }))

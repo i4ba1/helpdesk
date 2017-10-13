@@ -62,15 +62,16 @@
                             <table class="table table-bordered table-striped" ng-switch="license.licenseHistory.length" st-table="license.licenseHistory" style="min-height:50vh;">
                                 <thead>
                                     <tr>
-                                        <th>{{"NO"|translate}}</th>
+                                        <th width="50">{{"NO"|translate}}</th>
                                         <th>{{"STATUS"|translate}}</th>
                                         <th>{{"DATE"|translate}}</th>
                                         <th>{{"DESCRIPTION"|translate}}</th>
+                                        <th width="50"></th>
                                     </tr>
                                 </thead>
                                 <tbody ng-switch-when="0">
                                     <tr>
-                                        <td colspan="4" class="data-not-found">
+                                        <td colspan="5" class="data-not-found">
                                             {{"LICENSE_HISTORY_NOT_FOUND"|translate}}
                                         </td>
                                     </tr>
@@ -79,19 +80,22 @@
                                     <tr ng-repeat="history in license.licenseHistory track by $index">
                                         <td>{{$index+1}}</td>
                                         <td ng-switch="history.licenseStatus">
-                                            <span uib-tooltip="License already generated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="images/Generated.png"
+                                            <span uib-tooltip="{{'GENERATED_ST'|translate}}" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="0"><img src="images/Generated.png"
                                                                       class="license-status"/></span>
-                                            <span uib-tooltip="License already registered" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="images/Registered.png"
+                                            <span uib-tooltip="{{'REGISTERED_ST'|translate}}" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="1"><img src="images/Registered.png"
                                                                       class="license-status"/></span>
-                                            <span uib-tooltip="License already activated" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="images/Activated.png"
+                                            <span uib-tooltip="{{'ACTIVATED_ST'|translate}}" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="2"><img src="images/Activated.png"
                                                                       class="license-status"></span>
-                                            <span uib-tooltip="License have a problem" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="images/Problem.png"
+                                            <span uib-tooltip="{{'OVERRIDED_ST'|translate}}" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="3"><img src="images/Problem.png"
                                                                       class="license-status"></span>
-                                            <span uib-tooltip="License already disabled" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="images/Disabled.png"
+                                            <span uib-tooltip="{{'BLOCKED_ST'|translate}}" tooltip-placement="bottom" tooltip-trigger="'mouseenter'" ng-switch-when="4"><img src="images/Disabled.png"
                                                                       class="license-status"></span>
                                         </td>
                                         <td>{{history.createdDate | date :"dd/MM/yyyy hh:mm:ss"}}</td>
                                         <td>{{history.message}}</td>
+                                        <td>
+                                            <a ng-click="exportAttachment(history)" uib-tooltip="{{'DOWNLOAD_ATTACHMENT'|translate}}" tooltip-placement="bottom"><span ng-hide="!history.fileName" ng-show="history.fileName"><i class="fa fa-file-text-o fa-fw fa-2x"></i></span></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
