@@ -88,6 +88,7 @@ public class SNServiceImpl implements SNService {
         License snNumber = new License();
         snNumber.setLicense(serialNumber.getLicense().toLowerCase());
         snNumber.setPassKey(serialNumber.getPassKey());
+        snNumber.setCreatedDate(new Date().getTime());
         snNumber.setActivationKey("");
         snNumber.setNumberOfClient(serialNumber.getNumberOfClient());
         snNumber.setProduct(product);
