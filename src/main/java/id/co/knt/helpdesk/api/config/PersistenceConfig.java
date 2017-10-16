@@ -82,11 +82,11 @@ public class PersistenceConfig {
 
         //Specifies the action that is invoked to the database when the Hibernate
         //SessionFactory is created or closed.
-        //jpaProperties.put(PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO));
+        jpaProperties.put(PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO));
 
         //Configures the naming strategy that is used when Hibernate creates
         //new database objects and schema elements
-        jpaProperties.put(PROPERTY_NAME_HIBERNATE_PHYSICAL_NAMING_STRATEGY, "id.co.knt.helpdesk.api.impl.PhysicalNamingStrategyImpl");
+        //jpaProperties.put(PROPERTY_NAME_HIBERNATE_PHYSICAL_NAMING_STRATEGY, "id.co.knt.helpdesk.api.impl.PhysicalNamingStrategyImpl");
 
         //If the value of this property is true, Hibernate writes all SQL
         //statements to the console.

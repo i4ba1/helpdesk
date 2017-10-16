@@ -50,7 +50,7 @@ public class SNManagementController {
 		return new ResponseEntity<>(serialNumber, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/activate/{licenseId}/{passkey}/{reason}", method = RequestMethod.POST)
+	@RequestMapping(value = "/activate/", method = RequestMethod.POST)
 	public ResponseEntity<License> activateByPhone(@RequestParam("licenseId") Long licenseId,
 			@RequestParam("passkey") String passkey, @RequestParam("reason") String reason) {
 		
@@ -219,7 +219,7 @@ public class SNManagementController {
 		return new ResponseEntity<>(object, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/updateSchool/{licenseId}/{schoolName}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/updateSchool/", method = RequestMethod.POST)
 	public ResponseEntity<License> updateSchool(@RequestParam Long licenseId, @RequestParam String schoolName) {
 		License license = snRepo.findOne(licenseId);
 		if (license == null) {
@@ -244,7 +244,7 @@ public class SNManagementController {
 
 	}
 
-	@RequestMapping(value = "/blocked/{licenseId}/{message}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/blocked/", method = RequestMethod.POST)
 	public ResponseEntity<License> blocked(@RequestParam Long licenseId, @RequestParam String message) {
 		License license = snRepo.findOne(licenseId);
 		if (license == null) {

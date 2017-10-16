@@ -6,6 +6,7 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 
 import java.util.Locale;
 
+
 public class PhysicalNamingStrategyImpl extends PhysicalNamingStrategyStandardImpl {
 
     @Override

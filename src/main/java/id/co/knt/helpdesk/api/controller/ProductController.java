@@ -96,7 +96,7 @@ public class ProductController {
 		return new ResponseEntity<>(productDto, HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = { "/updateProduct/" }, method = RequestMethod.PUT)
+	@RequestMapping(value = { "/updateProduct/" }, method = RequestMethod.POST)
 	public ResponseEntity<Void> updateProduct(@RequestBody ProductDTO productDTO) {
 
 		Product currentProduct = productRepo.findOne(productDTO.getProduct().getId());
@@ -122,14 +122,14 @@ public class ProductController {
 		return new ResponseEntity<>( HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = { "/deleteProduct/{productId}" }, method = RequestMethod.DELETE)
+	@RequestMapping(value = { "/deleteProduct/" }, method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteProduct(@RequestParam("productId") Integer productId) {
 		productRepo.delete(productId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 
-	@RequestMapping(value = { "/deleteSubProduct/{subProductId}" }, method = RequestMethod.DELETE)
+	@RequestMapping(value = { "/deleteSubProduct/" }, method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteSubProduct(@RequestParam("subProductId") Integer subProductId) {
 		subProductRepo.delete(subProductId);
 		return new ResponseEntity<>(HttpStatus.OK);
