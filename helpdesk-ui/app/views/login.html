@@ -1,7 +1,7 @@
 <div class="login-container">
     <div class="login-form">
         <div class="login-title">{{'WELCOME'|translate}}</div>
-        <form id="loginForm" name="loginForm" ng-submit="login()" autocomplete="off" novalidate>
+        <form id="loginForm" name="loginForm" ng-submit="login()" autocomplete="on" novalidate>
             <div class="form-group login-group">
                 <input name="username" class="form-control login-input" type="text" placeholder="{{'USERNAME_PLH'|translate}}" ng-model="model.username" ng-required="true">
             </div>
