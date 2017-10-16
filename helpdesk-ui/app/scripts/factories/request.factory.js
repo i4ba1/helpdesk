@@ -11,10 +11,18 @@
 
     function RequestFactory($http, $state, $cookies) {
         var baseURL = "/helpdesk/api";
+        var httpHeader = {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': undefined
+            }
+        };
+
+        var formData;
+
         var service = {
             getBaseUrl: getBaseUrl,
             getSerialNumber: getSerialNumber,
-            createAdmin: createAdmin,
             login: login,
             logout: logout,
             isAlreadyAuthenticated: isAlreadyAuthenticated,
@@ -59,30 +67,18 @@
          * @param  {} model
          */
         function login(model) {
-            var formData = {
-                id: "",
-                name: "",
-                createdDate: "",
-                userName: model.username,
-                password: model.password
-            }
-            return $http.post(baseURL + "/userManagement/loggingIn/", formData);
-        }
+            formData = new FormData();
+            formData.append("userName", model.userName);
+            formData.append("password", model.password);
 
-        function createAdmin() {
-            var formData = {
-                id: "",
-                name: "",
-                createdDate: "",
-                userName: "",
-                password: ""
-            }
-            return $http.post(baseURL + "/userManagement/createUser/", formData);
+            return $http.post(baseURL + "/userManagement/loggingIn/", formData, httpHeader);
         }
 
         function logout() {
             var loggingIn = $cookies.getObject("loggingIn");
-            return $http.post(baseURL + "/userManagement/loggedOut/", loggingIn);
+            var formData = new FormData();
+            formData.append("token", loggingIn.token);
+            return $http.post(baseURL + "/userManagement/loggedOut/", formData, httpHeader);
         }
 
         function isAlreadyAuthenticated() {
@@ -96,7 +92,13 @@
         }
 
         function activate(licenseId, passkey, reason) {
-            return $http.post(baseURL + "/snManagement/activate/" + licenseId + "/" + passkey + "/" + reason);
+            var fd = new FormData();
+
+            fd.append("licenseId", licenseId);
+            fd.append("passkey", passkey);
+            fd.append("reason", reason);
+
+            return $http.post(baseURL + "/snManagement/activate/", fd, httpHeader);
         }
 
         /**
@@ -148,7 +150,7 @@
          * @param {*} product 
          */
         function updateProduct(productDto) {
-            return $http.put(baseURL + "/productManagement/updateProduct/", productDto);
+            return $http.post(baseURL + "/productManagement/updateProduct/", productDto);
         }
 
         /**
@@ -183,8 +185,11 @@
         }
 
         function updateSchool(licenseId, schoolName) {
+            var fd = new FormData();
+            fd.append("licenseId", licenseId);
+            fd.append("schoolName", schoolName);
 
-            return $http.put(baseURL + "/snManagement/updateSchool/" + licenseId + "/" + schoolName);
+            return $http.post(baseURL + "/snManagement/updateSchool/", fd, httpHeader);
         }
 
         function deleteSchool(schoolId) {
@@ -229,16 +234,14 @@
             formdata.append("message", message);
             formdata.append("file", file)
 
-            return $http.post(baseURL + "/snManagement/overrideActivationLimit/", formdata, {
-                transformRequest: angular.identity,
-                headers: {
-                    'Content-Type': undefined
-                }
-            });
+            return $http.post(baseURL + "/snManagement/overrideActivationLimit/", formdata, httpHeader);
         }
 
         function blockLicense(licenseId, message) {
-            return $http.put(baseURL + "/snManagement/blocked/" + licenseId + "/" + message);
+            formData = new FormData();
+            formData.append("licenseId", licenseId);
+            formData.append("message", message);
+            return $http.post(baseURL + "/snManagement/blocked/", formData, httpHeader);
         }
 
         function exportData(dataExport) {

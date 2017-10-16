@@ -10,28 +10,6 @@
 
     function LoginController($scope, $state, RequestFactory, $cookies, $window, DialogFactory) {
         var now = new $window.Date();
-        var isAdminCreated = $cookies.get("isAdminCreated");
-
-        if (!isAdminCreated) {
-            var createCookies = false;
-            // Create Admin
-            RequestFactory.createAdmin().then(function(repsonse) {
-                createCookies = true;
-            }, function(responseError) {
-                if (responseError.status > 0) {
-                    createCookies = true;
-                }
-            }).then(function() {
-                if (createCookies) {
-                    $cookies.put("isAdminCreated", true, {
-                        expires: (new $window.Date(now.getFullYear(), now.getMonth(), now.getDate() + 2))
-                    });
-                    console.log("Cookies Created");
-                }
-            });
-        }
-
-
         if (RequestFactory.isAlreadyAuthenticated()) {
             $state.go('administrator.dashboard');
         } else {
