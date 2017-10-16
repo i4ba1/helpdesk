@@ -312,7 +312,7 @@ public class SNServiceImpl implements SNService {
                     License newLicense = new License();
                     newLicense.setLicense(generatedSn.toLowerCase());
                     newLicense.setNumberOfClient(licenseGeneratorDTO.getSubProducts().get(0).getValue());
-                    newLicense.setCreatedDate(System.currentTimeMillis());
+                    newLicense.setCreatedDate(new Date().getTime());
                     newLicense.setProduct(product);
 
                     list.add(newLicense);
@@ -333,7 +333,7 @@ public class SNServiceImpl implements SNService {
                         License newLicense = new License();
                         newLicense.setLicense(generatedSn.toLowerCase());
                         newLicense.setNumberOfClient(null);
-                        newLicense.setCreatedDate(System.currentTimeMillis());
+                        newLicense.setCreatedDate(new Date().getTime());
                         newLicense.setProduct(product);
                         list.add(newLicense);
                     }
