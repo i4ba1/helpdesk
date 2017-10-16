@@ -657,3 +657,21 @@ input.ng-dirty {
         transform: scale(1, 1);
     }
 }
+
+.custom-overlay-loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(132, 221, 253, 0.40);
+    text-align: center;
+    padding-top: 40vh;
+}
+
+.bs-loading-container {
+    position: relative;
+    margin: 0 -15px;
+    width: 105%;
+    height: 100vh;
+}

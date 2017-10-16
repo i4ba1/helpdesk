@@ -3,9 +3,9 @@
     angular.module("application")
         .controller('GeneratorController', generatorController);
 
-    generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "localStorageService"];
+    generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "localStorageService", "bsLoadingOverlayService"];
 
-    function generatorController(RequestFactory, DialogFactory, $scope, $state, localStorageService) {
+    function generatorController(RequestFactory, DialogFactory, $scope, $state, localStorageService, bsLoadingOverlayService) {
         $scope.licenseGeneratorDTO = {
             product: null,
             subProducts: [],
@@ -20,30 +20,6 @@
         $scope.switchToSubProduct = null;
         $scope.subProducts = [];
         $scope.switchPage = "create";
-
-        if ($state.is("administrator.generator")) {
-            RequestFactory.getProducts().then(
-                function(response) {
-                    $scope.products = response.data;
-                },
-                function(error) {
-                    console.log("cannot fetch school");
-                }
-            );
-        } else if ($state.is("administrator.generator.list")) {
-            $scope.switchListGenerator = localStorageService.get("type");
-            if ($scope.switchListGenerator === "EL") {
-                $scope.generatedLicense = localStorageService.get("listGenerated").EL;
-            } else {
-                var listGenerated = localStorageService.get("listGenerated");
-                $scope.generatedLicense = [];
-                $scope.schoolList = [];
-                for (var i = 0; i < localStorageService.get("licenseCount"); i++) {
-                    $scope.generatedLicense.push(listGenerated["Paket" + (i + 1)]);
-                    $scope.schoolList.push({ schoolName: null });
-                }
-            }
-        }
 
         function submitLicenseGenerator(licenseGeneratorDTO) {
             var isvalid = true;
@@ -64,16 +40,21 @@
             }
 
             if (isvalid) {
+                showOverlay();
                 RequestFactory.licenseGenerator(licenseGeneratorDTO).then(
                     function(response) {
-                        $scope.generatedLicense = response.data;
-                        // $cookies.putObject("listGenerated", $scope.generatedLicense);
-                        localStorageService.set("licenseCount", licenseGeneratorDTO.licenseCount);
-                        localStorageService.set("listGenerated", $scope.generatedLicense);
-                        localStorageService.set("type", $scope.licenseGeneratorDTO.product.subModuleType);
-                        $state.go("administrator.generator.list");
+                        setTimeout(function() {
+                            hideOverlay();
+                            $scope.generatedLicense = response.data;
+                            // $cookies.putObject("listGenerated", $scope.generatedLicense);
+                            localStorageService.set("licenseCount", licenseGeneratorDTO.licenseCount);
+                            localStorageService.set("listGenerated", $scope.generatedLicense);
+                            localStorageService.set("type", $scope.licenseGeneratorDTO.product.subModuleType);
+                            $state.go("administrator.generator.list");
+                        }, 2000);
                     },
                     function(error) {
+                        hideOverlay();
                         console.log("Error" + error);
                     }
                 );
@@ -150,6 +131,38 @@
             });
 
             RequestFactory.exportData(dataExport);
+        }
+
+        function showOverlay() {
+            bsLoadingOverlayService.start();
+        }
+
+        function hideOverlay() {
+            bsLoadingOverlayService.stop();
+        }
+
+        if ($state.is("administrator.generator")) {
+            RequestFactory.getProducts().then(
+                function(response) {
+                    $scope.products = response.data;
+                },
+                function(error) {
+                    console.log("cannot fetch product");
+                }
+            );
+        } else if ($state.is("administrator.generator.list")) {
+            $scope.switchListGenerator = localStorageService.get("type");
+            if ($scope.switchListGenerator === "EL") {
+                $scope.generatedLicense = localStorageService.get("listGenerated").EL;
+            } else {
+                var listGenerated = localStorageService.get("listGenerated");
+                $scope.generatedLicense = [];
+                $scope.schoolList = [];
+                for (var i = 0; i < localStorageService.get("licenseCount"); i++) {
+                    $scope.generatedLicense.push(listGenerated["Paket" + (i + 1)]);
+                    $scope.schoolList.push({ schoolName: null });
+                }
+            }
         }
     }
 
