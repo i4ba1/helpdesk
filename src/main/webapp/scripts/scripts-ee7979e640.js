@@ -20,7 +20,8 @@
             "bsLoadingOverlay",
             'angularSpinner'
         ])
-        .config(["localStorageServiceProvider", "usSpinnerConfigProvider", config]);
+        .config(["localStorageServiceProvider", "usSpinnerConfigProvider", config])
+        .run(["$rootScope", "bsLoadingOverlayService", run]);
 
     function config(localStorageServiceProvider, usSpinnerConfigProvider) {
         localStorageServiceProvider.setPrefix('helpdesk');
@@ -28,6 +29,20 @@
         localStorageServiceProvider.setStorageType('localStorage');
 
         usSpinnerConfigProvider.setDefaults({ color: 'gray' });
+    }
+
+    function run($rootScope, bsLoadingOverlayService) {
+        $rootScope.showOverlay = showOverlay;
+        $rootScope.hideOverlay = hideOverlay;
+
+        function showOverlay() {
+            bsLoadingOverlayService.start();
+        }
+
+        function hideOverlay() {
+            bsLoadingOverlayService.stop();
+        }
+
     }
 
 })();
@@ -516,7 +531,7 @@
          */
         function login(model) {
             formData = new FormData();
-            formData.append("userName", model.userName);
+            formData.append("userName", model.username);
             formData.append("password", model.password);
 
             return $http.post(baseURL + "/userManagement/loggingIn/", formData, httpHeader);
@@ -1289,9 +1304,9 @@
     angular.module('application')
         .controller("ProjectSerialNumberController", ProjectSerialNumberController);
 
-    ProjectSerialNumberController.$inject = ['$scope', 'RequestFactory', '$state', "$stateParams", 'DialogFactory', 'FileSaver', 'Blob'];
+    ProjectSerialNumberController.$inject = ['$scope', 'RequestFactory', '$state', "$stateParams", 'DialogFactory', 'FileSaver', 'Blob', '$rootScope'];
 
-    function ProjectSerialNumberController($scope, RequestFactory, $state, $stateParams, DialogFactory, FileSaver, Blob) {
+    function ProjectSerialNumberController($scope, RequestFactory, $state, $stateParams, DialogFactory, FileSaver, Blob, $rootScope) {
         RequestFactory.isAlreadyAuthenticated();
 
         $scope.rowCollection = [];
@@ -1312,14 +1327,17 @@
         $scope.exportAttachment = exportAttachment;
         /**------------------------------------------------------*/
         function getAllSerialNumber() {
+            $rootScope.showOverlay();
             $scope.rowCollection = [];
             $scope.displayCollection = [];
             RequestFactory.getSerialNumber().then(
                 function(response) {
                     $scope.rowCollection = response.data;
                     $scope.displayCollection = response.data;
+                    $rootScope.hideOverlay();
                 },
                 function(error) {
+                    $rootScope.hideOverlay();
                     console.log(error);
                 }
             );
@@ -1827,9 +1845,9 @@
     angular.module("application")
         .controller('GeneratorController', generatorController);
 
-    generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "localStorageService", "bsLoadingOverlayService"];
+    generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "localStorageService", "$rootScope"];
 
-    function generatorController(RequestFactory, DialogFactory, $scope, $state, localStorageService, bsLoadingOverlayService) {
+    function generatorController(RequestFactory, DialogFactory, $scope, $state, localStorageService, $rootScope) {
         $scope.licenseGeneratorDTO = {
             product: null,
             subProducts: [],
@@ -1844,6 +1862,8 @@
         $scope.switchToSubProduct = null;
         $scope.subProducts = [];
         $scope.switchPage = "create";
+        $scope.checkLimit = checkLimit;
+        $scope.maxsize = 1000;
 
         function submitLicenseGenerator(licenseGeneratorDTO) {
             var isvalid = true;
@@ -1864,11 +1884,11 @@
             }
 
             if (isvalid) {
-                showOverlay();
+                $rootScope.showOverlay();
                 RequestFactory.licenseGenerator(licenseGeneratorDTO).then(
                     function(response) {
                         setTimeout(function() {
-                            hideOverlay();
+                            $rootScope.hideOverlay();
                             $scope.generatedLicense = response.data;
                             // $cookies.putObject("listGenerated", $scope.generatedLicense);
                             localStorageService.set("licenseCount", licenseGeneratorDTO.licenseCount);
@@ -1878,7 +1898,7 @@
                         }, 2000);
                     },
                     function(error) {
-                        hideOverlay();
+                        $rootScope.hideOverlay();
                         console.log("Error" + error);
                     }
                 );
@@ -1889,6 +1909,7 @@
 
         function registerGeneratedSN(generatedSN) {
             var licenses = [];
+            $rootScope.showOverlay();
             if ($scope.switchListGenerator === "EP") {
                 for (var i = 0; i < localStorageService.get("licenseCount"); i++) {
                     for (var j = 0; j < generatedSN[i].length; j++) {
@@ -1903,6 +1924,7 @@
 
             RequestFactory.registerGeneratedSN(licenses).then(
                 function(response) {
+                    $rootScope.hideOverlay();
                     DialogFactory.confirmationDialog("SAVE_SUCCESS", "SAVE_TO_XLSX_CONFIRMATION", "sm").then(
                         function(result) {
                             exportData(response.data);
@@ -1914,6 +1936,7 @@
                     );
                 },
                 function(errorResponse) {
+                    $rootScope.hideOverlay();
                     DialogFactory.messageDialog("SAVE_FAILED", ["SAVE_LICENSE_FAILED"], "sm");
                 }
             );
@@ -1957,12 +1980,11 @@
             RequestFactory.exportData(dataExport);
         }
 
-        function showOverlay() {
-            bsLoadingOverlayService.start();
-        }
 
-        function hideOverlay() {
-            bsLoadingOverlayService.stop();
+
+        function checkLimit() {
+            var total = $scope.licenseGeneratorDTO.licenseCount * $scope.licenseGeneratorDTO.subProducts;
+            $scope.maxsize = 100;
         }
 
         if ($state.is("administrator.generator")) {

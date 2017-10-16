@@ -667,11 +667,11 @@ input.ng-dirty {
     background-color: rgba(132, 221, 253, 0.40);
     text-align: center;
     padding-top: 40vh;
+    z-index: 900;
 }
 
-.bs-loading-container {
-    position: relative;
-    margin: 0 -15px;
-    width: 105%;
-    height: 100vh;
+#spinner {
+    position: fixed;
+    top: 50;
+    left: 50;
 }

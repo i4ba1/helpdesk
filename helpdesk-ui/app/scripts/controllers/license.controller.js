@@ -6,9 +6,9 @@
     angular.module('application')
         .controller("ProjectSerialNumberController", ProjectSerialNumberController);
 
-    ProjectSerialNumberController.$inject = ['$scope', 'RequestFactory', '$state', "$stateParams", 'DialogFactory', 'FileSaver', 'Blob'];
+    ProjectSerialNumberController.$inject = ['$scope', 'RequestFactory', '$state', "$stateParams", 'DialogFactory', 'FileSaver', 'Blob', '$rootScope'];
 
-    function ProjectSerialNumberController($scope, RequestFactory, $state, $stateParams, DialogFactory, FileSaver, Blob) {
+    function ProjectSerialNumberController($scope, RequestFactory, $state, $stateParams, DialogFactory, FileSaver, Blob, $rootScope) {
         RequestFactory.isAlreadyAuthenticated();
 
         $scope.rowCollection = [];
@@ -29,14 +29,17 @@
         $scope.exportAttachment = exportAttachment;
         /**------------------------------------------------------*/
         function getAllSerialNumber() {
+            $rootScope.showOverlay();
             $scope.rowCollection = [];
             $scope.displayCollection = [];
             RequestFactory.getSerialNumber().then(
                 function(response) {
                     $scope.rowCollection = response.data;
                     $scope.displayCollection = response.data;
+                    $rootScope.hideOverlay();
                 },
                 function(error) {
+                    $rootScope.hideOverlay();
                     console.log(error);
                 }
             );

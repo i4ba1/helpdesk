@@ -3,9 +3,9 @@
     angular.module("application")
         .controller('GeneratorController', generatorController);
 
-    generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "localStorageService", "bsLoadingOverlayService"];
+    generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "localStorageService", "$rootScope"];
 
-    function generatorController(RequestFactory, DialogFactory, $scope, $state, localStorageService, bsLoadingOverlayService) {
+    function generatorController(RequestFactory, DialogFactory, $scope, $state, localStorageService, $rootScope) {
         $scope.licenseGeneratorDTO = {
             product: null,
             subProducts: [],
@@ -20,6 +20,8 @@
         $scope.switchToSubProduct = null;
         $scope.subProducts = [];
         $scope.switchPage = "create";
+        $scope.checkLimit = checkLimit;
+        $scope.maxsize = 1000;
 
         function submitLicenseGenerator(licenseGeneratorDTO) {
             var isvalid = true;
@@ -40,11 +42,11 @@
             }
 
             if (isvalid) {
-                showOverlay();
+                $rootScope.showOverlay();
                 RequestFactory.licenseGenerator(licenseGeneratorDTO).then(
                     function(response) {
                         setTimeout(function() {
-                            hideOverlay();
+                            $rootScope.hideOverlay();
                             $scope.generatedLicense = response.data;
                             // $cookies.putObject("listGenerated", $scope.generatedLicense);
                             localStorageService.set("licenseCount", licenseGeneratorDTO.licenseCount);
@@ -54,7 +56,7 @@
                         }, 2000);
                     },
                     function(error) {
-                        hideOverlay();
+                        $rootScope.hideOverlay();
                         console.log("Error" + error);
                     }
                 );
@@ -65,6 +67,7 @@
 
         function registerGeneratedSN(generatedSN) {
             var licenses = [];
+            $rootScope.showOverlay();
             if ($scope.switchListGenerator === "EP") {
                 for (var i = 0; i < localStorageService.get("licenseCount"); i++) {
                     for (var j = 0; j < generatedSN[i].length; j++) {
@@ -79,6 +82,7 @@
 
             RequestFactory.registerGeneratedSN(licenses).then(
                 function(response) {
+                    $rootScope.hideOverlay();
                     DialogFactory.confirmationDialog("SAVE_SUCCESS", "SAVE_TO_XLSX_CONFIRMATION", "sm").then(
                         function(result) {
                             exportData(response.data);
@@ -90,6 +94,7 @@
                     );
                 },
                 function(errorResponse) {
+                    $rootScope.hideOverlay();
                     DialogFactory.messageDialog("SAVE_FAILED", ["SAVE_LICENSE_FAILED"], "sm");
                 }
             );
@@ -133,12 +138,11 @@
             RequestFactory.exportData(dataExport);
         }
 
-        function showOverlay() {
-            bsLoadingOverlayService.start();
-        }
 
-        function hideOverlay() {
-            bsLoadingOverlayService.stop();
+
+        function checkLimit() {
+            var total = $scope.licenseGeneratorDTO.licenseCount * $scope.licenseGeneratorDTO.subProducts;
+            $scope.maxsize = 100;
         }
 
         if ($state.is("administrator.generator")) {

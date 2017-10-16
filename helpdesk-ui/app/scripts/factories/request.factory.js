@@ -68,7 +68,7 @@
          */
         function login(model) {
             formData = new FormData();
-            formData.append("userName", model.userName);
+            formData.append("userName", model.username);
             formData.append("password", model.password);
 
             return $http.post(baseURL + "/userManagement/loggingIn/", formData, httpHeader);

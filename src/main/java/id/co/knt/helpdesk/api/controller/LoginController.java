@@ -44,11 +44,11 @@ public class LoginController {
     /**
      *
      * @param userName
-     * @param pass
+     * @param password
      * @return
      */
     @RequestMapping(value = "/loggingIn/", method = RequestMethod.POST)
-    public ResponseEntity<Login> login(@RequestParam String userName, @RequestParam String pass) {
+    public ResponseEntity<Login> login(@RequestParam String userName, @RequestParam String password) {
         Date dt = new Date();
         DateTime dateTime = new DateTime(dt);
         dateTime = dateTime.plusHours(3);
@@ -57,7 +57,7 @@ public class LoginController {
         /**
          * First check if the username and password are valid
          */
-        User user = userService.validateUser(userName, pass);
+        User user = userService.validateUser(userName, password);
         Boolean isValid = user == null ? false : true;
         Login login = null;
 
