@@ -149,7 +149,7 @@
         })
 
         .state('administrator.generator', {
-            url: "/licenseGeneratorDTO",
+            url: "/license-generator",
             views: {
                 'content@administrator': {
                     templateUrl: "views/create-generator.html",

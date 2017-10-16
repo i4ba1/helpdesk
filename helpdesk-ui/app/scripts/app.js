@@ -16,14 +16,18 @@
             'ui.router',
             "checklist-model",
             'LocalStorageModule',
-            'ngFileSaver'
+            'ngFileSaver',
+            "bsLoadingOverlay",
+            'angularSpinner'
         ])
-        .config(config);
+        .config(["localStorageServiceProvider", "usSpinnerConfigProvider", config]);
 
-    function config(localStorageServiceProvider) {
+    function config(localStorageServiceProvider, usSpinnerConfigProvider) {
         localStorageServiceProvider.setPrefix('helpdesk');
         localStorageServiceProvider.setDefaultToCookie(false);
         localStorageServiceProvider.setStorageType('localStorage');
+
+        usSpinnerConfigProvider.setDefaults({ color: 'gray' });
     }
 
 })();
