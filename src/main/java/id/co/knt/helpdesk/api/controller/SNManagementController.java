@@ -51,8 +51,8 @@ public class SNManagementController {
 	}
 
 	@RequestMapping(value = "/activate/{licenseId}/{passkey}/{reason}", method = RequestMethod.POST)
-	public ResponseEntity<License> activateByPhone(@PathVariable("licenseId") Long licenseId,
-			@PathVariable("passkey") String passkey, @PathVariable("reason") String reason) {
+	public ResponseEntity<License> activateByPhone(@RequestParam("licenseId") Long licenseId,
+			@RequestParam("passkey") String passkey, @RequestParam("reason") String reason) {
 		
 		License result = snService.findSN(licenseId);
 
@@ -220,7 +220,7 @@ public class SNManagementController {
 	}
 
 	@RequestMapping(value = "/updateSchool/{licenseId}/{schoolName}", method = RequestMethod.PUT)
-	public ResponseEntity<License> updateSchool(@PathVariable Long licenseId, @PathVariable String schoolName) {
+	public ResponseEntity<License> updateSchool(@RequestParam Long licenseId, @RequestParam String schoolName) {
 		License license = snRepo.findOne(licenseId);
 		if (license == null) {
 			return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
@@ -245,7 +245,7 @@ public class SNManagementController {
 	}
 
 	@RequestMapping(value = "/blocked/{licenseId}/{message}", method = RequestMethod.PUT)
-	public ResponseEntity<License> blocked(@PathVariable Long licenseId, @PathVariable String message) {
+	public ResponseEntity<License> blocked(@RequestParam Long licenseId, @RequestParam String message) {
 		License license = snRepo.findOne(licenseId);
 		if (license == null) {
 			return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);

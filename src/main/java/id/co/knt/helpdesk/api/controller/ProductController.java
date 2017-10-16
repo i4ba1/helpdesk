@@ -10,12 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import id.co.knt.helpdesk.api.model.Product;
 import id.co.knt.helpdesk.api.model.SubProduct;
@@ -128,14 +123,14 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = { "/deleteProduct/{productId}" }, method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Integer productId) {
+	public ResponseEntity<Void> deleteProduct(@RequestParam("productId") Integer productId) {
 		productRepo.delete(productId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 
 	@RequestMapping(value = { "/deleteSubProduct/{subProductId}" }, method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteSubProduct(@PathVariable("subProductId") Integer subProductId) {
+	public ResponseEntity<Void> deleteSubProduct(@RequestParam("subProductId") Integer subProductId) {
 		subProductRepo.delete(subProductId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
