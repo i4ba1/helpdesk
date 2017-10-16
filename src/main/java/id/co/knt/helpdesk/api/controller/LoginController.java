@@ -12,11 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import id.co.knt.helpdesk.api.model.Login;
 import id.co.knt.helpdesk.api.model.User;
@@ -46,21 +42,22 @@ public class LoginController {
 
 
     /**
-     * Logging in
-     * @param newUser
+     *
+     * @param userName
+     * @param pass
      * @return
      */
     @RequestMapping(value = "/loggingIn/", method = RequestMethod.POST)
-    public ResponseEntity<Login> login(@RequestBody User newUser) {
+    public ResponseEntity<Login> login(@RequestParam String userName, @RequestParam String pass) {
         Date dt = new Date();
         DateTime dateTime = new DateTime(dt);
         dateTime = dateTime.plusHours(3);
         SecureRandom rand = new SecureRandom();
+
         /**
          * First check if the username and password are valid
          */
-        User user = userService.validateUser(newUser.getUserName(),
-                newUser.getPassword());
+        User user = userService.validateUser(userName, pass);
         Boolean isValid = user == null ? false : true;
         Login login = null;
 
@@ -114,15 +111,15 @@ public class LoginController {
     }
 
     /**
-     * Logged out user
-     * @param newLogin
+     *
+     * @param token
      * @return
      */
     @RequestMapping(value = "/loggedOut/", method = RequestMethod.POST)
-    public ResponseEntity<Void> logout(@RequestBody Login newLogin) {
+    public ResponseEntity<Void> logout(@RequestParam String token) {
         HttpHeaders headers = new HttpHeaders();
 
-        Login login = loginService.findByToken(newLogin.getToken());
+        Login login = loginService.findByToken(token);
         if (login == null) {
             return new ResponseEntity<Void>(headers, HttpStatus.UNAUTHORIZED);
         }
