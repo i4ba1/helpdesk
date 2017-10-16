@@ -20,7 +20,8 @@
             "bsLoadingOverlay",
             'angularSpinner'
         ])
-        .config(["localStorageServiceProvider", "usSpinnerConfigProvider", config]);
+        .config(["localStorageServiceProvider", "usSpinnerConfigProvider", config])
+        .run(["$rootScope", "bsLoadingOverlayService", run]);
 
     function config(localStorageServiceProvider, usSpinnerConfigProvider) {
         localStorageServiceProvider.setPrefix('helpdesk');
@@ -28,6 +29,20 @@
         localStorageServiceProvider.setStorageType('localStorage');
 
         usSpinnerConfigProvider.setDefaults({ color: 'gray' });
+    }
+
+    function run($rootScope, bsLoadingOverlayService) {
+        $rootScope.showOverlay = showOverlay;
+        $rootScope.hideOverlay = hideOverlay;
+
+        function showOverlay() {
+            bsLoadingOverlayService.start();
+        }
+
+        function hideOverlay() {
+            bsLoadingOverlayService.stop();
+        }
+
     }
 
 })();
