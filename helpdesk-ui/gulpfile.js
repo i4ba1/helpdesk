@@ -183,11 +183,6 @@ gulp.task('html', function() {
 
 gulp.task('images', function() {
     return gulp.src(yeoman.app + '/images/**/*')
-        // .pipe($.cache($.imagemin({
-        //     optimizationLevel: 5,
-        //     progressive: true,
-        //     interlaced: true
-        // })))
         .pipe(gulp.dest(yeoman.dist + '/images'));
 });
 
@@ -201,8 +196,17 @@ gulp.task('copy:fonts', function() {
         .pipe(gulp.dest(yeoman.dist + '/fonts'));
 });
 
+gulp.task('copy:tinymce', function() {
+    gulp.src(yeoman.app + '/bower_components/tinymce/plugins/**/*')
+        .pipe(gulp.dest(yeoman.dist + '/scripts/plugins'));
+    gulp.src(yeoman.app + '/bower_components/tinymce/skins/**/*')
+        .pipe(gulp.dest(yeoman.dist + '/scripts/skins'));
+    gulp.src(yeoman.app + '/bower_components/tinymce/themes/**/*')
+        .pipe(gulp.dest(yeoman.dist + '/scripts/themes'));
+});
+
 gulp.task('build', ['clean:dist'], function() {
-    runSequence(['images', 'copy:extras', 'copy:fonts', 'client:build']);
+    runSequence(['images', 'copy:extras', 'copy:fonts', 'client:build', 'copy:tinymce']);
 });
 
 gulp.task('default', ['build']);
