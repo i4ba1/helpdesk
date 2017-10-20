@@ -122,15 +122,15 @@ public class ProductController {
 		return new ResponseEntity<>( HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = { "/deleteProduct/" }, method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteProduct(@RequestParam("productId") Integer productId) {
+	@RequestMapping(value = { "/deleteProduct/{productId}" }, method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Integer productId) {
 		productRepo.delete(productId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 
-	@RequestMapping(value = { "/deleteSubProduct/" }, method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteSubProduct(@RequestParam("subProductId") Integer subProductId) {
+	@RequestMapping(value = { "/deleteSubProduct/{subProductId}" }, method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteSubProduct(@PathVariable("subProductId") Integer subProductId) {
 		subProductRepo.delete(subProductId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
