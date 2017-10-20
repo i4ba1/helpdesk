@@ -15,7 +15,7 @@ public class CreateUserComponent {
     @Autowired
     private UserService userService;
 
-    @Value("${userName}")
+    @Value("${user_name}")
     String userName;
 
     @Value("${pass}")
