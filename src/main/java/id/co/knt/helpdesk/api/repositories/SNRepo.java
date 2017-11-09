@@ -1,6 +1,9 @@
 package id.co.knt.helpdesk.api.repositories;
 
 import java.util.List;
+import java.util.stream.Stream;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,5 +27,5 @@ public interface SNRepo extends JpaRepository<License, Long> {
     List<Object> findSnCountByProduct();
     
     @Query("select l from License l inner join fetch l.product p")
-    List<License> findAllLicense();
+	Stream<License> fetchLicenses(Pageable pageable);
 }

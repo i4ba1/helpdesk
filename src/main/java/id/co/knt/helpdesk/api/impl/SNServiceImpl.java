@@ -1,7 +1,7 @@
 package id.co.knt.helpdesk.api.impl;
 
-import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
 
 import id.co.knt.helpdesk.api.model.SubProduct;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
@@ -12,6 +12,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,7 +59,6 @@ public class SNServiceImpl implements SNService {
         License snNumber = null;
         License sn = snRepo.findByLicense(serialNumber.getLicense());
         Product product = null;
-        List<License> licenses = new ArrayList<>();
         List<ListLicenseDTO> dtoList = null;
 
         if (gawl.validate(serialNumber.getLicense().toLowerCase())) {
@@ -76,7 +76,7 @@ public class SNServiceImpl implements SNService {
                     sn = snRepo.findByLicense(serialNumber.getLicense());
                 }
 
-                licenses.add(sn);
+                Stream<License> licenses = Stream.of(sn);
                 dtoList = generateListLicenseDTO(licenses);
             } catch (Exception e) {
                 LoggingError.writeError(ExceptionUtils.getStackTrace(e));
@@ -145,31 +145,34 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public List<Map<String, Object>> findAllSN() {
-        List<License> serialNumbers = snRepo.findAllLicense();
-        List<ListLicenseDTO> dtoList = generateListLicenseDTO(serialNumbers);
+    public List<Map<String, Object>> findAllSN(int page) {
+        List<ListLicenseDTO> dtoList;
+
+        try (Stream<License> data = snRepo.fetchLicenses(new PageRequest(page, 20))){
+            dtoList = generateListLicenseDTO(data);
+        }
+
         return licenseDTOResult(dtoList);
     }
 
-    private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses){
+    private List<ListLicenseDTO> generateListLicenseDTO(Stream<License> licenses){
         List<ListLicenseDTO> dtoList = new ArrayList<>();
-        ListLicenseDTO listLicenseDTO;
 
-        if(licenses.size() > 0){
-            for (License sn : licenses) {
-                listLicenseDTO = new ListLicenseDTO();
-                listLicenseDTO.setId(sn.getId());
-                listLicenseDTO.setLicense(sn.getLicense().toLowerCase());
-                listLicenseDTO.setProductName(modifyProductName(sn));
-                listLicenseDTO.setCreatedDate(sn.getCreatedDate());
-                listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
-                listLicenseDTO.setSchoolName(sn.getSchoolName());
-                dtoList.add(listLicenseDTO);
-            }
-        }else{
-            if(!licenses.isEmpty()) {
-                License sn = licenses.get(0);
-                listLicenseDTO = new ListLicenseDTO();
+        try (Stream<License> data = licenses) {
+            if (data.count() > 1) {
+                data.forEach(license -> {
+                    ListLicenseDTO listLicenseDTO = new ListLicenseDTO();
+                    listLicenseDTO.setId(license.getId());
+                    listLicenseDTO.setLicense(license.getLicense().toLowerCase());
+                    listLicenseDTO.setProductName(modifyProductName(license));
+                    listLicenseDTO.setCreatedDate(license.getCreatedDate());
+                    listLicenseDTO.setNumberOfClient(license.getNumberOfClient());
+                    listLicenseDTO.setSchoolName(license.getSchoolName());
+                    dtoList.add(listLicenseDTO);
+                });
+            } else if (data.count() <= 1) {
+                License sn = data.findFirst().get();
+                ListLicenseDTO listLicenseDTO = new ListLicenseDTO();
                 listLicenseDTO.setId(sn.getId());
                 listLicenseDTO.setLicense(sn.getLicense().toLowerCase());
                 listLicenseDTO.setProductName(modifyProductName(sn));
@@ -179,7 +182,6 @@ public class SNServiceImpl implements SNService {
                 dtoList.add(listLicenseDTO);
             }
         }
-
         return dtoList;
     }
 
