@@ -111,7 +111,7 @@ public class SNManagementController {
 		return new ResponseEntity<>(currentLicense, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = { "" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/page/1" }, method = RequestMethod.GET)
 	public ResponseEntity<List<Map<String, Object>>> findAllSN() {
 		List<Map<String, Object>> result = snService.findAllSN();
 

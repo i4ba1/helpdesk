@@ -1,11 +1,14 @@
 package id.co.knt.helpdesk.api.impl;
 
+import java.io.IOException;
 import java.util.*;
 
 import id.co.knt.helpdesk.api.model.SubProduct;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
 import id.co.knt.helpdesk.api.repositories.SubProductRepo;
+import id.co.knt.helpdesk.api.utilities.LoggingError;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +79,7 @@ public class SNServiceImpl implements SNService {
                 licenses.add(sn);
                 dtoList = generateListLicenseDTO(licenses);
             } catch (Exception e) {
-                e.printStackTrace();
+                LoggingError.writeError(ExceptionUtils.getStackTrace(e));
             }
 
         }
@@ -130,7 +133,7 @@ public class SNServiceImpl implements SNService {
                 setLicenseHistory(license, status, message, null);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                LoggingError.writeError(ExceptionUtils.getStackTrace(e));
                 return 2;
             }
 
@@ -187,7 +190,7 @@ public class SNServiceImpl implements SNService {
                 Map<String, Byte> extractResult = gawl.extract(sn.getLicense());
                 module = extractResult.get(Gawl.MODULE);
             } catch (Exception e) {
-                e.printStackTrace();
+                LoggingError.writeError(ExceptionUtils.getStackTrace(e));
             }
 
             return sn.getProduct().getProductName() + "- kelas" + new Integer(module);
@@ -253,7 +256,7 @@ public class SNServiceImpl implements SNService {
             status = 2;
             setLicenseHistory(snNumber, status, reason, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggingError.writeError(ExceptionUtils.getStackTrace(e));
         }
 
         return snNumber;
@@ -278,7 +281,7 @@ public class SNServiceImpl implements SNService {
                         setLicenseHistory(sn, status, message, null);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LoggingError.writeError(ExceptionUtils.getStackTrace(e));
                 }
             }
         }
@@ -318,7 +321,7 @@ public class SNServiceImpl implements SNService {
 
                     list.add(newLicense);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LoggingError.writeError(ExceptionUtils.getStackTrace(e));
                 }
             }
 
@@ -342,7 +345,7 @@ public class SNServiceImpl implements SNService {
                     sortedData.put("Paket" + (i + 1), list);
                     list = new ArrayList<>();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LoggingError.writeError(ExceptionUtils.getStackTrace(e));
                 }
             }
         }
@@ -425,7 +428,7 @@ public class SNServiceImpl implements SNService {
                 licenseHistoryRepo.save(licenseHistory);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggingError.writeError(ExceptionUtils.getStackTrace(e));
         }
 
     }
