@@ -145,10 +145,10 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public List<Map<String, Object>> findAllSN(int page) {
+    public List<Map<String, Object>> findAllSN() {
         List<ListLicenseDTO> dtoList;
 
-        try (Stream<License> data = snRepo.fetchLicenses(new PageRequest(page, 20))){
+        try (Stream<License> data = snRepo.fetchLicenses()){
             dtoList = generateListLicenseDTO(data);
         }
 
