@@ -200,15 +200,21 @@ public class SNServiceImpl implements SNService {
     }
 
     private List<Map<String, Object>> licenseDTOResult(List<ListLicenseDTO> dtoList){
-        Map<String, Object> objectMap = null;
+        //Map<String, Object> objectMap = null;
         List<Map<String, Object>> result = new ArrayList<>();
 
-        for (ListLicenseDTO data : dtoList) {
+        dtoList.stream().forEachOrdered(data -> {
+            Map<String, Object> objectMap = new TreeMap<>();
+            objectMap.put("serialNumber", data);
+            objectMap.put("status", (int) fetchLicenseHistory(data.getId()).getLicenseStatus());
+            result.add(objectMap);
+        });
+        /*for (ListLicenseDTO data : dtoList) {
             objectMap = new TreeMap<>();
             objectMap.put("serialNumber", data);
             objectMap.put("status", (int) fetchLicenseHistory(data.getId()).getLicenseStatus());
             result.add(objectMap);
-        }
+        }*/
 
         return result;
     }
