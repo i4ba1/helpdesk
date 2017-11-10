@@ -1,6 +1,7 @@
 package id.co.knt.helpdesk.api.impl;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import id.co.knt.helpdesk.api.model.SubProduct;
@@ -60,6 +61,7 @@ public class SNServiceImpl implements SNService {
         License sn = snRepo.findByLicense(serialNumber.getLicense());
         Product product = null;
         List<ListLicenseDTO> dtoList = null;
+        List<License> licenses = new ArrayList<>();
 
         if (gawl.validate(serialNumber.getLicense().toLowerCase())) {
             try {
@@ -76,7 +78,7 @@ public class SNServiceImpl implements SNService {
                     sn = snRepo.findByLicense(serialNumber.getLicense());
                 }
 
-                Stream<License> licenses = Stream.of(sn);
+                licenses.add(sn);
                 dtoList = generateListLicenseDTO(licenses);
             } catch (Exception e) {
                 LoggingError.writeError(ExceptionUtils.getStackTrace(e));
@@ -148,19 +150,15 @@ public class SNServiceImpl implements SNService {
     public List<Map<String, Object>> findAllSN() {
         List<ListLicenseDTO> dtoList;
 
-        try (Stream<License> data = snRepo.fetchLicenses()){
-            dtoList = generateListLicenseDTO(data);
-        }
-
+        dtoList = generateListLicenseDTO(snRepo.fetchLicenses());
         return licenseDTOResult(dtoList);
     }
 
-    private List<ListLicenseDTO> generateListLicenseDTO(Stream<License> licenses){
+    private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses){
         List<ListLicenseDTO> dtoList = new ArrayList<>();
 
-        try (Stream<License> data = licenses) {
-            if (data.count() > 1) {
-                data.forEach(license -> {
+            if (licenses.size() > 1) {
+                licenses.stream().forEach(license -> {
                     ListLicenseDTO listLicenseDTO = new ListLicenseDTO();
                     listLicenseDTO.setId(license.getId());
                     listLicenseDTO.setLicense(license.getLicense().toLowerCase());
@@ -170,8 +168,8 @@ public class SNServiceImpl implements SNService {
                     listLicenseDTO.setSchoolName(license.getSchoolName());
                     dtoList.add(listLicenseDTO);
                 });
-            } else if (data.count() <= 1) {
-                License sn = data.findFirst().get();
+            } else if (licenses.size() <= 1) {
+                License sn = licenses.stream().findFirst().get();
                 ListLicenseDTO listLicenseDTO = new ListLicenseDTO();
                 listLicenseDTO.setId(sn.getId());
                 listLicenseDTO.setLicense(sn.getLicense().toLowerCase());
@@ -181,7 +179,7 @@ public class SNServiceImpl implements SNService {
                 listLicenseDTO.setSchoolName(sn.getSchoolName());
                 dtoList.add(listLicenseDTO);
             }
-        }
+
         return dtoList;
     }
 
