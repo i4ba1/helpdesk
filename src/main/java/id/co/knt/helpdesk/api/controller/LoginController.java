@@ -22,7 +22,6 @@ import id.co.knt.helpdesk.api.service.UserService;
 /**
  * @author Muhamad Nizar Iqbal
  */
-@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping(value = "/userManagement")
 public class LoginController {
