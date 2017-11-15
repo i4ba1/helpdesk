@@ -30,6 +30,7 @@ import id.web.pos.integra.gawl.Gawl;
 public class SNServiceImpl implements SNService {
 
 	Logger LOG = LoggerFactory.getLogger(SNServiceImpl.class);
+	private static final Integer SIZE_OF_PAGE = 20;
 
 	private Gawl gawl = new Gawl();
 
@@ -146,12 +147,17 @@ public class SNServiceImpl implements SNService {
         return 0;
     }
 
+    private PageRequest gotoPage(int page){
+        PageRequest request = new PageRequest(page, SIZE_OF_PAGE);
+        return request;
+    }
+
     @Override
-    public List<Map<String, Object>> findAllSN() {
+    public Map<String, Object> findAllSN(int page) {
         List<ListLicenseDTO> dtoList;
 
-        dtoList = generateListLicenseDTO(snRepo.fetchLicenses());
-        return licenseDTOResult(dtoList);
+        dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
+        return licenseDTOResult(dtoList, page);
     }
 
     private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses){
@@ -199,9 +205,13 @@ public class SNServiceImpl implements SNService {
         }
     }
 
-    private List<Map<String, Object>> licenseDTOResult(List<ListLicenseDTO> dtoList){
-        //Map<String, Object> objectMap = null;
+    //List<Map<String, Object>
+    private Map<String, Object> licenseDTOResult(List<ListLicenseDTO> dtoList, int page){
         List<Map<String, Object>> result = new ArrayList<>();
+        Map<String, Object> parentMap = new TreeMap<>();
+
+        int totalPage = dtoList.size()/SIZE_OF_PAGE;
+        totalPage = ((totalPage % 20) > 1? totalPage+1:totalPage);
 
         dtoList.stream().forEachOrdered(data -> {
             Map<String, Object> objectMap = new TreeMap<>();
@@ -209,6 +219,10 @@ public class SNServiceImpl implements SNService {
             objectMap.put("status", (int) fetchLicenseHistory(data.getId()).getLicenseStatus());
             result.add(objectMap);
         });
+
+        parentMap.put("data", result);
+        parentMap.put("totalPage", totalPage);
+        parentMap.put("currentPage", page);
         /*for (ListLicenseDTO data : dtoList) {
             objectMap = new TreeMap<>();
             objectMap.put("serialNumber", data);
@@ -216,7 +230,7 @@ public class SNServiceImpl implements SNService {
             result.add(objectMap);
         }*/
 
-        return result;
+        return parentMap;
     }
 
     public Map<String, Object> generateLicenseDTOResult(ListLicenseDTO data){

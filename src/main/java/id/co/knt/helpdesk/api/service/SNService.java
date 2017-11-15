@@ -17,7 +17,7 @@ public interface SNService{
 
     License onlineActivation(License serialNumber);
 
-    List<Map<String, Object>> findAllSN();
+    Map<String, Object> findAllSN(int page);
 
     License findSN(Long id);
     

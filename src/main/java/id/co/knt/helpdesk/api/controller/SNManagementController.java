@@ -111,9 +111,9 @@ public class SNManagementController {
 		return new ResponseEntity<>(currentLicense, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = { "" }, method = RequestMethod.GET)
-	public ResponseEntity<List<Map<String, Object>>> findAllSN() {
-		List<Map<String, Object>> result = snService.findAllSN();
+	@RequestMapping(value = { "/serialNumbers/{page}" }, method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> findAllSN(@PathVariable Integer page) {
+		Map<String, Object> result = snService.findAllSN(page);
 
 		if (result.isEmpty()) {
 			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);

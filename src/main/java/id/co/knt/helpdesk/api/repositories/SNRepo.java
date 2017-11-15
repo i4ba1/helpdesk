@@ -27,5 +27,5 @@ public interface SNRepo extends JpaRepository<License, Long> {
     List<Object> findSnCountByProduct();
     
     @Query("select l from License l inner join fetch l.product p")
-	List<License> fetchLicenses();
+	List<License> fetchLicenses(Pageable pageRequest);
 }
