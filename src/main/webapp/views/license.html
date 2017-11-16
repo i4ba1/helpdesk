@@ -11,6 +11,39 @@
         </section>
         <div class="content">
 
+            <!-- Serial Number Search -->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <form class="form-inline" role="form">
+
+                                <select id="selectcategory" class="form-control" required="required">
+                                    <option value="" selected disabled>search category</option>
+                                    <option value="scb_serial">search by serial number</option>
+                                    <option value="scb_school">search by school name</option>
+                                    <option value="scb_product">search by product name</option>
+                                </select>
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="" placeholder="Input field">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" title="search"><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>
+                            </form>
+
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 txt-right">
+                            <ul uib-pagination direction-links="false" total-items="100" ng-model="currentPage" num-pages="smallnumPages" max-size="4"></ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <table st-safe-src="rowCollection" st-table="displayCollection" class="table table-striped" ng-switch="displayCollection.length">
                     <thead>
