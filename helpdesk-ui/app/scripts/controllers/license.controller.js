@@ -27,6 +27,14 @@
         $scope.licenseBlock = licenseBlock;
         $scope.exportFile = exportFile;
         $scope.exportAttachment = exportAttachment;
+
+        $scope.searchModel = {
+            category: "",
+            searchText: "",
+            startDate: "",
+            endDate: ""
+        }
+
         /**------------------------------------------------------*/
         function getAllSerialNumber() {
             $rootScope.showOverlay();

@@ -17,25 +17,32 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
 
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <form class="form-inline" role="form">
+                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                            <form class="form-inline" role="form" ng-switch="searchModel.category">
 
-                                <select id="selectcategory" class="form-control" required="required">
+                                <select id="selectcategory" class="form-control" ng-model="searchModel.category" required="required">
                                     <option value="" selected disabled>search category</option>
-                                    <option value="scb_serial">search by serial number</option>
-                                    <option value="scb_school">search by school name</option>
-                                    <option value="scb_product">search by product name</option>
+                                    <option value="scb_serial">{{'SERIAL_NUMBER'|translate}}</option>
+                                    <option value="scb_school">{{'SCHOOL_NAME'|translate}}</option>
+                                    <option value="scb_product">{{'PRODUCT_NAME'|translate}}</option>
+                                    <option value="scb_date">{{'CREATED_DATE'|translate}}</option>
                                 </select>
 
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="" placeholder="Input field">
+                                <div class="form-group" ng-switch-default>
+                                    <input type="text" class="form-control" placeholder="{{'SEARCH_TEXT'|translate}}" ng-model="searchModel.searchText">
                                 </div>
 
-                                <button type="submit" class="btn btn-primary" title="search"><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>
+                                <div class="form-group" ng-switch-when="scb_date">
+                                    <input class="form-control" type="text" name="star_date" id="start_date" ng-model="searchModel.startDate" placeholder="{{'START_DATE'|translate}}">
+                                    <input class="form-control" type="text" name="end_date" id="end_date" ng-model="searchModel.endDate" placeholder="{{'END_DATE'|translate}}">
+                                </div>
+
+
+                                <button type="submit" class="btn btn-primary" title="{{'SEARCH'|translate}}"><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>
                             </form>
 
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 txt-right">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 txt-right">
                             <ul uib-pagination direction-links="false" total-items="100" ng-model="currentPage" num-pages="smallnumPages" max-size="4"></ul>
                         </div>
                     </div>
