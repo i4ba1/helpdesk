@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,6 +56,8 @@ public class SNServiceImpl implements SNService {
         EL,
         EP
     }
+
+    public static String findAllSerialNumber = "select l from License l inner join fetch l.product p";
 
     @Override
     public List<ListLicenseDTO> saveGeneratedSN(License serialNumber) {
@@ -153,28 +156,26 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public Map<String, Object> findAllSN(int page) {
-        List<ListLicenseDTO> dtoList;
+    public Map<String, Object> findAllSN(String searchText, int page, String serialNumber, String schoolName, Long startDate, Long endDate) {
+        List<ListLicenseDTO> dtoList = new ArrayList<>();
 
-        dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
+        if(searchText.isEmpty()){
+            dtoList = generateListLicenseDTO(snRepo.findAllAndOrderByCreatedDateDesc(gotoPage(page)));
+        }else {
+              if (!serialNumber.isEmpty() || !schoolName.isEmpty()){
+                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAndOrderByCreatedDateDesc(gotoPage(page), serialNumber, schoolName));
+              }else if(startDate != null && endDate != null){
+                  dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfterAndOrderByCreatedDateDesc(gotoPage(page), startDate, endDate));
+              }
+        }
+
         return licenseDTOResult(dtoList, page);
     }
 
     private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses){
         List<ListLicenseDTO> dtoList = new ArrayList<>();
 
-            if (licenses.size() > 1) {
-                licenses.stream().forEach(license -> {
-                    ListLicenseDTO listLicenseDTO = new ListLicenseDTO();
-                    listLicenseDTO.setId(license.getId());
-                    listLicenseDTO.setLicense(license.getLicense().toLowerCase());
-                    listLicenseDTO.setProductName(modifyProductName(license));
-                    listLicenseDTO.setCreatedDate(license.getCreatedDate());
-                    listLicenseDTO.setNumberOfClient(license.getNumberOfClient());
-                    listLicenseDTO.setSchoolName(license.getSchoolName());
-                    dtoList.add(listLicenseDTO);
-                });
-            } else if (licenses.size() <= 1) {
+            if (licenses.size() > 0 && licenses.size() <= 1) {
                 License sn = licenses.stream().findFirst().get();
                 ListLicenseDTO listLicenseDTO = new ListLicenseDTO();
                 listLicenseDTO.setId(sn.getId());
@@ -184,6 +185,17 @@ public class SNServiceImpl implements SNService {
                 listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
                 listLicenseDTO.setSchoolName(sn.getSchoolName());
                 dtoList.add(listLicenseDTO);
+            } else if (licenses.size() > 1) {
+                licenses.forEach(license -> {
+                    ListLicenseDTO listLicenseDTO = new ListLicenseDTO();
+                    listLicenseDTO.setId(license.getId());
+                    listLicenseDTO.setLicense(license.getLicense().toLowerCase());
+                    listLicenseDTO.setProductName(modifyProductName(license));
+                    listLicenseDTO.setCreatedDate(license.getCreatedDate());
+                    listLicenseDTO.setNumberOfClient(license.getNumberOfClient());
+                    listLicenseDTO.setSchoolName(license.getSchoolName());
+                    dtoList.add(listLicenseDTO);
+                });
             }
 
         return dtoList;
