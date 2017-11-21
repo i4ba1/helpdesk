@@ -193,7 +193,10 @@
             GENERATED_ST: "Lisensi dibuat",
             ACTIVATED_ST: "Lisensi diaktivasi",
             OVERRIDED_ST: "Lisensi tambah limit",
-            REGISTERED_ST: "Lisensi didaftarkan"
+            REGISTERED_ST: "Lisensi didaftarkan",
+            SEARCH_SCHOOL: "masukan nama sekolah",
+            SEARCH_SN: "masukan serial number",
+            SEARCH_BY: "Pencarian"
 
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');

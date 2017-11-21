@@ -18,7 +18,8 @@
             'LocalStorageModule',
             'ngFileSaver',
             "bsLoadingOverlay",
-            'angularSpinner'
+            'angularSpinner',
+            'ui.mask'
         ])
         .config(["localStorageServiceProvider", "usSpinnerConfigProvider", config])
         .run(["$rootScope", "bsLoadingOverlayService", run]);
