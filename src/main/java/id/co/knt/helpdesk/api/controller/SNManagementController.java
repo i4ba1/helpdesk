@@ -28,6 +28,11 @@ public class SNManagementController {
 	@Autowired
 	private SNRepo snRepo;
 
+	/**
+	 * To handle register license
+	 * @param license
+	 * @return ResponseEntity<Integer>
+	 */
 	@RequestMapping(value = "/register/", method = RequestMethod.POST)
 	public ResponseEntity<Integer> register(@RequestBody License license) {
 		int error = snService.registerSN(license);
@@ -40,6 +45,12 @@ public class SNManagementController {
 		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
 
+	/**
+	 * To generate activation key based on passkey
+	 * @param id
+	 * @param passKey
+	 * @return ResponseEntity<License>
+	 */
 	@RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
 	public ResponseEntity<License> requestActivationKey(@PathVariable Long id, @PathVariable String passKey) {
 		License serialNumber = snService.generateActivationKey(id, passKey);
@@ -50,6 +61,13 @@ public class SNManagementController {
 		return new ResponseEntity<>(serialNumber, HttpStatus.OK);
 	}
 
+	/**
+	 * This method to handle activation by Phone
+	 * @param licenseId
+	 * @param passkey
+	 * @param reason
+	 * @return ResponseEntity<License>
+	 */
 	@RequestMapping(value = "/activate/", method = RequestMethod.POST)
 	public ResponseEntity<License> activateByPhone(@RequestParam("licenseId") Long licenseId,
 			@RequestParam("passkey") String passkey, @RequestParam("reason") String reason) {
@@ -85,6 +103,11 @@ public class SNManagementController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	/**
+	 * This method to handle activation by internet
+	 * @param serialNumber
+	 * @return ResponseEntity<License>
+	 */
 	@RequestMapping(value = "/activateByInternet/", method = RequestMethod.POST)
 	public ResponseEntity<License> activateByInternet(@RequestBody License serialNumber) {
 		License currentLicense = snService.findBySerial(serialNumber.getLicense());
@@ -111,10 +134,20 @@ public class SNManagementController {
 		return new ResponseEntity<>(currentLicense, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = { "/serialNumbers/{page}" }, method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> findAllSN(@PathVariable Integer page) {
-		Map<String, Object> result = snService.findAllSN(page);
+	/**
+	 * This method to fetch all serial numbers and for search with filter by license, school name, and create date
+	 * @param searchText
+	 * @param page
+	 * @param serialNumber
+	 * @param schoolName
+	 * @param startDate
+	 * @param endDate
+	 * @return ResponseEntity<Map<String, Object>>
+	 */
+	@RequestMapping(value = { "/serialNumbers/" }, method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> findAllSN(@RequestParam String searchText, @RequestParam int page, @RequestParam String serialNumber,@RequestParam String schoolName, @RequestParam Long startDate,  @RequestParam Long endDate) {
 
+		Map<String, Object> result = snService.findAllSN(searchText, page, serialNumber, schoolName, startDate, endDate);
 		if (result.isEmpty()) {
 			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 		}
@@ -122,19 +155,25 @@ public class SNManagementController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	/**
+	 * View detail of license table
+	 * @param id
+	 * @return ResponseEntity<Map<String, Object>>
+	 */
 	@RequestMapping(value = "/viewDetailSN/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> viewDetailSN(@PathVariable Long id) {
 		Map<String, Object> objectMap = snService.viewDetailLicense(id);
-		if (objectMap.equals(null)) {
-			return new ResponseEntity<>(objectMap, HttpStatus.EXPECTATION_FAILED);
+		if (objectMap == null) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
 
 		return new ResponseEntity<>(objectMap, HttpStatus.OK);
 	}
 
 	/**
+	 *
 	 * @param licenseGeneratorDTO
-	 * @return
+	 * @return ResponseEntity<TreeMap<String, List<License>>>
 	 */
 	@RequestMapping(value = { "/snGenerator/" }, method = RequestMethod.POST)
 	public ResponseEntity<TreeMap<String, List<License>>> snGenerator(
@@ -149,6 +188,11 @@ public class SNManagementController {
 		return new ResponseEntity<>(treeMap, HttpStatus.OK);
 	}
 
+	/**
+	 * ResponseEntity<List<Map<String, Object>>>
+	 * @param list
+	 * @return generate license
+	 */
 	@RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
 	public ResponseEntity<List<Map<String, Object>>> registerGeneratedSN(@RequestBody List<License> list) {
 		List<List<ListLicenseDTO>> listList = new ArrayList<>();
@@ -169,6 +213,10 @@ public class SNManagementController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	/**
+	 * To find unread license to show on dashboard
+	 * @return ResponseEntity<List<LicenseHistory>>
+	 */
 	@RequestMapping(value = "/findUnreadLicenses/", method = RequestMethod.GET)
 	public ResponseEntity<List<LicenseHistory>> findUnreadLicenses() {
 		List<LicenseHistory> unreadLicenses = snService.findUnreadLicense();

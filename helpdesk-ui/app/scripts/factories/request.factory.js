@@ -10,7 +10,7 @@
     RequestFactory.$inject = ["$http", "$state", "$cookies"];
 
     function RequestFactory($http, $state, $cookies) {
-        var baseURL = "/helpdesk/api";
+        var baseURL = "/api";
         var httpHeader = {
             transformRequest: angular.identity,
             headers: {
@@ -131,7 +131,7 @@
 
         /**
          * View detail of product
-         * @param {*} productId 
+         * @param {*} productId
          */
         function viewProductDetail(productId) {
             return $http.get(baseURL + "/productManagement/productDetail/" + productId);
@@ -139,7 +139,7 @@
 
         /**
          * Create new of product
-         * @param {*} product 
+         * @param {*} product
          */
         function createProduct(productDto) {
             return $http.post(baseURL + "/productManagement/createProduct/", productDto);
@@ -147,15 +147,15 @@
 
         /**
          * update current product
-         * @param {*} product 
+         * @param {*} product
          */
         function updateProduct(productDto) {
             return $http.post(baseURL + "/productManagement/updateProduct/", productDto);
         }
 
         /**
-         * 
-         * @param {*} productId 
+         *
+         * @param {*} productId
          */
         function deleteProduct(productId) {
             return $http.delete(baseURL + "/productManagement/deleteProduct/" + productId);
@@ -198,7 +198,7 @@
 
         /**
          * @param  generator { productId, licenseCount, secondParam}
-         * requestType  is GET 
+         * requestType  is GET
          */
         function licenseGenerator(licenseProductDTO) {
             return $http.post(baseURL + "/snManagement/snGenerator/", licenseProductDTO);
