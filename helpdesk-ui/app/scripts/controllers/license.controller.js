@@ -27,9 +27,11 @@
         $scope.licenseBlock = licenseBlock;
         $scope.exportFile = exportFile;
         $scope.exportAttachment = exportAttachment;
+        $scope.searchLicenseByCategory = searchLicenseByCategory;
+        $scope.resetSearchModel = resetSearchModel;
 
         $scope.searchModel = {
-            category: "",
+            category: "scb_serial",
             searchText: "",
             startDate: "",
             endDate: ""
@@ -207,6 +209,16 @@
                 }).then(function(blobData) {
                     FileSaver.saveAs(blobData, history.fileName);
                 });
+        }
+
+        function searchLicenseByCategory(searchModel) {
+            console.log(searchModel);
+        }
+
+        function resetSearchModel() {
+            $scope.searchModel.searchText = "";
+            $scope.searchModel.startDate = "";
+            $scope.searchModel.endDate = "";
         }
     }
 

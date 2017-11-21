@@ -18,23 +18,25 @@
                     <div class="panel-body">
 
                         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                            <form class="form-inline" role="form" ng-switch="searchModel.category">
+                            <form class="form-inline" role="form" ng-switch="searchModel.category" ng-submit="searchLicenseByCategory(searchModel)">
 
-                                <select id="selectcategory" class="form-control" ng-model="searchModel.category" required="required">
-                                    <option value="" selected disabled>search category</option>
-                                    <option value="scb_serial">{{'SERIAL_NUMBER'|translate}}</option>
+                                <div class="form-group">
+                                    <label class="control-label" for="selectcategory">{{'SEARCH_BY'|translate}} : </label>
+                                </div>
+
+                                <select id="selectcategory" class="form-control" ng-model="searchModel.category" required="required" ng-change="resetSearchModel()">
+                                    <option value="scb_serial" selected>{{'SERIAL_NUMBER'|translate}}</option>
                                     <option value="scb_school">{{'SCHOOL_NAME'|translate}}</option>
-                                    <option value="scb_product">{{'PRODUCT_NAME'|translate}}</option>
                                     <option value="scb_date">{{'CREATED_DATE'|translate}}</option>
                                 </select>
 
                                 <div class="form-group" ng-switch-default>
-                                    <input type="text" class="form-control" placeholder="{{'SEARCH_TEXT'|translate}}" ng-model="searchModel.searchText">
+                                    <input type="text" class="form-control" placeholder="{{(searchModel.category === 'scb_serial'?'SEARCH_SN':'SEARCH_SCHOOL')|translate}}" ng-model="searchModel.searchText">
                                 </div>
 
                                 <div class="form-group" ng-switch-when="scb_date">
-                                    <input class="form-control" type="text" name="star_date" id="start_date" ng-model="searchModel.startDate" placeholder="{{'START_DATE'|translate}}">
-                                    <input class="form-control" type="text" name="end_date" id="end_date" ng-model="searchModel.endDate" placeholder="{{'END_DATE'|translate}}">
+                                    <input class="form-control" type="text" name="star_date" id="start_date" ng-model="searchModel.startDate" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_">
+                                    <input class="form-control" type="text" name="end_date" id="end_date" ng-model="searchModel.endDate" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_">
                                 </div>
 
 
