@@ -164,20 +164,28 @@ public class SNServiceImpl implements SNService {
     @Override
     public Map<String, Object> findAllSN(String category, int page, String searchText, Long startDate, Long endDate) {
         List<ListLicenseDTO> dtoList = new ArrayList<>();
+        List<License> licenses = new ArrayList<>();
+        int pageSize = 0;
 
         if(searchText.isEmpty()){
-            dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
+            licenses = snRepo.fetchLicenses(gotoPage(page));
+            dtoList = generateListLicenseDTO(licenses);
         }else {
               if (category.compareTo(filterSearch.SN.name()) == 0){
-                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), category, ""));
+                  licenses = snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), category, "");
+                  dtoList = generateListLicenseDTO(licenses);
               }else if (category.compareTo(filterSearch.SCHOOL.name()) == 0){
-                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), "", category));
+                  licenses = snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), "", category);
+                  dtoList = generateListLicenseDTO(licenses);
               } else if(category.compareTo(filterSearch.DATE.name()) == 0){
-                  dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(gotoPage(page), startDate, endDate));
+                  licenses = snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(gotoPage(page), startDate, endDate);
+                  dtoList = generateListLicenseDTO(licenses);
               }
         }
 
-        return licenseDTOResult(dtoList, page);
+        pageSize = licenses.size()/SIZE_OF_PAGE;
+        pageSize = licenses.size() % SIZE_OF_PAGE > 1? pageSize+1:pageSize;
+        return licenseDTOResult(dtoList, page, pageSize);
     }
 
     private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses){
@@ -226,12 +234,12 @@ public class SNServiceImpl implements SNService {
     }
 
     //List<Map<String, Object>
-    private Map<String, Object> licenseDTOResult(List<ListLicenseDTO> dtoList, int page){
+    private Map<String, Object> licenseDTOResult(List<ListLicenseDTO> dtoList, int page, int totalPage){
         List<Map<String, Object>> result = new ArrayList<>();
         Map<String, Object> parentMap = new TreeMap<>();
 
-        int totalPage = dtoList.size()/SIZE_OF_PAGE;
-        totalPage = ((totalPage % 20) > 1? totalPage+1:totalPage);
+        /*int totalPage = dtoList.size()/SIZE_OF_PAGE;
+        totalPage = ((totalPage % 20) > 1? totalPage+1:totalPage);*/
 
         dtoList.stream().forEachOrdered(data -> {
             Map<String, Object> objectMap = new TreeMap<>();

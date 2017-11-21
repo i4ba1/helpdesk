@@ -35,4 +35,11 @@ public interface SNRepo extends JpaRepository<License, Long> {
 
 	@Query("select l from License l join fetch l.product")
 	List<License> fetchLicenses(Pageable pageRequest);
+
+	@Query("SELECT COUNT(l) FROM License l join fetch l.product")
+	long countAll();
+
+	long countByLicenseLikeOrSchoolNameLike(Pageable pageRequest, String license, String schoolName);
+
+
 }
