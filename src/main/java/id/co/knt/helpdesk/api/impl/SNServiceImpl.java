@@ -165,27 +165,27 @@ public class SNServiceImpl implements SNService {
     @Override
     public Map<String, Object> findAllSN(String category, int page, String searchText, Long startDate, Long endDate) {
         List<ListLicenseDTO> dtoList = new ArrayList<>();
-        List<License> licenses = new ArrayList<>();
+        int totalRow = 0;
         int pageSize = 0;
 
         if(searchText.isEmpty()){
-            licenses = snRepo.fetchLicenses(gotoPage(page));
-            dtoList = generateListLicenseDTO(licenses);
+            totalRow = snRepo.countLicense();
+            dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
         }else {
               if (category.compareTo(filterSearch.SN.name()) == 0){
-                  licenses = snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), category, "");
-                  dtoList = generateListLicenseDTO(licenses);
+                  totalRow = snRepo.countByLicenseLikeOrSchoolNameLike(category, "");
+                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), category, ""));
               }else if (category.compareTo(filterSearch.SCHOOL.name()) == 0){
-                  licenses = snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), "", category);
-                  dtoList = generateListLicenseDTO(licenses);
+                  totalRow = snRepo.countByLicenseLikeOrSchoolNameLike("", category);
+                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), "", category));
               } else if(category.compareTo(filterSearch.DATE.name()) == 0){
-                  licenses = snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(gotoPage(page), startDate, endDate);
-                  dtoList = generateListLicenseDTO(licenses);
+                  totalRow = snRepo.countByCreatedDateIsBeforeAndCreatedDateAfter(startDate, endDate);
+                  dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(gotoPage(page), startDate, endDate));
               }
         }
 
-        pageSize = licenses.size()/SIZE_OF_PAGE;
-        pageSize = licenses.size() % SIZE_OF_PAGE > 1? pageSize+1:pageSize;
+        pageSize = totalRow/SIZE_OF_PAGE;
+        pageSize = totalRow % SIZE_OF_PAGE > 1? pageSize+1:pageSize;
         return licenseDTOResult(dtoList, page, pageSize);
     }
 

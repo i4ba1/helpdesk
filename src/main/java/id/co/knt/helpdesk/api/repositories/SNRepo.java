@@ -1,12 +1,8 @@
 package id.co.knt.helpdesk.api.repositories;
 
 import java.util.List;
-import java.util.stream.Stream;
 
-import id.co.knt.helpdesk.api.impl.SNServiceImpl;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,10 +32,9 @@ public interface SNRepo extends JpaRepository<License, Long> {
 	@Query("select l from License l join fetch l.product")
 	List<License> fetchLicenses(Pageable pageRequest);
 
-	@Query("SELECT COUNT(l) FROM License l join fetch l.product")
-	long countAll();
+	@Query("SELECT COUNT(l) FROM License l")
+	int countLicense();
 
-	long countByLicenseLikeOrSchoolNameLike(Pageable pageRequest, String license, String schoolName);
+	int countByLicenseLikeOrSchoolNameLike(String license, String schoolName);
 
-
-}
+	int countByCreatedDateIsBeforeAndCreatedDateAfter(Long startDate, Long endDate);
