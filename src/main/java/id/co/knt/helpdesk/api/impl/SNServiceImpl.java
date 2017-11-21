@@ -57,6 +57,12 @@ public class SNServiceImpl implements SNService {
         EP
     }
 
+    private enum filterSearch{
+        SN,
+        DATE,
+        SCHOOL
+    }
+
     public static String findAllSerialNumber = "select l from License l inner join fetch l.product p";
 
     @Override
@@ -156,15 +162,17 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public Map<String, Object> findAllSN(String searchText, int page, String serialNumber, String schoolName, Long startDate, Long endDate) {
+    public Map<String, Object> findAllSN(String category, int page, String searchText, Long startDate, Long endDate) {
         List<ListLicenseDTO> dtoList = new ArrayList<>();
 
         if(searchText.isEmpty()){
             dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
         }else {
-              if (!serialNumber.isEmpty() || !schoolName.isEmpty()){
-                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), serialNumber, schoolName));
-              }else if(startDate != null && endDate != null){
+              if (category.compareTo(filterSearch.SN.name()) == 0){
+                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), category, ""));
+              }else if (category.compareTo(filterSearch.SCHOOL.name()) == 0){
+                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), "", category));
+              } else if(category.compareTo(filterSearch.DATE.name()) == 0){
                   dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(gotoPage(page), startDate, endDate));
               }
         }

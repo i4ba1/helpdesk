@@ -136,18 +136,17 @@ public class SNManagementController {
 
 	/**
 	 * This method to fetch all serial numbers and for search with filter by license, school name, and create date
-	 * @param searchText
+	 * @param category
 	 * @param page
-	 * @param serialNumber
-	 * @param schoolName
+	 * @param searchText
 	 * @param startDate
 	 * @param endDate
 	 * @return ResponseEntity<Map<String, Object>>
 	 */
 	@RequestMapping(value = { "/serialNumbers/" }, method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> findAllSN(@RequestParam String searchText, @RequestParam int page, @RequestParam String serialNumber,@RequestParam String schoolName, @RequestParam Long startDate,  @RequestParam Long endDate) {
+	public ResponseEntity<Map<String, Object>> findAllSN(@RequestParam String category, @RequestParam int page, @RequestParam String searchText, @RequestParam Long startDate,  @RequestParam Long endDate) {
 
-		Map<String, Object> result = snService.findAllSN(searchText, page, serialNumber, schoolName, startDate, endDate);
+		Map<String, Object> result = snService.findAllSN(category, page, searchText, startDate, endDate);
 		if (result.isEmpty()) {
 			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 		}
