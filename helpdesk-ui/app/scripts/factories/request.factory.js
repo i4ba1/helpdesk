@@ -64,9 +64,9 @@
             formData.append("category", searchModel.category);
             formData.append("searchText", searchModel.searchText);
             formData.append("page", searchModel.page);
-            formData.append("startDate", searchModel.starDate);
+            formData.append("startDate", searchModel.startDate);
             formData.append("endDate", searchModel.endDate);
-            return $http.get(baseURL + '/snManagement/serialNumbers/', formData, httpHeader);
+            return $http.post(baseURL + '/snManagement/serialNumbers/', formData, httpHeader);
         }
 
         /**
