@@ -17,7 +17,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
 
-                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                             <form class="form-inline" role="form" ng-switch="searchModel.category" ng-submit="searchLicenseByCategory(searchModel)">
 
                                 <div class="form-group">
@@ -25,16 +25,16 @@
                                 </div>
 
                                 <select id="selectcategory" class="form-control" ng-model="searchModel.category" required="required" ng-change="resetSearchModel()">
-                                    <option value="scb_serial" selected>{{'SERIAL_NUMBER'|translate}}</option>
-                                    <option value="scb_school">{{'SCHOOL_NAME'|translate}}</option>
-                                    <option value="scb_date">{{'CREATED_DATE'|translate}}</option>
+                                    <option value="sn" selected>{{'SERIAL_NUMBER'|translate}}</option>
+                                    <option value="school">{{'SCHOOL_NAME'|translate}}</option>
+                                    <option value="date">{{'CREATED_DATE'|translate}}</option>
                                 </select>
 
                                 <div class="form-group" ng-switch-default>
-                                    <input type="text" class="form-control" placeholder="{{(searchModel.category === 'scb_serial'?'SEARCH_SN':'SEARCH_SCHOOL')|translate}}" ng-model="searchModel.searchText">
+                                    <input type="text" class="form-control" placeholder="{{(searchModel.category === 'serial'?'SEARCH_SN':'SEARCH_SCHOOL')|translate}}" ng-model="searchModel.searchText">
                                 </div>
 
-                                <div class="form-group" ng-switch-when="scb_date">
+                                <div class="form-group" ng-switch-when="date">
                                     <input class="form-control" type="text" name="star_date" id="start_date" ng-model="searchModel.startDate" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_">
                                     <input class="form-control" type="text" name="end_date" id="end_date" ng-model="searchModel.endDate" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_">
                                 </div>
@@ -44,8 +44,8 @@
                             </form>
 
                         </div>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 txt-right">
-                            <ul uib-pagination direction-links="false" total-items="100" ng-model="currentPage" num-pages="smallnumPages" max-size="4"></ul>
+                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 txt-right">
+                            <ul uib-pagination direction-links="false" total-items="totalItem" ng-model="searchModel.page" num-pages="smallnumPages" max-size="maxSize" items-per-page="itemPage" class="pagination-sm" boundary-link-numbers="true" rotate="false" ng-change="searchLicenseByCategory(searchModel)"></ul>
                         </div>
                     </div>
                 </div>
@@ -66,19 +66,11 @@
                             <th st-sort="licenseStatus">{{'LICENSE_STATUS' | translate}}</th>
                             <th width="100"></th>
                         </tr>
-                        <tr>
-                            <th></th>
-                            <th><input st-search="serialNumber.license" class="input-sm form-control" type="search" /></th>
-                            <th><input st-search="serialNumber.productName" class="input-sm form-control" type="search" /></th>
-                            <th><input st-search="serialNumber.numberOfClient" class="input-sm form-control" type="search" /></th>
-                            <th><input st-search="serialNumber.schoolName" class="input-sm form-control" type="search" /></th>
-                            <th colspan="3"></th>
-                        </tr>
 
                     </thead>
                     <tbody ng-switch-default>
                         <tr ng-repeat="row in displayCollection track by $index">
-                            <td>{{(currentPage-1)*itemPage+$index+1}}</td>
+                            <td>{{(searchModel.page-1)*itemPage+$index+1}}</td>
                             <td>{{row.serialNumber.license}}</td>
                             <td>{{row.serialNumber.productName}}</td>
                             <td>{{row.serialNumber.numberOfClient}}</td>
@@ -111,13 +103,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="5" class="text-center">
-                                <div st-pagination="" st-items-by-page="itemPage" st-displayed-pages="5" st-page-change="rembemberCurrentPage(newPage)"></div>
-                            </td>
-                        </tr>
-                    </tfoot>
+
                 </table>
 
             </div>

@@ -61,9 +61,9 @@
 
         function getSerialNumber(searchModel) {
             formData = new FormData();
-            formData.append("category", searchModel.category);
+            formData.append("category", searchModel.category.toUpperCase());
             formData.append("searchText", searchModel.searchText);
-            formData.append("page", searchModel.page);
+            formData.append("page", searchModel.page - 1);
             formData.append("startDate", searchModel.startDate);
             formData.append("endDate", searchModel.endDate);
             return $http.post(baseURL + '/snManagement/serialNumbers/', formData, httpHeader);
