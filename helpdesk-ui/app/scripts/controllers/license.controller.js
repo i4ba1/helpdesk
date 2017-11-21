@@ -33,8 +33,8 @@
         $scope.searchModel = {
             category: "serial",
             searchText: "",
-            startDate: "",
-            endDate: "",
+            startDate: 0,
+            endDate: 0,
             page: 1
         }
 
@@ -43,7 +43,7 @@
             $rootScope.showOverlay();
             $scope.rowCollection = [];
             $scope.displayCollection = [];
-            RequestFactory.getSerialNumber().then(
+            RequestFactory.getSerialNumber($scope.searchModel).then(
                 function(response) {
                     $scope.rowCollection = response.data;
                     $scope.displayCollection = response.data;
