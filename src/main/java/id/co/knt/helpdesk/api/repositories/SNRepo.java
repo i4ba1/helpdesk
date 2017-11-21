@@ -33,7 +33,7 @@ public interface SNRepo extends JpaRepository<License, Long> {
 
 	List<License> findAllAndOrderByCreatedDateDesc(Pageable pageable);
 
-	List<License> findLicenseByCreatedDateIsBeforeAndCreatedDateAfterAndOrderByCreatedDateDesc(Pageable pageable, long startDate, long endDate);
+	List<License> findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(Pageable pageable, long startDate, long endDate);
 
 	List<License> fetchLicenses(Pageable pageRequest);
 }
