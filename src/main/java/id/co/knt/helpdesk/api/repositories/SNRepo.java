@@ -21,9 +21,9 @@ public interface SNRepo extends JpaRepository<License, Long> {
 
 	@Query("select sn from License sn join fetch sn.product p  where sn.id= :licenseId")
 	License findLicenseById(@Param("licenseId") Long licenseId);
-	
-    @Query("select p.productName ,count(p.productName) from License l inner join l.product p group by p.productName")
-    List<Object> findSnCountByProduct();
+
+	@Query("select p.productName ,count(p.productName) from License l inner join l.product p group by p.productName")
+	List<Object> findSnCountByProduct();
 
 	List<License> findByLicenseLikeOrSchoolNameLike(Pageable pageRequest, String license, String schoolName);
 
@@ -38,3 +38,4 @@ public interface SNRepo extends JpaRepository<License, Long> {
 	int countByLicenseLikeOrSchoolNameLike(String license, String schoolName);
 
 	int countByCreatedDateIsBeforeAndCreatedDateAfter(Long startDate, Long endDate);
+}

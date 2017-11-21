@@ -166,7 +166,6 @@ public class SNServiceImpl implements SNService {
     public Map<String, Object> findAllSN(String category, int page, String searchText, Long startDate, Long endDate) {
         List<ListLicenseDTO> dtoList = new ArrayList<>();
         int totalRow = 0;
-        int pageSize = 0;
 
         if(searchText.isEmpty()){
             totalRow = snRepo.countLicense();
@@ -184,9 +183,7 @@ public class SNServiceImpl implements SNService {
               }
         }
 
-        pageSize = totalRow/SIZE_OF_PAGE;
-        pageSize = totalRow % SIZE_OF_PAGE > 1? pageSize+1:pageSize;
-        return licenseDTOResult(dtoList, page, pageSize);
+        return licenseDTOResult(dtoList, page, totalRow);
     }
 
     private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses){
