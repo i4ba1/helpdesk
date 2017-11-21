@@ -160,12 +160,12 @@ public class SNServiceImpl implements SNService {
         List<ListLicenseDTO> dtoList = new ArrayList<>();
 
         if(searchText.isEmpty()){
-            dtoList = generateListLicenseDTO(snRepo.findAllAndOrderByCreatedDateDesc(gotoPage(page)));
+            dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
         }else {
               if (!serialNumber.isEmpty() || !schoolName.isEmpty()){
-                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAndOrderByCreatedDateDesc(gotoPage(page), serialNumber, schoolName));
+                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), serialNumber, schoolName));
               }else if(startDate != null && endDate != null){
-                  dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfterAndOrderByCreatedDateDesc(gotoPage(page), startDate, endDate));
+                  dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(gotoPage(page), startDate, endDate));
               }
         }
 

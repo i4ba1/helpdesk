@@ -29,11 +29,10 @@ public interface SNRepo extends JpaRepository<License, Long> {
     @Query("select p.productName ,count(p.productName) from License l inner join l.product p group by p.productName")
     List<Object> findSnCountByProduct();
 
-	List<License> findByLicenseLikeOrSchoolNameLikeAndOrderByCreatedDateDesc(Pageable pageRequest, String license, String schoolName);
+	List<License> findByLicenseLikeOrSchoolNameLike(Pageable pageRequest, String license, String schoolName);
 
-	List<License> findAllAndOrderByCreatedDateDesc(Pageable pageable);
+	List<License> findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(Pageable pageable, Long startDate, Long endDate);
 
-	List<License> findLicenseByCreatedDateIsBeforeAndCreatedDateAfterAndOrderByCreatedDateDesc(Pageable pageable, long startDate, long endDate);
-
+	@Query("select l from License l join fetch l.product")
 	List<License> fetchLicenses(Pageable pageRequest);
 }
