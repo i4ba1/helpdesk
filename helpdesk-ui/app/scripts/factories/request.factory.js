@@ -10,7 +10,7 @@
     RequestFactory.$inject = ["$http", "$state", "$cookies"];
 
     function RequestFactory($http, $state, $cookies) {
-        var baseURL = "/api";
+        var baseURL = "/helpdesk/api";
         var httpHeader = {
             transformRequest: angular.identity,
             headers: {
@@ -59,8 +59,14 @@
             return baseURL;
         }
 
-        function getSerialNumber() {
-            return $http.get(baseURL + '/snManagement');
+        function getSerialNumber(searchModel) {
+            formData = new FormData();
+            formData.append("category", searchModel.category);
+            formData.append("searchText", searchModel.searchText);
+            formData.append("page", searchModel.page);
+            formData.append("startDate", searchModel.starDate);
+            formData.append("endDate", searchModel.endDate);
+            return $http.get(baseURL + '/snManagement/serialNumbers/', formData, httpHeader);
         }
 
         /**

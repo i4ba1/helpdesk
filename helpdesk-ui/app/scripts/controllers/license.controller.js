@@ -31,10 +31,11 @@
         $scope.resetSearchModel = resetSearchModel;
 
         $scope.searchModel = {
-            category: "scb_serial",
+            category: "serial",
             searchText: "",
             startDate: "",
-            endDate: ""
+            endDate: "",
+            page: 1
         }
 
         /**------------------------------------------------------*/
