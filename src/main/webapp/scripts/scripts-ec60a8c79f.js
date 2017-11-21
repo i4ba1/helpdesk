@@ -421,7 +421,7 @@
             REGISTERED_ST: "Lisensi didaftarkan",
             SEARCH_SCHOOL: "masukan nama sekolah",
             SEARCH_SN: "masukan serial number",
-            SEARCH_BY: "Pencarian :"
+            SEARCH_BY: "Pencarian"
 
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
@@ -526,8 +526,14 @@
             return baseURL;
         }
 
-        function getSerialNumber() {
-            return $http.get(baseURL + '/snManagement');
+        function getSerialNumber(searchModel) {
+            formData = new FormData();
+            formData.append("category", searchModel.category.toUpperCase());
+            formData.append("searchText", searchModel.searchText);
+            formData.append("page", searchModel.page - 1);
+            formData.append("startDate", searchModel.startDate);
+            formData.append("endDate", searchModel.endDate);
+            return $http.post(baseURL + '/snManagement/serialNumbers/', formData, httpHeader);
         }
 
         /**
@@ -598,7 +604,7 @@
 
         /**
          * View detail of product
-         * @param {*} productId 
+         * @param {*} productId
          */
         function viewProductDetail(productId) {
             return $http.get(baseURL + "/productManagement/productDetail/" + productId);
@@ -606,7 +612,7 @@
 
         /**
          * Create new of product
-         * @param {*} product 
+         * @param {*} product
          */
         function createProduct(productDto) {
             return $http.post(baseURL + "/productManagement/createProduct/", productDto);
@@ -614,15 +620,15 @@
 
         /**
          * update current product
-         * @param {*} product 
+         * @param {*} product
          */
         function updateProduct(productDto) {
             return $http.post(baseURL + "/productManagement/updateProduct/", productDto);
         }
 
         /**
-         * 
-         * @param {*} productId 
+         *
+         * @param {*} productId
          */
         function deleteProduct(productId) {
             return $http.delete(baseURL + "/productManagement/deleteProduct/" + productId);
@@ -665,7 +671,7 @@
 
         /**
          * @param  generator { productId, licenseCount, secondParam}
-         * requestType  is GET 
+         * requestType  is GET
          */
         function licenseGenerator(licenseProductDTO) {
             return $http.post(baseURL + "/snManagement/snGenerator/", licenseProductDTO);
@@ -1317,9 +1323,9 @@
         $scope.displayCollection = [];
         $scope.search = "";
 
-        $scope.currentPage = 1;
-        $scope.maxSize = 5;
+        $scope.maxSize = 4;
         $scope.itemPage = 20;
+        $scope.totalItem;
 
         $scope.license = null;
         $scope.updateSchool = updateSchool;
@@ -1333,10 +1339,11 @@
         $scope.resetSearchModel = resetSearchModel;
 
         $scope.searchModel = {
-            category: "scb_serial",
+            category: "sn",
             searchText: "",
-            startDate: "",
-            endDate: ""
+            startDate: 0,
+            endDate: 0,
+            page: 1
         }
 
         /**------------------------------------------------------*/
@@ -1344,10 +1351,12 @@
             $rootScope.showOverlay();
             $scope.rowCollection = [];
             $scope.displayCollection = [];
-            RequestFactory.getSerialNumber().then(
+            RequestFactory.getSerialNumber($scope.searchModel).then(
                 function(response) {
-                    $scope.rowCollection = response.data;
-                    $scope.displayCollection = response.data;
+                    $scope.rowCollection = response.data.data;
+                    $scope.displayCollection = response.data.data;
+                    $scope.totalItem = response.data.totalPage;
+                    $scope.searchModel.page = response.data.currentPage + 1;
                     $rootScope.hideOverlay();
                 },
                 function(error) {
@@ -1514,13 +1523,25 @@
         }
 
         function searchLicenseByCategory(searchModel) {
-            console.log(searchModel);
+            if (searchModel.category === 'date') {
+                searchModel.startDate = getTime(searchModel.startDate.toString());
+                searchModel.endDate = getTime(searchModel.endDate.toString());
+            }
+            $scope.searchModel = searchModel;
+            getAllSerialNumber();
         }
 
         function resetSearchModel() {
             $scope.searchModel.searchText = "";
             $scope.searchModel.startDate = "";
             $scope.searchModel.endDate = "";
+        }
+
+        function getTime(date) {
+            var day = date.substring(0, 2),
+                month = date.substring(2, 4),
+                year = date.substring(4, date.length);
+            return new Date(year, month, day, 0, 0, 0, 0).getTime();
         }
     }
 

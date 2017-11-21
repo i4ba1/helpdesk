@@ -15,9 +15,9 @@
         $scope.displayCollection = [];
         $scope.search = "";
 
-        $scope.currentPage = 1;
-        $scope.maxSize = 5;
+        $scope.maxSize = 4;
         $scope.itemPage = 20;
+        $scope.totalItem;
 
         $scope.license = null;
         $scope.updateSchool = updateSchool;
@@ -31,7 +31,7 @@
         $scope.resetSearchModel = resetSearchModel;
 
         $scope.searchModel = {
-            category: "serial",
+            category: "sn",
             searchText: "",
             startDate: 0,
             endDate: 0,
@@ -45,8 +45,10 @@
             $scope.displayCollection = [];
             RequestFactory.getSerialNumber($scope.searchModel).then(
                 function(response) {
-                    $scope.rowCollection = response.data;
-                    $scope.displayCollection = response.data;
+                    $scope.rowCollection = response.data.data;
+                    $scope.displayCollection = response.data.data;
+                    $scope.totalItem = response.data.totalPage;
+                    $scope.searchModel.page = response.data.currentPage + 1;
                     $rootScope.hideOverlay();
                 },
                 function(error) {
@@ -213,13 +215,25 @@
         }
 
         function searchLicenseByCategory(searchModel) {
-            console.log(searchModel);
+            if (searchModel.category === 'date') {
+                searchModel.startDate = getTime(searchModel.startDate.toString());
+                searchModel.endDate = getTime(searchModel.endDate.toString());
+            }
+            $scope.searchModel = searchModel;
+            getAllSerialNumber();
         }
 
         function resetSearchModel() {
             $scope.searchModel.searchText = "";
             $scope.searchModel.startDate = "";
             $scope.searchModel.endDate = "";
+        }
+
+        function getTime(date) {
+            var day = date.substring(0, 2),
+                month = date.substring(2, 4),
+                year = date.substring(4, date.length);
+            return new Date(year, month, day, 0, 0, 0, 0).getTime();
         }
     }
 
