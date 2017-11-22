@@ -1,8 +1,6 @@
 package id.co.knt.helpdesk.api.impl;
 
 import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import id.co.knt.helpdesk.api.model.SubProduct;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
@@ -15,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +24,7 @@ import id.co.knt.helpdesk.api.repositories.LicenseHistoryRepo;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.co.knt.helpdesk.api.service.SNService;
 import id.web.pos.integra.gawl.Gawl;
+
 
 @Service("snServiceImpl")
 public class SNServiceImpl implements SNService {
@@ -58,7 +56,7 @@ public class SNServiceImpl implements SNService {
         EP
     }
 
-    private enum filterSearch{
+    enum filterSearch{
         SN,
         DATE,
         SCHOOL
@@ -158,29 +156,34 @@ public class SNServiceImpl implements SNService {
     }
 
     private Pageable gotoPage(int page){
-        Pageable request = new PageRequest(page, SIZE_OF_PAGE);
-        return request;
+        return  new PageRequest(page, SIZE_OF_PAGE);
     }
 
     @Override
     public Map<String, Object> findAllSN(String category, int page, String searchText, Long startDate, Long endDate) {
         List<ListLicenseDTO> dtoList = new ArrayList<>();
-        int totalRow = 0;
+        int totalRow;
 
-        if(searchText.isEmpty()){
-            totalRow = snRepo.countLicense();
-            dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
-        }else {
-              if (category.compareTo(filterSearch.SN.name()) == 0){
-                  totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("%"+searchText+"%", "");
-                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "%"+searchText+"%", ""));
-              }else if (category.compareTo(filterSearch.SCHOOL.name()) == 0){
-                  totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("", "%"+searchText+"%");
-                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "", "%"+searchText+"%"));
-              } else if(category.compareTo(filterSearch.DATE.name()) == 0){
-                  totalRow = snRepo.countByCreatedDateIsBeforeAndCreatedDateAfter(startDate, endDate);
-                  dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(gotoPage(page), startDate, endDate));
-              }
+        filterSearch filter;
+        filter = filterSearch.SN;
+
+        switch (filter){
+            case SN:
+                totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("%"+searchText+"%", "");
+                dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "%"+searchText+"%", ""));
+                break;
+            case SCHOOL:
+                totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("", "%"+searchText+"%");
+                dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "", "%"+searchText+"%"));
+                break;
+            case DATE:
+                totalRow = snRepo.countByCreatedDateIsBeforeAndCreatedDateAfter(startDate, endDate);
+                dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(gotoPage(page), startDate, endDate));
+                break;
+                default:
+                    totalRow = snRepo.countLicense();
+                    dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
+                    break;
         }
 
         return licenseDTOResult(dtoList, page, totalRow);
