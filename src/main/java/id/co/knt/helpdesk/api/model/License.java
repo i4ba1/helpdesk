@@ -53,7 +53,7 @@ public class License implements Serializable {
 	@Column(name="school_name")
 	private String schoolName;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "product_id", nullable = true)
 	private Product product;
 
