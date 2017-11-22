@@ -56,7 +56,7 @@ public class SNServiceImpl implements SNService {
         EP
     }
 
-    enum filterSearch{
+    enum FilterSearch{
         SN,
         DATE,
         SCHOOL
@@ -164,8 +164,8 @@ public class SNServiceImpl implements SNService {
         List<ListLicenseDTO> dtoList = new ArrayList<>();
         int totalRow;
 
-        filterSearch filter;
-        filter = filterSearch.SN;
+        FilterSearch filter;
+        filter = FilterSearch. valueOf(category);
 
         switch (filter){
             case SN:
