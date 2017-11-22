@@ -83,15 +83,8 @@
             RequestFactory.registerGeneratedSN(licenses).then(
                 function(response) {
                     $rootScope.hideOverlay();
-                    DialogFactory.confirmationDialog("SAVE_SUCCESS", "SAVE_TO_XLSX_CONFIRMATION", "sm").then(
-                        function(result) {
-                            exportData(response.data);
-                            $state.go("administrator.license");
-                        },
-                        function(dismiss) {
-                            $state.go("administrator.license");
-                        }
-                    );
+                    exportData(response.data);
+                    $state.go("administrator.license");
                 },
                 function(errorResponse) {
                     $rootScope.hideOverlay();

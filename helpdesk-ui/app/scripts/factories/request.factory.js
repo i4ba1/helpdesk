@@ -251,7 +251,8 @@
         }
 
         function exportData(dataExport) {
-            alasql('SELECT * INTO XLSX("licenses.xlsx",{headers:true}) FROM ?', [dataExport, dataExport]);
+            var name = "Serial Number " + new Date().toLocaleString().split("/").join("-");
+            alasql('SELECT * INTO XLSX("' + name + '.xlsx",{headers:true}) FROM ?', [dataExport, dataExport]);
         }
     }
 
