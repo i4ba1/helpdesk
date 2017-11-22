@@ -177,8 +177,8 @@ public class SNServiceImpl implements SNService {
                 dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "", "%"+searchText+"%"));
                 break;
             case DATE:
-                totalRow = snRepo.countByCreatedDateIsBeforeAndCreatedDateAfter(startDate, endDate);
-                dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(gotoPage(page), startDate, endDate));
+                totalRow = snRepo.countByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(startDate, endDate);
+                dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(gotoPage(page), startDate, endDate));
                 break;
                 default:
                     totalRow = snRepo.countLicense();

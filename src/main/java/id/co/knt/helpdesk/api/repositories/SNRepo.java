@@ -27,7 +27,7 @@ public interface SNRepo extends JpaRepository<License, Long> {
 
 	List<License> findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(Pageable pageRequest, String license, String schoolName);
 
-	List<License> findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(Pageable pageable, Long startDate, Long endDate);
+	List<License> findLicenseByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(Pageable pageable, Long startDate, Long endDate);
 
 	@Query("select l from License l join fetch l.product")
 	List<License> fetchLicenses(Pageable pageRequest);
@@ -37,5 +37,5 @@ public interface SNRepo extends JpaRepository<License, Long> {
 
 	int countByLicenseLikeOrSchoolNameLikeAllIgnoreCase(String license, String schoolName);
 
-	int countByCreatedDateIsBeforeAndCreatedDateAfter(Long startDate, Long endDate);
+	int countByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(Long startDate, Long endDate);
 }

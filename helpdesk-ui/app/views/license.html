@@ -31,12 +31,12 @@
                                 </select>
 
                                 <div class="form-group" ng-switch-default>
-                                    <input type="text" class="form-control" placeholder="{{(searchModel.category === 'serial'?'SEARCH_SN':'SEARCH_SCHOOL')|translate}}" ng-model="searchModel.searchText">
+                                    <input type="text" class="form-control" placeholder="{{(searchModel.category === 'serial'?'SEARCH_SN':'SEARCH_SCHOOL')|translate}}" ng-model="searchModel.searchText" required>
                                 </div>
 
                                 <div class="form-group" ng-switch-when="date">
-                                    <input class="form-control" type="text" name="star_date" id="start_date" ng-model="searchModel.startDate" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_">
-                                    <input class="form-control" type="text" name="end_date" id="end_date" ng-model="searchModel.endDate" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_">
+                                    <input class="form-control" type="text" name="star_date" id="start_date" ng-model="searchModel.startDate" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_" required>
+                                    <input class="form-control" type="text" name="end_date" id="end_date" ng-model="searchModel.endDate" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_" required>
                                 </div>
 
 
