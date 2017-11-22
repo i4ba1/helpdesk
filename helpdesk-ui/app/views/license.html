@@ -3,21 +3,19 @@
         <section class="content-header" style="padding: 15px;">
             <div class="title-brand">
                 <span id="root-title">{{'PRODUCT_MANAGEMENT'|translate|uppercase}}</span> / <span class="child-title">{{'SERIAL_NUMBER'|translate}}</span>
-                <div class="pull-right">
-                    <a ng-click="exportFile('ALL')" tooltip-placement="top" uib-tooltip="{{'EXPORT_ALL_PAGE'|translate}}"><img src="images/export_all.png" alt="export all" class="export-file"></a>
-                    <a ng-click="exportFile('CURRENT')" tooltip-placement="top" uib-tooltip="{{'EXPORT_CURRENT_PAGE'|translate}}"><img src="images/export_current_page.png" alt="export current" class="export-file"></a>
-                </div>
+
             </div>
         </section>
         <div class="content">
 
             <!-- Serial Number Search -->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
                 <div class="panel panel-default">
+
                     <div class="panel-body">
 
-                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="text-align: left;">
+
                             <form class="form-inline" role="form" ng-switch="searchModel.category" ng-submit="searchLicenseByCategory(searchModel)">
 
                                 <div class="form-group">
@@ -25,27 +23,28 @@
                                 </div>
 
                                 <select id="selectcategory" class="form-control" ng-model="searchModel.category" required="required" ng-change="resetSearchModel()">
-                                    <option value="sn" selected>{{'SERIAL_NUMBER'|translate}}</option>
-                                    <option value="school">{{'SCHOOL_NAME'|translate}}</option>
-                                    <option value="date">{{'CREATED_DATE'|translate}}</option>
-                                </select>
+                                        <option value="sn" selected>{{'SERIAL_NUMBER'|translate}}</option>
+                                        <option value="school">{{'SCHOOL_NAME'|translate}}</option>
+                                        <option value="date">{{'CREATED_DATE'|translate}}</option>
+                                    </select>
 
                                 <div class="form-group" ng-switch-default>
-                                    <input type="text" class="form-control" placeholder="{{(searchModel.category === 'serial'?'SEARCH_SN':'SEARCH_SCHOOL')|translate}}" ng-model="searchModel.searchText" required>
+                                    <input type="text" class="form-control" placeholder="{{(searchModel.category === 'sn'?'SEARCH_SN':'SEARCH_SCHOOL')|translate}}" ng-model="searchModel.searchText" required>
                                 </div>
 
                                 <div class="form-group" ng-switch-when="date">
-                                    <input class="form-control" type="text" name="star_date" id="start_date" ng-model="searchModel.startDate" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_" required>
-                                    <input class="form-control" type="text" name="end_date" id="end_date" ng-model="searchModel.endDate" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_" required>
+                                    <date-picker dt="searchModel.startDate"></date-picker>
+                                    <date-picker dt="searchModel.endDate"></date-picker>
                                 </div>
 
 
                                 <button type="submit" class="btn btn-primary" title="{{'SEARCH'|translate}}"><i class="fa fa-search fa-fw" aria-hidden="true"></i></button>
                             </form>
-
                         </div>
-                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 txt-right">
-                            <ul uib-pagination direction-links="false" total-items="totalItem" ng-model="searchModel.page" num-pages="smallnumPages" max-size="maxSize" items-per-page="itemPage" class="pagination-sm" boundary-link-numbers="true" rotate="false" ng-change="searchLicenseByCategory(searchModel)"></ul>
+
+
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="text-align: right">
+                            <a ng-click="exportFile('CURRENT')" tooltip-placement="top" uib-tooltip="{{'EXPORT_CURRENT_PAGE'|translate}}"><img src="images/export_current_page.png" alt="export current" class="export-file"></a>
                         </div>
                     </div>
                 </div>
@@ -106,6 +105,15 @@
 
                 </table>
 
+            </div>
+
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="text-align:center;">
+                        <ul uib-pagination total-items="totalItem" ng-model="searchModel.page" max-size="maxSize" items-per-page="itemPage" boundary-link-numbers="true" rotate="true" ng-change="searchLicenseByCategory(searchModel)" next-text="{{'NEXT'|translate}}" previous-text="{{'PREVIOUS'|translate}}"></ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

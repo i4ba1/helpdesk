@@ -211,25 +211,14 @@
         function searchLicenseByCategory(searchModel) {
             var sm = new Search(searchModel.category, searchModel.searchText, searchModel.page);
             if (searchModel.category === 'date') {
-                sm.startDate = getTime(searchModel.startDate.toString());
-                sm.endDate = getTime(searchModel.endDate.toString());
+                sm.startDate = searchModel.startDate.getTime();
+                sm.endDate = searchModel.endDate.getTime();
             }
             getAllSerialNumber(sm);
         }
 
         function resetSearchModel() {
-            $scope.searchModel.searchText = "";
-            $scope.searchModel.startDate = "";
-            $scope.searchModel.endDate = "";
-        }
-
-        function getTime(dateString) {
-            var day = parseInt(dateString.substring(0, 2)),
-                month = parseInt(dateString.substring(2, 4)),
-                year = parseInt(dateString.substring(4, dateString.length));
-
-            var date = new Date(year, month - 1, day, 0, 0, 0, 0);
-            return date.getTime();
+            $scope.searchModel = new Search($scope.searchModel.category);
         }
 
         function Search(category, searchText, page, startDate, endDate) {

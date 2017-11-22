@@ -421,7 +421,10 @@
             REGISTERED_ST: "Lisensi didaftarkan",
             SEARCH_SCHOOL: "masukan nama sekolah",
             SEARCH_SN: "masukan serial number",
-            SEARCH_BY: "Pencarian"
+            SEARCH_BY: "Pencarian",
+            NEXT: "Selanjutnya",
+            PREVIOUS: "Sebelumnya"
+
 
         });
         $translateProvider.useSanitizeValueStrategy('sanitize');
@@ -445,6 +448,116 @@
 
         return directive;
     }
+})();
+(function() {
+
+    'use strict';
+    angular.module('application').directive('datePicker', startDateDirective);
+
+    function startDateDirective() {
+        var controller = ['$scope', function($scope) {
+            $scope.today = function() {
+                $scope.dt = new Date();
+            };
+            $scope.today();
+
+            $scope.clear = function() {
+                $scope.dt = null;
+            };
+
+            // Disable weekend selection
+            $scope.disabled = function(date, mode) {
+                return mode === 'day' && (date.getDay() === 0);
+            };
+
+            $scope.minDate = new Date(1975, 0, 1);
+            $scope.maxDate = new Date(2020, 11, 31);
+
+            $scope.open1 = function() {
+                $scope.popup1.opened = true;
+            };
+
+            $scope.open3 = function() {
+                $scope.popup3.opened = true;
+            };
+
+            $scope.setDate = function(year, month, day) {
+                $scope.dt = new Date(year, month, day);
+            };
+
+            $scope.dateOptions = {
+                formatYear: 'yy',
+                startingDay: 1
+            };
+
+            $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy',
+                'shortDate'
+            ];
+            $scope.format = $scope.formats[0];
+            $scope.altInputFormats = ['M!/d!/yyyy'];
+
+            $scope.popup1 = {
+                opened: false
+            };
+
+            $scope.popup3 = {
+                opened: false
+            };
+
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            var afterTomorrow = new Date();
+            afterTomorrow.setDate(tomorrow.getDate() + 1);
+            $scope.events = [{
+                date: tomorrow,
+                status: 'full'
+            }, {
+                date: afterTomorrow,
+                status: 'partially'
+            }];
+
+            $scope.getDayClass = function(date, mode) {
+                if (mode === 'day') {
+                    var dayToCheck = new Date(date)
+                        .setHours(0, 0, 0, 0);
+
+                    for (var i = 0; i < $scope.events.length; i++) {
+                        var currentDay = new Date($scope.events[i].date)
+                            .setHours(0, 0, 0, 0);
+
+                        if (dayToCheck === currentDay) {
+                            return $scope.events[i].status;
+                        }
+                    }
+                }
+
+                return '';
+            };
+
+        }];
+
+        var template = '<div class="input-group">' +
+            '<input name="{{name}}" type="text" ng-disabled="disable" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="dt" is-open="popup3.opened" min-date="minDate" max-date="maxDate"' +
+            'datepicker-options="dateOptions" ng-required="true" close-text="Close"/>' +
+            '<span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="open3()">' +
+            '<i class="fa fa-calendar" aria-hidden="true"></i>' +
+            '</button>' +
+            '</span>' +
+            '</div>';
+
+        return {
+            restrict: 'EA', //Default in 1.3+
+            controller: controller,
+            scope: {
+                dt: '=',
+                disable: '=',
+                name: '@'
+            },
+            template: template
+        };
+    }
+
+
 })();
 (function() {
     "use strict";
@@ -718,7 +831,8 @@
         }
 
         function exportData(dataExport) {
-            alasql('SELECT * INTO XLSX("licenses.xlsx",{headers:true}) FROM ?', [dataExport, dataExport]);
+            var name = "Serial Number " + new Date().toLocaleString().split("/").join("-");
+            alasql('SELECT * INTO XLSX("' + name + '.xlsx",{headers:true}) FROM ?', [dataExport, dataExport]);
         }
     }
 
@@ -1519,25 +1633,14 @@
         function searchLicenseByCategory(searchModel) {
             var sm = new Search(searchModel.category, searchModel.searchText, searchModel.page);
             if (searchModel.category === 'date') {
-                sm.startDate = getTime(searchModel.startDate.toString());
-                sm.endDate = getTime(searchModel.endDate.toString());
+                sm.startDate = searchModel.startDate.getTime();
+                sm.endDate = searchModel.endDate.getTime();
             }
             getAllSerialNumber(sm);
         }
 
         function resetSearchModel() {
-            $scope.searchModel.searchText = "";
-            $scope.searchModel.startDate = "";
-            $scope.searchModel.endDate = "";
-        }
-
-        function getTime(dateString) {
-            var day = parseInt(dateString.substring(0, 2)),
-                month = parseInt(dateString.substring(2, 4)),
-                year = parseInt(dateString.substring(4, dateString.length));
-
-            var date = new Date(year, month - 1, day, 0, 0, 0, 0);
-            return date.getTime();
+            $scope.searchModel = new Search($scope.searchModel.category);
         }
 
         function Search(category, searchText, page, startDate, endDate) {
@@ -1974,15 +2077,8 @@
             RequestFactory.registerGeneratedSN(licenses).then(
                 function(response) {
                     $rootScope.hideOverlay();
-                    DialogFactory.confirmationDialog("SAVE_SUCCESS", "SAVE_TO_XLSX_CONFIRMATION", "sm").then(
-                        function(result) {
-                            exportData(response.data);
-                            $state.go("administrator.license");
-                        },
-                        function(dismiss) {
-                            $state.go("administrator.license");
-                        }
-                    );
+                    exportData(response.data);
+                    $state.go("administrator.license");
                 },
                 function(errorResponse) {
                     $rootScope.hideOverlay();
