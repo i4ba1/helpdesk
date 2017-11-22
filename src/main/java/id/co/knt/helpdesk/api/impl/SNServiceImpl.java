@@ -172,11 +172,11 @@ public class SNServiceImpl implements SNService {
             dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
         }else {
               if (category.compareTo(filterSearch.SN.name()) == 0){
-                  totalRow = snRepo.countByLicenseLikeOrSchoolNameLike(searchText, "");
-                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), searchText, ""));
+                  totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("%"+searchText+"%", "");
+                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "%"+searchText+"%", ""));
               }else if (category.compareTo(filterSearch.SCHOOL.name()) == 0){
-                  totalRow = snRepo.countByLicenseLikeOrSchoolNameLike("", searchText);
-                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLike(gotoPage(page), "", searchText));
+                  totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("", "%"+searchText+"%");
+                  dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "", "%"+searchText+"%"));
               } else if(category.compareTo(filterSearch.DATE.name()) == 0){
                   totalRow = snRepo.countByCreatedDateIsBeforeAndCreatedDateAfter(startDate, endDate);
                   dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateIsBeforeAndCreatedDateAfter(gotoPage(page), startDate, endDate));
