@@ -1338,20 +1338,14 @@
         $scope.searchLicenseByCategory = searchLicenseByCategory;
         $scope.resetSearchModel = resetSearchModel;
 
-        $scope.searchModel = {
-            category: "sn",
-            searchText: "",
-            startDate: 0,
-            endDate: 0,
-            page: 1
-        }
+        $scope.searchModel = new Search();
 
         /**------------------------------------------------------*/
-        function getAllSerialNumber() {
+        function getAllSerialNumber(searchModel) {
             $rootScope.showOverlay();
             $scope.rowCollection = [];
             $scope.displayCollection = [];
-            RequestFactory.getSerialNumber($scope.searchModel).then(
+            RequestFactory.getSerialNumber(searchModel).then(
                 function(response) {
                     $scope.rowCollection = response.data.data;
                     $scope.displayCollection = response.data.data;
@@ -1379,7 +1373,7 @@
                 function(response) {
                     DialogFactory.activationDialog("ACTIVATION_SUCCESS", "ACTIVATION_SUCCESS_MESSAGES", "md", "Activation Key :" + response.data.activationKey).then(
                         function(response) {
-                            getAllSerialNumber();
+                            getAllSerialNumber(new Search());
                         },
                         function(dismiss) {}
                     );
@@ -1409,7 +1403,7 @@
             /**
              *  Call getAllSerialNumber
              */
-            getAllSerialNumber();
+            getAllSerialNumber(new Search());
         }
 
 
@@ -1523,12 +1517,12 @@
         }
 
         function searchLicenseByCategory(searchModel) {
+            var sm = new Search(searchModel.category, searchModel.searchText, searchModel.page);
             if (searchModel.category === 'date') {
-                searchModel.startDate = getTime(searchModel.startDate.toString());
-                searchModel.endDate = getTime(searchModel.endDate.toString());
+                sm.startDate = getTime(searchModel.startDate.toString());
+                sm.endDate = getTime(searchModel.endDate.toString());
             }
-            $scope.searchModel = searchModel;
-            getAllSerialNumber();
+            getAllSerialNumber(sm);
         }
 
         function resetSearchModel() {
@@ -1537,11 +1531,21 @@
             $scope.searchModel.endDate = "";
         }
 
-        function getTime(date) {
-            var day = date.substring(0, 2),
-                month = date.substring(2, 4),
-                year = date.substring(4, date.length);
-            return new Date(year, month, day, 0, 0, 0, 0).getTime();
+        function getTime(dateString) {
+            var day = parseInt(dateString.substring(0, 2)),
+                month = parseInt(dateString.substring(2, 4)),
+                year = parseInt(dateString.substring(4, dateString.length));
+
+            var date = new Date(year, month - 1, day, 0, 0, 0, 0);
+            return date.getTime();
+        }
+
+        function Search(category, searchText, page, startDate, endDate) {
+            this.searchText = searchText ? searchText : "";
+            this.category = category ? category : "sn";
+            this.page = page ? page : 1;
+            this.startDate = startDate ? startDate : 0;
+            this.endDate = endDate ? startDate : 0;
         }
     }
 
