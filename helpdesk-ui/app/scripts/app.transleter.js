@@ -198,7 +198,9 @@
             SEARCH_SN: "masukan serial number",
             SEARCH_BY: "Pencarian",
             NEXT: "Selanjutnya",
-            PREVIOUS: "Sebelumnya"
+            PREVIOUS: "Sebelumnya",
+            REGISTRATION_SN: "Registrasi Serial Number",
+            REGISTRATION: "Registrasi"
 
 
         });
