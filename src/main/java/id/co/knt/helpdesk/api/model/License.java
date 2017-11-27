@@ -48,7 +48,7 @@ public class License implements Serializable {
 	private String xlock;
 
 	@Column(name = "number_of_license")
-	private Integer numberOfClient = 0;
+	private Integer numberOfClient = null;
 
 	@Column(name="school_name")
 	private String schoolName;
