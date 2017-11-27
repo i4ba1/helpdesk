@@ -93,7 +93,7 @@
             views: {
                 'content@administrator': {
                     templateUrl: "views/registration.html",
-                    controller: "RegistrationControlelr as regCtrl"
+                    controller: "RegistrationController as regCtrl"
                 }
             }
         })

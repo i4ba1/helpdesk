@@ -200,7 +200,9 @@
             NEXT: "Selanjutnya",
             PREVIOUS: "Sebelumnya",
             REGISTRATION_SN: "Registrasi Serial Number",
-            REGISTRATION: "Registrasi"
+            REGISTRATION: "Registrasi",
+            REGISTRATION_SUCCESS: "Registrasi Berhasil",
+            REGISTRATION_FAILED: "Registrasi Gagal"
 
 
         });
