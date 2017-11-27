@@ -40,6 +40,8 @@ public class SNManagementController {
 			return new ResponseEntity<>(error, HttpStatus.ACCEPTED);
 		} else if (error == 2) {
 			return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+		} else if (error == 3) {
+			return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 
 		return new ResponseEntity<>(error, HttpStatus.OK);

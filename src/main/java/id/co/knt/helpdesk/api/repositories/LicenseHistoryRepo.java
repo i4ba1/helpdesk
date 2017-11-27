@@ -20,7 +20,7 @@ public interface LicenseHistoryRepo extends JpaRepository<LicenseHistory, Long> 
 	@Query("select lh from LicenseHistory lh inner join fetch lh.license")
 	List<LicenseHistory> fetchUnreadLicenseGenerator();
 
-	@Query("select lh from LicenseHistory lh where lh.license.id= :licenseId order by createdDate desc")
+	@Query("select lh from LicenseHistory lh where lh.license.id= :licenseId order by lh.createdDate desc")
 	List<LicenseHistory> findLicenseHistory(@Param("licenseId") Long licenseId);
 
 	@Query("select lh.licenseStatus from LicenseHistory lh where lh.license.id= :licenseId and lh.licenseStatus=4 order by createdDate desc")
