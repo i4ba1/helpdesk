@@ -116,21 +116,6 @@ public class SNServiceImpl implements SNService {
         License license =  snRepo.findByLicense(serialNumber.getLicense());
         Short licenseStatus = 0;
 
-        /**
-         * Check if passkey is valid
-         */
-        Map<String, Byte> info = null;
-        try{
-            info = gawl.extract(serialNumber.getLicense());
-        }catch (Exception e){
-            LoggingError.writeError(ExceptionUtils.getStackTrace(e));
-        }
-
-        String tempPassKey = gawl.pass(info.get(Gawl.SEED1), info.get(Gawl.SEED2));
-        if (tempPassKey.compareTo(serialNumber.getPassKey()) < 0 || tempPassKey.compareTo(serialNumber.getPassKey()) > 0){
-            return 3;
-        }
-
         if(license != null) {
             if(licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId()) != null) {
                 licenseStatus = licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId());
@@ -328,27 +313,24 @@ public class SNServiceImpl implements SNService {
 
     @Override
     public License onlineActivation(License serialNumber) {
-        List<LicenseHistory> histories = licenseHistoryRepo.findLicenseHistory(serialNumber.getId());
         License sn = snRepo.findByLicense(serialNumber.getLicense());
 
-        if (histories.stream().findFirst().isPresent() && histories.stream().findFirst().get().getLicenseStatus() == 1){
-            if (sn != null) {
-                if (gawl.validate(serialNumber.getLicense())) {
-                    try {
-                        Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
-                        if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
-                            String activationKey = gawl.activate(serialNumber.getPassKey());
-                            sn.setPassKey(serialNumber.getPassKey());
-                            sn.setActivationKey(activationKey);
-                            sn.setNumberOfActivation((short) (sn.getNumberOfActivation() + 1));
-                            sn = snRepo.saveAndFlush(sn);
-                            String message = "The license " + sn.getLicense() + " has been activated";
-                            status = 2;
-                            setLicenseHistory(sn, status, message, null);
-                        }
-                    } catch (Exception e) {
-                        LoggingError.writeError(ExceptionUtils.getStackTrace(e));
+        if (!sn.getPassKey().isEmpty()){
+            if (gawl.validate(serialNumber.getLicense())) {
+                try {
+                    Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
+                    if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
+                        String activationKey = gawl.activate(serialNumber.getPassKey());
+                        sn.setPassKey(serialNumber.getPassKey());
+                        sn.setActivationKey(activationKey);
+                        sn.setNumberOfActivation((short) (sn.getNumberOfActivation() + 1));
+                        sn = snRepo.saveAndFlush(sn);
+                        String message = "The license " + sn.getLicense() + " has been activated";
+                        status = 2;
+                        setLicenseHistory(sn, status, message, null);
                     }
+                } catch (Exception e) {
+                    LoggingError.writeError(ExceptionUtils.getStackTrace(e));
                 }
             }
         }
