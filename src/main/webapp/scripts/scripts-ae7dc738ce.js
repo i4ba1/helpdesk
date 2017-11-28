@@ -1,3 +1,40 @@
+function License() {
+    this.id = undefined;
+    this.license = undefined;
+    this.passKey = undefined;
+    this.activationKey = undefined;
+    this.activationLimit = 3;
+    this.createdDate = (new Date()).getTime();
+    this.xlock = undefined;
+    this.numberOfClient = undefined;
+    this.schoolName = undefined;
+    this.product = new Product();
+}
+
+function Product() {
+    this.id = undefined;
+    this.productName = undefined;
+    this.productCode = undefined;
+    this.description = undefined;
+    this.subModuleType = undefined;
+    this.subModuleLable = undefined;
+    this.createdDate = undefined;
+    this.deleted = undefined;
+}
+
+function User() {
+    this.name = undefined;
+    this.createdDate = (new Date()).getTime();
+    this.userName = undefined;
+    this.password = undefined;
+}
+
+function SubProduct() {
+    this.id = undefined;
+    this.label = undefined;
+    this.value = undefined;
+    this.product = new Product();
+}
 /**
  * Application Module
  */
@@ -135,6 +172,16 @@
                     controller: "ActivateAndRegisterController as snCtrl"
                 }
 
+            }
+        })
+
+        .state('administrator.registration', {
+            url: "/registration",
+            views: {
+                'content@administrator': {
+                    templateUrl: "views/registration.html",
+                    controller: "RegistrationController as regCtrl"
+                }
             }
         })
 
@@ -423,7 +470,11 @@
             SEARCH_SN: "masukan serial number",
             SEARCH_BY: "Pencarian",
             NEXT: "Selanjutnya",
-            PREVIOUS: "Sebelumnya"
+            PREVIOUS: "Sebelumnya",
+            REGISTRATION_SN: "Registrasi Serial Number",
+            REGISTRATION: "Registrasi",
+            REGISTRATION_SUCCESS: "Registrasi Berhasil",
+            REGISTRATION_FAILED: "Registrasi Gagal"
 
 
         });
@@ -628,7 +679,8 @@
             viewLicenseDetail: viewLicenseDetail,
             overrideActivationLimit: overrideActivationLimit,
             blockLicense: blockLicense,
-            exportData: exportData
+            exportData: exportData,
+            register: register
         };
 
         return service;
@@ -833,6 +885,10 @@
         function exportData(dataExport) {
             var name = "Serial Number " + new Date().toLocaleString().split("/").join("-");
             alasql('SELECT * INTO XLSX("' + name + '.xlsx",{headers:true}) FROM ?', [dataExport, dataExport]);
+        }
+
+        function register(license) {
+            return $http.post(baseURL + "/snManagement/register/", license);
         }
     }
 
@@ -2157,4 +2213,33 @@
         }
     }
 
+})();
+(function() {
+    "use strict";
+
+    angular.module("application")
+        .controller("RegistrationController", registration);
+    registration.$inject = ["$scope", "RequestFactory", "DialogFactory", "$state"];
+
+    function registration($scope, RequestFactory, DialogFactory, $state) {
+        $scope.license = new License();
+        $scope.products = [];
+        $scope.submit = registration;
+
+        function registration(license) {
+            RequestFactory.register(license).then(
+                function(success) {
+                    DialogFactory.messageDialog("REGISTRATION", ["REGISTRATION_SUCCESS"], "sm").then(
+                        function(s) {
+                            $state.go("administrator.license");
+                        }
+                    );
+                },
+                function(failed) {
+                    DialogFactory.messageDialog("REGISTRATION", ["REGISTRATION_FAILED"], "sm");
+                }
+            );
+
+        }
+    }
 })();

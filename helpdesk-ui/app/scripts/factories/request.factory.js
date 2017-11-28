@@ -48,7 +48,8 @@
             viewLicenseDetail: viewLicenseDetail,
             overrideActivationLimit: overrideActivationLimit,
             blockLicense: blockLicense,
-            exportData: exportData
+            exportData: exportData,
+            register: register
         };
 
         return service;
@@ -253,6 +254,10 @@
         function exportData(dataExport) {
             var name = "Serial Number " + new Date().toLocaleString().split("/").join("-");
             alasql('SELECT * INTO XLSX("' + name + '.xlsx",{headers:true}) FROM ?', [dataExport, dataExport]);
+        }
+
+        function register(license) {
+            return $http.post(baseURL + "/snManagement/register/", license);
         }
     }
 

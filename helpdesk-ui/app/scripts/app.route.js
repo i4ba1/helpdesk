@@ -88,6 +88,16 @@
             }
         })
 
+        .state('administrator.registration', {
+            url: "/registration",
+            views: {
+                'content@administrator': {
+                    templateUrl: "views/registration.html",
+                    controller: "RegistrationController as regCtrl"
+                }
+            }
+        })
+
         .state('administrator.school-management', {
             url: "/school-management",
             views: {
