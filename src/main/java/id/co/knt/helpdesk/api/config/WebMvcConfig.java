@@ -42,11 +42,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		return resolver;
 	}
 
-	/*@Override
+	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/api/**").allowCredentials(true).allowedMethods("POST", "PUT", "GET", "DELETE")
-				.allowedOrigins("http://localhost:5353");
-	}*/
+		registry.addMapping("/api/**").allowCredentials(true).allowedMethods("POST", "PUT", "GET", "DELETE");
+	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

@@ -114,6 +114,10 @@ public class SNManagementController {
 	public ResponseEntity<License> activateByInternet(@RequestBody License serialNumber) {
 		License currentLicense = snService.findBySerial(serialNumber.getLicense());
 
+		if (currentLicense == null || currentLicense.getPassKey().isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
+
 		try {
 			if (currentLicense.getActivationKey() == null || currentLicense.getActivationKey().length() <= 0) {
 				currentLicense = snService.onlineActivation(serialNumber);

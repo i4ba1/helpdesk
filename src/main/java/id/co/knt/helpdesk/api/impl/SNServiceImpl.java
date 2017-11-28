@@ -29,16 +29,16 @@ import id.web.pos.integra.gawl.Gawl;
 @Service("snServiceImpl")
 public class SNServiceImpl implements SNService {
 
-	Logger LOG = LoggerFactory.getLogger(SNServiceImpl.class);
-	private static final Integer SIZE_OF_PAGE = 20;
+    Logger LOG = LoggerFactory.getLogger(SNServiceImpl.class);
+    private static final Integer SIZE_OF_PAGE = 20;
 
-	private Gawl gawl = new Gawl();
+    private Gawl gawl = new Gawl();
 
-	@Autowired
-	private SNRepo snRepo;
+    @Autowired
+    private SNRepo snRepo;
 
-	@Autowired
-	private ProductRepo productRepo;
+    @Autowired
+    private ProductRepo productRepo;
 
     private LicenseHistory licenseHistory;
 
@@ -56,7 +56,7 @@ public class SNServiceImpl implements SNService {
         EP
     }
 
-    enum FilterSearch{
+    enum FilterSearch {
         SN,
         DATE,
         SCHOOL
@@ -98,7 +98,7 @@ public class SNServiceImpl implements SNService {
         return dtoList;
     }
 
-    private License saveLicenseData(License serialNumber, Product product){
+    private License saveLicenseData(License serialNumber, Product product) {
         License snNumber = new License();
         snNumber.setLicense(serialNumber.getLicense().toLowerCase());
         snNumber.setPassKey(serialNumber.getPassKey());
@@ -113,55 +113,40 @@ public class SNServiceImpl implements SNService {
     @Override
     public int registerSN(License serialNumber) {
         Product product = null;
-        License license =  snRepo.findByLicense(serialNumber.getLicense());
+        License license = snRepo.findByLicense(serialNumber.getLicense());
         Short licenseStatus = 0;
 
-        /**
-         * Check if passkey is valid
-         */
-        Map<String, Byte> info = null;
-        try{
-            info = gawl.extract(serialNumber.getLicense());
-        }catch (Exception e){
-            LoggingError.writeError(ExceptionUtils.getStackTrace(e));
-        }
-
-        String tempPassKey = gawl.pass(info.get(Gawl.SEED1), info.get(Gawl.SEED2));
-        if (tempPassKey.compareTo(serialNumber.getPassKey()) < 0 || tempPassKey.compareTo(serialNumber.getPassKey()) > 0){
-            return 3;
-        }
-
-        if(license != null) {
-            if(licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId()) != null) {
+        if (license != null) {
+            if (licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId()) != null) {
                 licenseStatus = licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId());
             }
         }
 
         String strSN = serialNumber.getLicense().toLowerCase();
         if (gawl.validate(strSN) && licenseStatus < 4) {
-            if(licenseStatus < 4)
-            try {
-                Map<String, Byte> extractResult = gawl.extract(strSN);
-                byte Type = extractResult.get(Gawl.TYPE);
+            if (licenseStatus < 4)
+                try {
+                    Map<String, Byte> extractResult = gawl.extract(strSN);
+                    byte Type = extractResult.get(Gawl.TYPE);
 
-                product = productRepo.findByProductCode(new Integer(Type));
-                message = "One license: " + strSN + "for " + product.getProductName() + " has been registered";
-                status = 1;
+                    product = productRepo.findByProductCode(new Integer(Type));
+                    message = "One license: " + strSN + "for " + product.getProductName() + " has been registered";
+                    status = 1;
 
-                if(license == null){
-                    license = saveLicenseData(serialNumber, product);
+                    if (license == null) {
+                        license = saveLicenseData(serialNumber, product);
+                    }
+
+                    license.setPassKey(serialNumber.getPassKey());
+                    license.setCreatedDate(new Date().getTime());
+                    snRepo.saveAndFlush(license);
+
+                    setLicenseHistory(license, status, message, null);
+
+                } catch (Exception e) {
+                    LoggingError.writeError(ExceptionUtils.getStackTrace(e));
+                    return 2;
                 }
-
-                license.setPassKey(serialNumber.getPassKey());
-                license.setCreatedDate(new Date().getTime());
-                snRepo.saveAndFlush(license);
-
-                setLicenseHistory(license, status, message, null);
-
-            } catch (Exception e) {
-                LoggingError.writeError(ExceptionUtils.getStackTrace(e));
-                return 2;
-            }
 
         } else {
             return 2;
@@ -170,8 +155,8 @@ public class SNServiceImpl implements SNService {
         return 0;
     }
 
-    private Pageable gotoPage(int page){
-        return  new PageRequest(page, SIZE_OF_PAGE);
+    private Pageable gotoPage(int page) {
+        return new PageRequest(page, SIZE_OF_PAGE);
     }
 
     @Override
@@ -180,60 +165,60 @@ public class SNServiceImpl implements SNService {
         int totalRow;
 
         FilterSearch filter;
-        filter = FilterSearch. valueOf(category);
+        filter = FilterSearch.valueOf(category);
 
-        switch (filter){
+        switch (filter) {
             case SN:
-                totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("%"+searchText+"%", "");
-                dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "%"+searchText+"%", ""));
+                totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("%" + searchText + "%", "");
+                dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "%" + searchText + "%", ""));
                 break;
             case SCHOOL:
-                totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("", "%"+searchText+"%");
-                dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "", "%"+searchText+"%"));
+                totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("", "%" + searchText + "%");
+                dtoList = generateListLicenseDTO(snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "", "%" + searchText + "%"));
                 break;
             case DATE:
                 totalRow = snRepo.countByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(startDate, endDate);
                 dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(gotoPage(page), startDate, endDate));
                 break;
-                default:
-                    totalRow = snRepo.countLicense();
-                    dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
-                    break;
+            default:
+                totalRow = snRepo.countLicense();
+                dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
+                break;
         }
 
         return licenseDTOResult(dtoList, page, totalRow);
     }
 
-    private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses){
+    private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses) {
         List<ListLicenseDTO> dtoList = new ArrayList<>();
 
-            if (licenses.size() > 0 && licenses.size() <= 1) {
-                License sn = licenses.stream().findFirst().get();
+        if (licenses.size() > 0 && licenses.size() <= 1) {
+            License sn = licenses.stream().findFirst().get();
+            ListLicenseDTO listLicenseDTO = new ListLicenseDTO();
+            listLicenseDTO.setId(sn.getId());
+            listLicenseDTO.setLicense(sn.getLicense().toLowerCase());
+            listLicenseDTO.setProductName(modifyProductName(sn));
+            listLicenseDTO.setCreatedDate(sn.getCreatedDate());
+            listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
+            listLicenseDTO.setSchoolName(sn.getSchoolName());
+            dtoList.add(listLicenseDTO);
+        } else if (licenses.size() > 1) {
+            licenses.forEach(license -> {
                 ListLicenseDTO listLicenseDTO = new ListLicenseDTO();
-                listLicenseDTO.setId(sn.getId());
-                listLicenseDTO.setLicense(sn.getLicense().toLowerCase());
-                listLicenseDTO.setProductName(modifyProductName(sn));
-                listLicenseDTO.setCreatedDate(sn.getCreatedDate());
-                listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
-                listLicenseDTO.setSchoolName(sn.getSchoolName());
+                listLicenseDTO.setId(license.getId());
+                listLicenseDTO.setLicense(license.getLicense().toLowerCase());
+                listLicenseDTO.setProductName(modifyProductName(license));
+                listLicenseDTO.setCreatedDate(license.getCreatedDate());
+                listLicenseDTO.setNumberOfClient(license.getNumberOfClient());
+                listLicenseDTO.setSchoolName(license.getSchoolName());
                 dtoList.add(listLicenseDTO);
-            } else if (licenses.size() > 1) {
-                licenses.forEach(license -> {
-                    ListLicenseDTO listLicenseDTO = new ListLicenseDTO();
-                    listLicenseDTO.setId(license.getId());
-                    listLicenseDTO.setLicense(license.getLicense().toLowerCase());
-                    listLicenseDTO.setProductName(modifyProductName(license));
-                    listLicenseDTO.setCreatedDate(license.getCreatedDate());
-                    listLicenseDTO.setNumberOfClient(license.getNumberOfClient());
-                    listLicenseDTO.setSchoolName(license.getSchoolName());
-                    dtoList.add(listLicenseDTO);
-                });
-            }
+            });
+        }
 
         return dtoList;
     }
 
-    private String modifyProductName(License sn){
+    private String modifyProductName(License sn) {
         byte module = 0;
         if (sn.getProduct().getSubModuleType().equals(productTypeChoice.EP.name())) {
             try {
@@ -250,7 +235,7 @@ public class SNServiceImpl implements SNService {
     }
 
     //List<Map<String, Object>
-    private Map<String, Object> licenseDTOResult(List<ListLicenseDTO> dtoList, int page, int totalPage){
+    private Map<String, Object> licenseDTOResult(List<ListLicenseDTO> dtoList, int page, int totalPage) {
         List<Map<String, Object>> result = new ArrayList<>();
         Map<String, Object> parentMap = new TreeMap<>();
 
@@ -277,7 +262,7 @@ public class SNServiceImpl implements SNService {
         return parentMap;
     }
 
-    public Map<String, Object> generateLicenseDTOResult(ListLicenseDTO data){
+    public Map<String, Object> generateLicenseDTOResult(ListLicenseDTO data) {
         Map<String, Object> objectMap = null;
         objectMap = new TreeMap<>();
         objectMap.put("serialNumber", data);
@@ -328,30 +313,26 @@ public class SNServiceImpl implements SNService {
 
     @Override
     public License onlineActivation(License serialNumber) {
-        List<LicenseHistory> histories = licenseHistoryRepo.findLicenseHistory(serialNumber.getId());
         License sn = snRepo.findByLicense(serialNumber.getLicense());
 
-        if (histories.stream().findFirst().isPresent() && histories.stream().findFirst().get().getLicenseStatus() == 1){
-            if (sn != null) {
-                if (gawl.validate(serialNumber.getLicense())) {
-                    try {
-                        Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
-                        if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
-                            String activationKey = gawl.activate(serialNumber.getPassKey());
-                            sn.setPassKey(serialNumber.getPassKey());
-                            sn.setActivationKey(activationKey);
-                            sn.setNumberOfActivation((short) (sn.getNumberOfActivation() + 1));
-                            sn = snRepo.saveAndFlush(sn);
-                            String message = "The license " + sn.getLicense() + " has been activated";
-                            status = 2;
-                            setLicenseHistory(sn, status, message, null);
-                        }
-                    } catch (Exception e) {
-                        LoggingError.writeError(ExceptionUtils.getStackTrace(e));
-                    }
+        if (gawl.validate(serialNumber.getLicense())) {
+            try {
+                Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
+                if (extractResult.containsKey(Gawl.TYPE) && extractResult.containsKey(Gawl.MODULE)) {
+                    String activationKey = gawl.activate(serialNumber.getPassKey());
+                    sn.setPassKey(serialNumber.getPassKey());
+                    sn.setActivationKey(activationKey);
+                    sn.setNumberOfActivation((short) (sn.getNumberOfActivation() + 1));
+                    sn = snRepo.saveAndFlush(sn);
+                    String message = "The license " + sn.getLicense() + " has been activated";
+                    status = 2;
+                    setLicenseHistory(sn, status, message, null);
                 }
+            } catch (Exception e) {
+                LoggingError.writeError(ExceptionUtils.getStackTrace(e));
             }
         }
+
 
         return sn;
     }
@@ -373,7 +354,7 @@ public class SNServiceImpl implements SNService {
         TreeMap<String, List<License>> sortedData = new TreeMap<>();
         String generatedSn = "";
 
-		/* For Direct Entry */
+        /* For Direct Entry */
         if (product.getSubModuleType().equals("EL")) {
             for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
                 try {
@@ -444,7 +425,8 @@ public class SNServiceImpl implements SNService {
     public Map<String, Object> viewDetailLicense(Long licenseId) {
         License license = snRepo.findLicenseById(licenseId);
         List<LicenseHistory> histories = licenseHistoryRepo.findLicenseHistory(licenseId);
-        Short licenseStatus = licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId());;
+        Short licenseStatus = licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId());
+        ;
 
         Map<String, Object> map = new HashMap<>();
         map.put("licenseKey", license.getLicense());
