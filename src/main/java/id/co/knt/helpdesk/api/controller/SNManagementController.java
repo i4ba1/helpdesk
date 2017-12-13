@@ -2,6 +2,7 @@ package id.co.knt.helpdesk.api.controller;
 
 import java.util.*;
 
+import id.co.knt.helpdesk.api.model.dto.LicenseDTO;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
@@ -34,8 +35,8 @@ public class SNManagementController {
 	 * @return ResponseEntity<Integer>
 	 */
 	@RequestMapping(value = "/register/", method = RequestMethod.POST)
-	public ResponseEntity<Integer> register(@RequestBody License license) {
-		int error = snService.registerSN(license);
+	public ResponseEntity<Integer> register(@RequestBody LicenseDTO license) {
+		int error = snService.registerSN(license.getLicense(), license.getFlag());
 		if (error == 1) {
 			return new ResponseEntity<>(error, HttpStatus.ACCEPTED);
 		} else if (error == 2) {
