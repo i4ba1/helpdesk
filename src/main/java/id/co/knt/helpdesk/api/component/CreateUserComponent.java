@@ -23,7 +23,7 @@ public class CreateUserComponent {
 
     @PostConstruct
     public void createUser(){
-        User user =userService.findUserByUsername("a4m1n");
+        User user =userService.findUserByUsername(userName);
 
         if (user == null) {
             User newUser = new User();
