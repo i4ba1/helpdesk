@@ -15,7 +15,7 @@ public interface SNService{
 
     int registerSN(License serialNumber);
 
-    Map<String, Object> registerSNDTO(License serialNumber);
+    Map<String, Object> registerInHelpdesk(License serialNumber);
 
     License onlineActivation(License serialNumber);
 

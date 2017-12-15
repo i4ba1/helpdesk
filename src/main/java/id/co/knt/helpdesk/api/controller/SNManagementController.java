@@ -2,7 +2,6 @@ package id.co.knt.helpdesk.api.controller;
 
 import java.util.*;
 
-import id.co.knt.helpdesk.api.model.dto.LicenseDTO;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
@@ -48,13 +47,14 @@ public class SNManagementController {
 
 	@RequestMapping(value = "/registerInHelpdesk/", method = RequestMethod.POST)
 	public ResponseEntity<License> registerInHelpdesk(@RequestBody License license) {
-		Map<String, Object> map = snService.registerSNDTO(license);
+		Map<String, Object> map = snService.registerInHelpdesk(license);
 
-		if ((int)map.get("error") == 1) {
-			return new ResponseEntity<>((License)map.get("license"), HttpStatus.ACCEPTED);
-		} else if ((int)map.get("error") == 2) {
+		/**
+		 * If the serial number invalid or any error when extracting SN
+		 */
+		if ((int)map.get("error") == 2) {
 			return new ResponseEntity<>((License)map.get("license"), HttpStatus.FORBIDDEN);
-		} else if ((int)map.get("error") == 3) {
+		} else if ((int)map.get("error") == 3) {// If passKey is not valid to generate activationKey
 			return new ResponseEntity<>((License)map.get("license"), HttpStatus.NOT_ACCEPTABLE);
 		}
 

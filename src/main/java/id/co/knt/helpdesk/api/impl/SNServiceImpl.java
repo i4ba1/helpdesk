@@ -156,7 +156,7 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public Map<String, Object> registerSNDTO(License serialNumber) {
+    public Map<String, Object> registerInHelpdesk(License serialNumber) {
         Product product = null;
         License license = snRepo.findByLicense(serialNumber.getLicense());
         Map<String, Object> map = new HashMap<>();
