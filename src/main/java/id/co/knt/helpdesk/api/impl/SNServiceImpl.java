@@ -192,8 +192,9 @@ public class SNServiceImpl implements SNService {
                         serialNumber.setActivationKey(activationKey);
                         license = saveLicenseData(serialNumber, product);
                     } else {
-                        serialNumber.setActivationKey(activationKey);
+                        license.setActivationKey(activationKey);
                         license.setPassKey(serialNumber.getPassKey());
+                        license.setSchoolName(serialNumber.getSchoolName());
                         license.setCreatedDate(new Date().getTime());
                         snRepo.saveAndFlush(license);
                     }
