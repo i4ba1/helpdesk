@@ -35,17 +35,30 @@ public class SNManagementController {
 	 * @return ResponseEntity<Integer>
 	 */
 	@RequestMapping(value = "/register/", method = RequestMethod.POST)
-	public ResponseEntity<Integer> register(@RequestBody LicenseDTO license) {
-		int error = snService.registerSN(license.getLicense(), license.getFlag());
+	public ResponseEntity<Integer> register(@RequestBody License license) {
+		int error = snService.registerSN(license);
 		if (error == 1) {
 			return new ResponseEntity<>(error, HttpStatus.ACCEPTED);
 		} else if (error == 2) {
 			return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
-		} else if (error == 3) {
-			return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 
 		return new ResponseEntity<>(error, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/registerInHelpdesk/", method = RequestMethod.POST)
+	public ResponseEntity<License> registerInHelpdesk(@RequestBody License license) {
+		Map<String, Object> map = snService.registerSNDTO(license);
+
+		if ((int)map.get("error") == 1) {
+			return new ResponseEntity<>((License)map.get("license"), HttpStatus.ACCEPTED);
+		} else if ((int)map.get("error") == 2) {
+			return new ResponseEntity<>((License)map.get("license"), HttpStatus.FORBIDDEN);
+		} else if ((int)map.get("error") == 3) {
+			return new ResponseEntity<>((License)map.get("license"), HttpStatus.NOT_ACCEPTABLE);
+		}
+
+		return new ResponseEntity<>((License)map.get("license"), HttpStatus.OK);
 	}
 
 	/**

@@ -13,7 +13,9 @@ import java.util.TreeMap;
 public interface SNService{
     List<ListLicenseDTO> saveGeneratedSN(License serialNumber);
 
-    int registerSN(License serialNumber, int flag);
+    int registerSN(License serialNumber);
+
+    Map<String, Object> registerSNDTO(License serialNumber);
 
     License onlineActivation(License serialNumber);
 

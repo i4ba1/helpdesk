@@ -111,7 +111,7 @@ public class SNServiceImpl implements SNService {
     }
 
     @Override
-    public int registerSN(License serialNumber, int flag) {
+    public int registerSN(License serialNumber) {
         Product product = null;
         License license = snRepo.findByLicense(serialNumber.getLicense());
         Short licenseStatus = 0;
@@ -133,32 +133,12 @@ public class SNServiceImpl implements SNService {
                     message = "One license: " + strSN + "for " + product.getProductName() + " has been registered";
                     status = 1;
 
-                    if(flag == 0) {
-                        if (license == null) {
-                            license = saveLicenseData(serialNumber, product);
-                        } else {
-                            license.setPassKey(serialNumber.getPassKey());
-                            license.setCreatedDate(new Date().getTime());
-                            snRepo.saveAndFlush(license);
-                        }
-                    }else {
-                        String activationKey;
-                        try {
-                            activationKey = gawl.activate(serialNumber.getPassKey());
-                            serialNumber.setActivationKey(activationKey);
-                        }catch (Gawl.UnknownCharacterException e){
-                            LoggingError.writeError(ExceptionUtils.getStackTrace(e));
-                            return 3;
-                        }
-
-                        if (license == null) {
-                            license = saveLicenseData(serialNumber, product);
-                        } else {
-                            license.setPassKey(activationKey);
-                            license.setPassKey(serialNumber.getPassKey());
-                            license.setCreatedDate(new Date().getTime());
-                            snRepo.saveAndFlush(license);
-                        }
+                    if (license == null) {
+                        license = saveLicenseData(serialNumber, product);
+                    } else {
+                        license.setPassKey(serialNumber.getPassKey());
+                        license.setCreatedDate(new Date().getTime());
+                        snRepo.saveAndFlush(license);
                     }
 
                     setLicenseHistory(license, status, message, null);
@@ -173,6 +153,64 @@ public class SNServiceImpl implements SNService {
         }
 
         return 0;
+    }
+
+    @Override
+    public Map<String, Object> registerSNDTO(License serialNumber) {
+        Product product = null;
+        License license = snRepo.findByLicense(serialNumber.getLicense());
+        Map<String, Object> map = new HashMap<>();
+        Short licenseStatus = 0;
+
+        if (license != null) {
+            if (licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId()) != null) {
+                licenseStatus = licenseHistoryRepo.findLicenseHistoryByLicenseStatus(license.getId());
+            }
+        }
+
+        String strSN = serialNumber.getLicense().toLowerCase();
+        if (gawl.validate(strSN) && licenseStatus < 4) {
+            if (licenseStatus < 4)
+                try {
+                    Map<String, Byte> extractResult = gawl.extract(strSN);
+                    byte Type = extractResult.get(Gawl.TYPE);
+
+                    product = productRepo.findByProductCode(new Integer(Type));
+                    message = "One license: " + strSN + "for " + product.getProductName() + " has been registered";
+                    status = 1;
+
+                    String activationKey = "";
+                    try {
+                        activationKey = gawl.activate(serialNumber.getPassKey());
+                    } catch (Gawl.UnknownCharacterException e) {
+                        LoggingError.writeError(ExceptionUtils.getStackTrace(e));
+                        map.put("error", 3);
+                        map.put("license", license);
+                    }
+
+                    if (license == null) {
+                        serialNumber.setActivationKey(activationKey);
+                        license = saveLicenseData(serialNumber, product);
+                    } else {
+                        serialNumber.setActivationKey(activationKey);
+                        license.setPassKey(serialNumber.getPassKey());
+                        license.setCreatedDate(new Date().getTime());
+                        snRepo.saveAndFlush(license);
+                    }
+
+                    setLicenseHistory(license, status, message, null);
+                } catch (Exception e) {
+                    LoggingError.writeError(ExceptionUtils.getStackTrace(e));
+                    map.put("error", 2);
+                    map.put("license", license);
+                }
+
+        } else {
+            map.put("error", 2);
+            map.put("license", license);
+        }
+
+        return map;
     }
 
     private Pageable gotoPage(int page) {
