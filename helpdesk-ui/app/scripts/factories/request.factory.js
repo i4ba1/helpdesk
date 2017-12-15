@@ -257,7 +257,7 @@
         }
 
         function register(license) {
-            return $http.post(baseURL + "/snManagement/register/", license);
+            return $http.post(baseURL + "/snManagement/registerInHelpdesk/", license);
         }
     }
 

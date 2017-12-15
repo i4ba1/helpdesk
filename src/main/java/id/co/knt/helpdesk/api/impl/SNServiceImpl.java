@@ -199,6 +199,8 @@ public class SNServiceImpl implements SNService {
                     }
 
                     setLicenseHistory(license, status, message, null);
+                    map.put("error", 1);
+                    map.put("license", license);
                 } catch (Exception e) {
                     LoggingError.writeError(ExceptionUtils.getStackTrace(e));
                     map.put("error", 2);
