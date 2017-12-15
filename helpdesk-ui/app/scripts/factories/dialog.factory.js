@@ -45,9 +45,10 @@
             modalInstance = uibModal.open({
                 animation: true,
                 templateUrl: 'views/message-dialog.html',
-                controller: ['$uibModalInstance', 'params', messageDialogController],
+                controller: ['$uibModalInstance', 'params', '$sce', messageDialogController],
                 controllerAs: '$ctrl',
                 size: size,
+                backdrop: 'static',
                 resolve: {
                     params: function() {
                         return {
@@ -135,10 +136,11 @@
 
         }
 
-        function messageDialogController($uibModalInstance, params) {
+        function messageDialogController($uibModalInstance, params, $sce) {
             var ctrl = this;
             ctrl.title = params.title;
             ctrl.messages = params.messsages;
+            ctrl.trustAsHtml = $sce.trustAsHtml;
 
             ctrl.ok = function() {
                 $uibModalInstance.close("close");

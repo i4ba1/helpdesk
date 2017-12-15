@@ -5,7 +5,7 @@
     <div class="error-message">
         <ul>
             <li ng-repeat="message in $ctrl.messages track by $index">
-                {{message|translate}}
+                <span ng-bind-html="$ctrl.trustAsHtml(message)|translate"></span>
             </li>
         </ul>
     </div>

@@ -888,7 +888,7 @@ function SubProduct() {
         }
 
         function register(license) {
-            return $http.post(baseURL + "/snManagement/register/", license);
+            return $http.post(baseURL + "/snManagement/registerInHelpdesk/", license);
         }
     }
 
@@ -940,9 +940,10 @@ function SubProduct() {
             modalInstance = uibModal.open({
                 animation: true,
                 templateUrl: 'views/message-dialog.html',
-                controller: ['$uibModalInstance', 'params', messageDialogController],
+                controller: ['$uibModalInstance', 'params', '$sce', messageDialogController],
                 controllerAs: '$ctrl',
                 size: size,
+                backdrop: 'static',
                 resolve: {
                     params: function() {
                         return {
@@ -1030,10 +1031,11 @@ function SubProduct() {
 
         }
 
-        function messageDialogController($uibModalInstance, params) {
+        function messageDialogController($uibModalInstance, params, $sce) {
             var ctrl = this;
             ctrl.title = params.title;
             ctrl.messages = params.messsages;
+            ctrl.trustAsHtml = $sce.trustAsHtml;
 
             ctrl.ok = function() {
                 $uibModalInstance.close("close");
@@ -2229,14 +2231,22 @@ function SubProduct() {
         function registration(license) {
             RequestFactory.register(license).then(
                 function(success) {
-                    DialogFactory.messageDialog("REGISTRATION", ["REGISTRATION_SUCCESS"], "sm").then(
+                    var message = "Berikut Aktivation Key : <b style='color:red;font-size:16px'>" + success.data.activationKey + "</b>";
+                    DialogFactory.messageDialog("REGISTRATION", ["REGISTRATION_SUCCESS", message], "sm").then(
                         function(s) {
                             $state.go("administrator.license");
                         }
                     );
                 },
                 function(failed) {
-                    DialogFactory.messageDialog("REGISTRATION", ["REGISTRATION_FAILED"], "sm");
+                    switch (failed.status) {
+                        case 403:
+                            DialogFactory.messageDialog("REGISTRATION", ["Maaf Serial Number tidak valid !"], "sm");
+                            break;
+                        default:
+                            DialogFactory.messageDialog("REGISTRATION", ["Maaf Passkey tidak valid!"], "sm");
+                            break;
+                    }
                 }
             );
 

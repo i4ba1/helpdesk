@@ -13,14 +13,22 @@
         function registration(license) {
             RequestFactory.register(license).then(
                 function(success) {
-                    DialogFactory.messageDialog("REGISTRATION", ["REGISTRATION_SUCCESS"], "sm").then(
+                    var message = "Berikut Aktivation Key : <b style='color:red;font-size:16px'>" + success.data.activationKey + "</b>";
+                    DialogFactory.messageDialog("REGISTRATION", ["REGISTRATION_SUCCESS", message], "sm").then(
                         function(s) {
                             $state.go("administrator.license");
                         }
                     );
                 },
                 function(failed) {
-                    DialogFactory.messageDialog("REGISTRATION", ["REGISTRATION_FAILED"], "sm");
+                    switch (failed.status) {
+                        case 403:
+                            DialogFactory.messageDialog("REGISTRATION", ["Maaf Serial Number tidak valid !"], "sm");
+                            break;
+                        default:
+                            DialogFactory.messageDialog("REGISTRATION", ["Maaf Passkey tidak valid!"], "sm");
+                            break;
+                    }
                 }
             );
 
