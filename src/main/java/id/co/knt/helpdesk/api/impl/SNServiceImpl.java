@@ -149,6 +149,11 @@ public class SNServiceImpl implements SNService {
 		return 0;
 	}
 
+	/**
+	 * 
+	 * @param serialNumber
+	 * @return
+	 */
 	@Override
 	public Map<String, Object> registerInHelpdesk(License serialNumber) {
 		Product product = null;
