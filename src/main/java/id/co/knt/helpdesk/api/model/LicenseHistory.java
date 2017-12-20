@@ -52,7 +52,7 @@ public class LicenseHistory implements Serializable {
 	private byte[] fileData;
 
 	/**
-	 * 0 is generated 1 is registered 2 is activated 3 is warning/problem 4 is
+	 * 0 is generated, 1 is registered, 2 is activated, 3 is warning/problem, 4 is
 	 * disabled
 	 */
 	@Column(name = "license_status", columnDefinition = "smallint")

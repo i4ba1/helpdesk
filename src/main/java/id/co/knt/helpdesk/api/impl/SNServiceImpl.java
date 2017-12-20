@@ -150,14 +150,15 @@ public class SNServiceImpl implements SNService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param serialNumber
 	 * @return
 	 */
 	@Override
 	public Map<String, Object> registerInHelpdesk(License serialNumber) {
 		Product product = null;
-		License license = snRepo.findByLicense(serialNumber.getLicense());
+		String strSN = serialNumber.getLicense().toLowerCase();
+		License license = snRepo.findByLicense(strSN);
 		Map<String, Object> map = new HashMap<>();
 		Short licenseStatus = 0;
 
@@ -167,7 +168,6 @@ public class SNServiceImpl implements SNService {
 			}
 		}
 
-		String strSN = serialNumber.getLicense().toLowerCase();
 		if (gawl.validate(strSN) && licenseStatus < 4) {
 			if (licenseStatus < 4) {
 				Map<String, Byte> extractResult;
@@ -186,6 +186,7 @@ public class SNServiceImpl implements SNService {
 
 				message = "One license: " + strSN + "for " + product.getProductName() + " has been registered";
 				status = 1;
+				setLicenseHistory(license, status, message, null);
 
 				String activationKey = "";
 				try {
@@ -214,6 +215,8 @@ public class SNServiceImpl implements SNService {
 					map.put("license", license);
 				}
 
+				message = "One license: " + strSN + "for " + product.getProductName() + " has been activated";
+				status = 2;
 				setLicenseHistory(license, status, message, null);
 			}
 
