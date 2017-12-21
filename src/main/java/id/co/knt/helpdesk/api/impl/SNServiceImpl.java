@@ -200,15 +200,13 @@ public class SNServiceImpl implements SNService {
 					return map;
 				}
 
-				int increaseActivation = (int)serialNumber.getNumberOfActivation() + 1;
-				short totalActivation = (short)increaseActivation;
 				if (license == null) {
 					serialNumber.setActivationKey(activationKey);
-					serialNumber.setNumberOfActivation(totalActivation);
+					serialNumber.setNumberOfActivation((short)(serialNumber.getNumberOfActivation() + 1));
 					license = saveLicenseData(serialNumber, product);
 					map.put("license", license);
 				} else {
-					license.setNumberOfActivation(totalActivation);
+					license.setNumberOfActivation((short)(license.getNumberOfActivation() + 1));
 					license.setActivationKey(activationKey);
 					license.setPassKey(serialNumber.getPassKey());
 					license.setSchoolName(serialNumber.getSchoolName());
