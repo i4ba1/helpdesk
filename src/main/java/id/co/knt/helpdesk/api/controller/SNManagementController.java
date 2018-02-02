@@ -22,323 +22,329 @@ import id.co.knt.helpdesk.api.service.SNService;
 @RequestMapping(value = "/snManagement")
 public class SNManagementController {
 
-	@Autowired
-	private SNService snService;
+    @Autowired
+    private SNService snService;
 
-	@Autowired
-	private SNRepo snRepo;
+    @Autowired
+    private SNRepo snRepo;
 
-	/**
-	 * To handle register license
-	 * @param license
-	 * @return ResponseEntity<Integer>
-	 */
-	@RequestMapping(value = "/register/", method = RequestMethod.POST)
-	public ResponseEntity<Integer> register(@RequestBody License license) {
-		int error = snService.registerSN(license);
-		if (error == 1) {
-			return new ResponseEntity<>(error, HttpStatus.ACCEPTED);
-		} else if (error == 2) {
-			return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
-		}
+    /**
+     * To handle register license
+     *
+     * @param license
+     * @return ResponseEntity<Integer>
+     */
+    @RequestMapping(value = "/register/", method = RequestMethod.POST)
+    public ResponseEntity<Integer> register(@RequestBody License license) {
+        int error = snService.registerSN(license);
+        if (error == 1) {
+            return new ResponseEntity<>(error, HttpStatus.ACCEPTED);
+        } else if (error == 2) {
+            return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+        }
 
-		return new ResponseEntity<>(error, HttpStatus.OK);
-	}
+        return new ResponseEntity<>(error, HttpStatus.OK);
+    }
 
-	@RequestMapping(value = "/registerInHelpdesk/", method = RequestMethod.POST)
-	public ResponseEntity<License> registerInHelpdesk(@RequestBody License license) {
-		Map<String, Object> map = snService.registerInHelpdesk(license);
+    @RequestMapping(value = "/registerInHelpdesk/", method = RequestMethod.POST)
+    public ResponseEntity<License> registerInHelpdesk(@RequestBody License license) {
+        Map<String, Object> map = snService.registerInHelpdesk(license);
 
-		/**
-		 * If the serial number invalid or any error when extracting SN
-		 */
-		if ((int)map.get("error") == 2) {
-			return new ResponseEntity<>((License)map.get("license"), HttpStatus.FORBIDDEN);
-		} else if ((int)map.get("error") == 3) {// If passKey is not valid to generate activationKey
-			return new ResponseEntity<>((License)map.get("license"), HttpStatus.NOT_ACCEPTABLE);
-		}
+        /**
+         * If the serial number invalid or any error when extracting SN
+         */
+        if ((int) map.get("error") == 2) {
+            return new ResponseEntity<>((License) map.get("license"), HttpStatus.FORBIDDEN);
+        } else if ((int) map.get("error") == 3) {// If passKey is not valid to generate activationKey
+            return new ResponseEntity<>((License) map.get("license"), HttpStatus.NOT_ACCEPTABLE);
+        }
 
-		return new ResponseEntity<>((License)map.get("license"), HttpStatus.OK);
-	}
+        return new ResponseEntity<>((License) map.get("license"), HttpStatus.OK);
+    }
 
-	/**
-	 * To generate activation key based on passkey
-	 * @param id
-	 * @param passKey
-	 * @return ResponseEntity<License>
-	 */
-	@RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
-	public ResponseEntity<License> requestActivationKey(@PathVariable Long id, @PathVariable String passKey) {
-		License serialNumber = snService.generateActivationKey(id, passKey);
-		if (serialNumber.equals(null)) {
-			return new ResponseEntity<>(serialNumber, HttpStatus.NOT_FOUND);
-		}
+    /**
+     * To generate activation key based on passkey
+     *
+     * @param id
+     * @param passKey
+     * @return ResponseEntity<License>
+     */
+    @RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
+    public ResponseEntity<License> requestActivationKey(@PathVariable Long id, @PathVariable String passKey) {
+        License serialNumber = snService.generateActivationKey(id, passKey);
+        if (serialNumber.equals(null)) {
+            return new ResponseEntity<>(serialNumber, HttpStatus.NOT_FOUND);
+        }
 
-		return new ResponseEntity<>(serialNumber, HttpStatus.OK);
-	}
+        return new ResponseEntity<>(serialNumber, HttpStatus.OK);
+    }
 
-	/**
-	 * This method to handle activation by Phone
-	 * @param licenseId
-	 * @param passkey
-	 * @param reason
-	 * @return ResponseEntity<License>
-	 */
-	@RequestMapping(value = "/activate/", method = RequestMethod.POST)
-	public ResponseEntity<License> activateByPhone(@RequestParam("licenseId") Long licenseId,
-			@RequestParam("passkey") String passkey, @RequestParam("reason") String reason) {
-		
-		License result = snService.findSN(licenseId);
+    /**
+     * This method to handle activation by Phone
+     *
+     * @param licenseId
+     * @param passkey
+     * @param reason
+     * @return ResponseEntity<License>
+     */
+    @RequestMapping(value = "/activate/", method = RequestMethod.POST)
+    public ResponseEntity<License> activateByPhone(@RequestParam("licenseId") Long licenseId,
+                                                   @RequestParam("passkey") String passkey, @RequestParam("reason") String reason) {
 
-		/*
-		 * if passkey client is not same on the Helpdesk
-		 */
-		if (!passkey.equals(result.getPassKey())) {
-			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
-		}
+        License result = snService.findSN(licenseId);
 
-		try {
-			if (result.getNumberOfActivation() < result.getActivationLimit()) {
-				if (result.getActivationKey() == null || result.getActivationKey().length() <= 0) {
-					result = snService.manuallyActivate(licenseId, passkey, reason);
-				} else {
-					result = snService.manuallyActivate(licenseId, passkey, reason);
-				}
-			} else {
-				return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
-			}
+        /*
+         * if passkey client is not same on the Helpdesk
+         */
+        if (!passkey.equals(result.getPassKey())) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        try {
+            if (result.getNumberOfActivation() < result.getActivationLimit()) {
+                if (result.getActivationKey() == null || result.getActivationKey().length() <= 0) {
+                    result = snService.manuallyActivate(licenseId, passkey, reason);
+                } else {
+                    result = snService.manuallyActivate(licenseId, passkey, reason);
+                }
+            } else {
+                return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
+            }
 
-		if (result == null) {
-			return new ResponseEntity<>(result, HttpStatus.EXPECTATION_FAILED);
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
+        if (result == null) {
+            return new ResponseEntity<>(result, HttpStatus.EXPECTATION_FAILED);
+        }
 
-	/**
-	 * This method to handle activation by internet
-	 * @param serialNumber
-	 * @return ResponseEntity<License>
-	 */
-	@RequestMapping(value = "/activateByInternet/", method = RequestMethod.POST)
-	public ResponseEntity<License> activateByInternet(@RequestBody License serialNumber) {
-		License currentLicense = snService.findBySerial(serialNumber.getLicense());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
-		if (currentLicense == null || currentLicense.getPassKey().isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-		}
+    /**
+     * This method to handle activation by internet
+     *
+     * @param serialNumber
+     * @return ResponseEntity<License>
+     */
+    @RequestMapping(value = "/activateByInternet/", method = RequestMethod.POST)
+    public ResponseEntity<License> activateByInternet(@RequestBody License serialNumber) {
+        License currentLicense = snService.findBySerial(serialNumber.getLicense());
 
-		try {
-			if (currentLicense.getActivationKey() == null || currentLicense.getActivationKey().length() <= 0) {
-				currentLicense = snService.onlineActivation(serialNumber);
-			} else {
-				if (currentLicense.getNumberOfActivation() < currentLicense.getActivationLimit()) {
-					currentLicense = snService.onlineActivation(serialNumber);
-				} else {
-					return new ResponseEntity<>(currentLicense, HttpStatus.FORBIDDEN);
-				}
-			}
+        if (currentLicense == null || currentLicense.getPassKey().isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        try {
+            if (currentLicense.getActivationKey() == null || currentLicense.getActivationKey().length() <= 0) {
+                currentLicense = snService.onlineActivation(serialNumber);
+            } else {
+                if (currentLicense.getNumberOfActivation() < currentLicense.getActivationLimit()) {
+                    currentLicense = snService.onlineActivation(serialNumber);
+                } else {
+                    return new ResponseEntity<>(currentLicense, HttpStatus.FORBIDDEN);
+                }
+            }
 
-		if (currentLicense == null) {
-			return new ResponseEntity<>(currentLicense, HttpStatus.EXPECTATION_FAILED);
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		return new ResponseEntity<>(currentLicense, HttpStatus.OK);
-	}
+        if (currentLicense == null) {
+            return new ResponseEntity<>(currentLicense, HttpStatus.EXPECTATION_FAILED);
+        }
 
-	/**
-	 * This method to fetch all serial numbers and for search with filter by license, school name, and create date
-	 * @param category
-	 * @param page
-	 * @param searchText
-	 * @param startDate
-	 * @param endDate
-	 * @return ResponseEntity<Map<String, Object>>
-	 */
-	@RequestMapping(value = { "/serialNumbers/" }, method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> findAllSN(@RequestParam String category, @RequestParam int page, @RequestParam String searchText, @RequestParam Long startDate,  @RequestParam Long endDate) {
+        return new ResponseEntity<>(currentLicense, HttpStatus.OK);
+    }
 
-		Map<String, Object> result = snService.findAllSN(category, page, searchText, startDate, endDate);
-		if (result.isEmpty()) {
-			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
-		}
+    /**
+     * This method to fetch all serial numbers and for search with filter by license, school name, and create date
+     *
+     * @param category
+     * @param page
+     * @param searchText
+     * @param startDate
+     * @param endDate
+     * @return ResponseEntity<Map   <   String   ,       Object>>
+     */
+    @RequestMapping(value = {"/serialNumbers/"}, method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> findAllSN(@RequestParam String category, @RequestParam int page, @RequestParam String searchText, @RequestParam Long startDate, @RequestParam Long endDate) {
 
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
+        Map<String, Object> result = snService.findAllSN(category, page, searchText, startDate, endDate);
+        if (result.isEmpty()) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
 
-	/**
-	 * View detail of license table
-	 * @param id
-	 * @return ResponseEntity<Map<String, Object>>
-	 */
-	@RequestMapping(value = "/viewDetailSN/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> viewDetailSN(@PathVariable Long id) {
-		Map<String, Object> objectMap = snService.viewDetailLicense(id);
-		if (objectMap == null) {
-			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-		}
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
-		return new ResponseEntity<>(objectMap, HttpStatus.OK);
-	}
+    /**
+     * View detail of license table
+     *
+     * @param id
+     * @return ResponseEntity<Map   <   String   ,       Object>>
+     */
+    @RequestMapping(value = "/viewDetailSN/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, Object>> viewDetailSN(@PathVariable Long id) {
+        Map<String, Object> objectMap = snService.viewDetailLicense(id);
+        if (objectMap == null) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
 
-	/**
-	 *
-	 * @param licenseGeneratorDTO
-	 * @return ResponseEntity<TreeMap<String, List<License>>>
-	 */
-	@RequestMapping(value = { "/snGenerator/" }, method = RequestMethod.POST)
-	public ResponseEntity<TreeMap<String, List<License>>> snGenerator(
-			@RequestBody LicenseGeneratorDTO licenseGeneratorDTO) {
+        return new ResponseEntity<>(objectMap, HttpStatus.OK);
+    }
 
-		TreeMap<String, List<License>> treeMap = snService.serialNumberGenerator(licenseGeneratorDTO);
+    /**
+     * @param licenseGeneratorDTO
+     * @return ResponseEntity<TreeMap   <   String   ,       List   <   License>>>
+     */
+    @RequestMapping(value = {"/snGenerator/"}, method = RequestMethod.POST)
+    public ResponseEntity<TreeMap<String, List<License>>> snGenerator(
+            @RequestBody LicenseGeneratorDTO licenseGeneratorDTO) {
 
-		if (treeMap.isEmpty()) {
-			return new ResponseEntity<>(treeMap, HttpStatus.BAD_REQUEST);
-		}
+        TreeMap<String, List<License>> treeMap = snService.serialNumberGenerator(licenseGeneratorDTO);
 
-		return new ResponseEntity<>(treeMap, HttpStatus.OK);
-	}
+        if (treeMap.isEmpty()) {
+            return new ResponseEntity<>(treeMap, HttpStatus.BAD_REQUEST);
+        }
 
-	/**
-	 * ResponseEntity<List<Map<String, Object>>>
-	 * @param list
-	 * @return generate license
-	 */
-	@RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
-	public ResponseEntity<List<Map<String, Object>>> registerGeneratedSN(@RequestBody List<License> list) {
-		List<List<ListLicenseDTO>> listList = new ArrayList<>();
-		Map<String, Object> objectMap = null;
-		List<Map<String, Object>> result = new ArrayList<>();
+        return new ResponseEntity<>(treeMap, HttpStatus.OK);
+    }
 
-		for (License license : list) {
-			listList.add(snService.saveGeneratedSN(license));
-		}
+    /**
+     * ResponseEntity<List<Map<String, Object>>>
+     *
+     * @param list
+     * @return generate license
+     */
+    @RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
+    public ResponseEntity<List<Map<String, Object>>> registerGeneratedSN(@RequestBody List<License> list) {
+        //List<List<ListLicenseDTO>> listList = new ArrayList<>();
+        List<ListLicenseDTO> licenseDTOS = new ArrayList<>();
+        Map<String, Object> objectMap = null;
+        List<Map<String, Object>> result = new ArrayList<>();
 
-		for (List<ListLicenseDTO> dtoList : listList) {
-			for (ListLicenseDTO data : dtoList) {
-				objectMap = snService.generateLicenseDTOResult(data);
-				result.add(objectMap);
-			}
-		}
+        for (License license : list) {
+            licenseDTOS.add(snService.saveGeneratedSN(license).get(0));
+        }
 
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
+        for (ListLicenseDTO data : licenseDTOS) {
+            objectMap = snService.generateLicenseDTOResult(data);
+            result.add(objectMap);
+        }
 
-	/**
-	 * To find unread license to show on dashboard
-	 * @return ResponseEntity<List<LicenseHistory>>
-	 */
-	@RequestMapping(value = "/findUnreadLicenses/", method = RequestMethod.GET)
-	public ResponseEntity<List<LicenseHistory>> findUnreadLicenses() {
-		List<LicenseHistory> unreadLicenses = snService.findUnreadLicense();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
-		if (unreadLicenses.isEmpty()) {
-			return new ResponseEntity<>(unreadLicenses, HttpStatus.NOT_FOUND);
-		}
+    /**
+     * To find unread license to show on dashboard
+     *
+     * @return ResponseEntity<List   <   LicenseHistory>>
+     */
+    @RequestMapping(value = "/findUnreadLicenses/", method = RequestMethod.GET)
+    public ResponseEntity<List<LicenseHistory>> findUnreadLicenses() {
+        List<LicenseHistory> unreadLicenses = snService.findUnreadLicense();
 
-		return new ResponseEntity<>(unreadLicenses, HttpStatus.OK);
+        if (unreadLicenses.isEmpty()) {
+            return new ResponseEntity<>(unreadLicenses, HttpStatus.NOT_FOUND);
+        }
 
-	}
+        return new ResponseEntity<>(unreadLicenses, HttpStatus.OK);
 
-	/**
-	 *
-	 */
-	@RequestMapping(value = "/licenseCountByProduct/", method = RequestMethod.GET)
-	public ResponseEntity<List<Map<String, Object>>> findSnCountByProduct() {
-		List<Object> list = snService.findSnCountByProduct();
-		List<Map<String, Object>> mapReturn = new ArrayList<>();
-		if (list.size() > 0) {
-			for (Object object : list) {
-				Object[] values = (Object[]) object;
-				Map<String, Object> newMap = new HashMap<>();
+    }
 
-				newMap.put("productName", values[0]);
-				newMap.put("licenseCount", values[1]);
-				mapReturn.add(newMap);
+    /**
+     *
+     */
+    @RequestMapping(value = "/licenseCountByProduct/", method = RequestMethod.GET)
+    public ResponseEntity<List<Map<String, Object>>> findSnCountByProduct() {
+        List<Object> list = snService.findSnCountByProduct();
+        List<Map<String, Object>> mapReturn = new ArrayList<>();
+        if (list.size() > 0) {
+            for (Object object : list) {
+                Object[] values = (Object[]) object;
+                Map<String, Object> newMap = new HashMap<>();
 
-			}
-			return new ResponseEntity<>(mapReturn, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(mapReturn, HttpStatus.NOT_FOUND);
-	}
+                newMap.put("productName", values[0]);
+                newMap.put("licenseCount", values[1]);
+                mapReturn.add(newMap);
 
-	@RequestMapping(value = "/viewDetailUnreadLicense/{licenseId}/{historyId}", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> viewDetailUnreadLicense(@PathVariable Long licenseId,
-			@PathVariable Long historyId) {
-		Map<String, Object> object = snService.viewDetailLicense(licenseId);
+            }
+            return new ResponseEntity<>(mapReturn, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(mapReturn, HttpStatus.NOT_FOUND);
+    }
 
-		if (object.isEmpty()) {
-			return new ResponseEntity<>(object, HttpStatus.NOT_FOUND);
-		}
+    @RequestMapping(value = "/viewDetailUnreadLicense/{licenseId}/{historyId}", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, Object>> viewDetailUnreadLicense(@PathVariable Long licenseId,
+                                                                       @PathVariable Long historyId) {
+        Map<String, Object> object = snService.viewDetailLicense(licenseId);
 
-		LicenseHistory generatorHistory = snService.findDetailHistory(historyId);
-		generatorHistory.setIsRead(true);
-		snService.updateReadStatus(generatorHistory);
+        if (object.isEmpty()) {
+            return new ResponseEntity<>(object, HttpStatus.NOT_FOUND);
+        }
 
-		return new ResponseEntity<>(object, HttpStatus.OK);
-	}
+        LicenseHistory generatorHistory = snService.findDetailHistory(historyId);
+        generatorHistory.setIsRead(true);
+        snService.updateReadStatus(generatorHistory);
 
-	@RequestMapping(value = "/updateSchool/", method = RequestMethod.POST)
-	public ResponseEntity<License> updateSchool(@RequestParam Long licenseId, @RequestParam String schoolName) {
-		License license = snRepo.findOne(licenseId);
-		if (license == null) {
-			return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
-		}
-		license.setSchoolName(schoolName);
+        return new ResponseEntity<>(object, HttpStatus.OK);
+    }
 
-		return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
-	}
+    @RequestMapping(value = "/updateSchool/", method = RequestMethod.POST)
+    public ResponseEntity<License> updateSchool(@RequestParam Long licenseId, @RequestParam String schoolName) {
+        License license = snRepo.findOne(licenseId);
+        if (license == null) {
+            return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
+        }
+        license.setSchoolName(schoolName);
 
-	@RequestMapping(value = "/overrideActivationLimit/", method = RequestMethod.POST)
-	public ResponseEntity<License> overrideActivationLimit(@RequestParam("licenseId") Long licenseId,
-			@RequestParam("message") String message, @RequestParam("file") MultipartFile file) {
-		License license = snRepo.findOne(licenseId);
-		if (license == null) {
-			return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
-		}
-		license.setActivationLimit((short) (license.getActivationLimit() + 1));
-		snService.setLicenseHistory(license, (short) 3, message, file);
+        return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
+    }
 
-		return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
+    @RequestMapping(value = "/overrideActivationLimit/", method = RequestMethod.POST)
+    public ResponseEntity<License> overrideActivationLimit(@RequestParam("licenseId") Long licenseId,
+                                                           @RequestParam("message") String message, @RequestParam("file") MultipartFile file) {
+        License license = snRepo.findOne(licenseId);
+        if (license == null) {
+            return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
+        }
+        license.setActivationLimit((short) (license.getActivationLimit() + 1));
+        snService.setLicenseHistory(license, (short) 3, message, file);
 
-	}
+        return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
 
-	@RequestMapping(value = "/blocked/", method = RequestMethod.POST)
-	public ResponseEntity<License> blocked(@RequestParam Long licenseId, @RequestParam String message) {
-		License license = snRepo.findOne(licenseId);
-		if (license == null) {
-			return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
-		}
-		license.setActivationLimit((short) (license.getActivationLimit() + 1));
-		snService.setLicenseHistory(license, (short) 4, message, null);
+    }
 
-		return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
-	}
+    @RequestMapping(value = "/blocked/", method = RequestMethod.POST)
+    public ResponseEntity<License> blocked(@RequestParam Long licenseId, @RequestParam String message) {
+        License license = snRepo.findOne(licenseId);
+        if (license == null) {
+            return new ResponseEntity<>(license, HttpStatus.NOT_FOUND);
+        }
+        license.setActivationLimit((short) (license.getActivationLimit() + 1));
+        snService.setLicenseHistory(license, (short) 4, message, null);
 
-	@RequestMapping(value = "/validateActivationKey", method = RequestMethod.POST)
-	public ResponseEntity<Integer> checkActivationCode(@RequestBody License license) {
-		License currentLicense = snRepo.findByLicense(license.getLicense());
+        return new ResponseEntity<>(snRepo.saveAndFlush(license), HttpStatus.OK);
+    }
 
-		if (currentLicense == null) {
-			return new ResponseEntity<Integer>(-1, HttpStatus.NOT_FOUND);
-		}
+    @RequestMapping(value = "/validateActivationKey", method = RequestMethod.POST)
+    public ResponseEntity<Integer> checkActivationCode(@RequestBody License license) {
+        License currentLicense = snRepo.findByLicense(license.getLicense());
 
-		try {
-			if (!currentLicense.getActivationKey().equals(license.getActivationKey())) {
-				return new ResponseEntity<>(-1, HttpStatus.NOT_ACCEPTABLE);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        if (currentLicense == null) {
+            return new ResponseEntity<Integer>(-1, HttpStatus.NOT_FOUND);
+        }
 
-		return new ResponseEntity<>(0, HttpStatus.OK);
-	}
+        try {
+            if (!currentLicense.getActivationKey().equals(license.getActivationKey())) {
+                return new ResponseEntity<>(-1, HttpStatus.NOT_ACCEPTABLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(0, HttpStatus.OK);
+    }
 }

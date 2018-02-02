@@ -8,6 +8,7 @@ public class ListLicenseDTO {
     private Integer numberOfClient;
     private String schoolName;
     private Long createdDate;
+    private Short licenseStatus;
 
     public Long getId() {
         return id;
@@ -55,5 +56,13 @@ public class ListLicenseDTO {
 
     public void setCreatedDate(Long createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Short getLicenseStatus() {
+        return licenseStatus;
+    }
+
+    public void setLicenseStatus(Short licenseStatus) {
+        this.licenseStatus = licenseStatus;
     }
 }

@@ -82,7 +82,7 @@ public class SNServiceImpl implements SNService {
 				}
 
 				licenses.add(sn);
-				dtoList = generateListLicenseDTO(licenses);
+				dtoList = generateListLicenseDTO(licenses, status);
 			} catch (Exception e) {
 				LoggingError.writeError(ExceptionUtils.getStackTrace(e));
 			}
@@ -244,28 +244,28 @@ public class SNServiceImpl implements SNService {
 		case SN:
 			totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("%" + searchText + "%", "");
 			dtoList = generateListLicenseDTO(
-					snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "%" + searchText + "%", ""));
+					snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "%" + searchText + "%", ""), null);
 			break;
 		case SCHOOL:
 			totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("", "%" + searchText + "%");
 			dtoList = generateListLicenseDTO(
-					snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "", "%" + searchText + "%"));
+					snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "", "%" + searchText + "%"), null);
 			break;
 		case DATE:
 			totalRow = snRepo.countByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(startDate, endDate);
 			dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(
-					gotoPage(page), startDate, endDate));
+					gotoPage(page), startDate, endDate), null);
 			break;
 		default:
 			totalRow = snRepo.countLicense();
-			dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)));
+			dtoList = generateListLicenseDTO(snRepo.fetchLicenses(gotoPage(page)), null);
 			break;
 		}
 
 		return licenseDTOResult(dtoList, page, totalRow);
 	}
 
-	private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses) {
+	private List<ListLicenseDTO> generateListLicenseDTO(List<License> licenses, Short licenseStatus) {
 		List<ListLicenseDTO> dtoList = new ArrayList<>();
 
 		if (licenses.size() > 0 && licenses.size() <= 1) {
@@ -277,6 +277,7 @@ public class SNServiceImpl implements SNService {
 			listLicenseDTO.setCreatedDate(sn.getCreatedDate());
 			listLicenseDTO.setNumberOfClient(sn.getNumberOfClient());
 			listLicenseDTO.setSchoolName(sn.getSchoolName());
+			listLicenseDTO.setLicenseStatus(licenseStatus);
 			dtoList.add(listLicenseDTO);
 		} else if (licenses.size() > 1) {
 			licenses.forEach(license -> {
@@ -287,6 +288,7 @@ public class SNServiceImpl implements SNService {
 				listLicenseDTO.setCreatedDate(license.getCreatedDate());
 				listLicenseDTO.setNumberOfClient(license.getNumberOfClient());
 				listLicenseDTO.setSchoolName(license.getSchoolName());
+				listLicenseDTO.setLicenseStatus(licenseStatus);
 				dtoList.add(listLicenseDTO);
 			});
 		}
@@ -344,7 +346,8 @@ public class SNServiceImpl implements SNService {
 		Map<String, Object> objectMap = null;
 		objectMap = new TreeMap<>();
 		objectMap.put("serialNumber", data);
-		objectMap.put("status", (int) fetchLicenseHistory(data.getId()).getLicenseStatus());
+		objectMap.put("status", (int)data.getLicenseStatus());
+		//objectMap.put("status", (int) fetchLicenseHistory(data.getId()).getLicenseStatus());
 
 		return objectMap;
 	}
