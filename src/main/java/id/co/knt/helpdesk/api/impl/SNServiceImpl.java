@@ -130,7 +130,6 @@ public class SNServiceImpl implements SNService {
 					if (license == null) {
 						license = saveLicenseData(serialNumber, product);
 					} else {
-						license.setPassKey(serialNumber.getPassKey());
 						license.setCreatedDate(new Date().getTime());
 						snRepo.saveAndFlush(license);
 					}
