@@ -126,11 +126,18 @@ public class SNServiceImpl implements SNService {
 					product = productRepo.findByProductCode(new Integer(Type));
 					message = "One license: " + strSN + "for " + product.getProductName() + " has been registered";
 					status = 1;
+					String passkey = gawl.pass(extractResult.get(Gawl.SEED1), extractResult.get(Gawl.SEED2));
 
 					if (license == null) {
 						license = saveLicenseData(serialNumber, product);
 					} else {
-						license.setCreatedDate(new Date().getTime());
+						if(license.getPassKey() == null){
+							license.setPassKey(serialNumber.getPassKey());
+							license.setCreatedDate(new Date().getTime());
+						}else if(serialNumber.getPassKey().compareTo(license.getPassKey()) == 0){
+							license.setCreatedDate(new Date().getTime());
+						}
+
 						snRepo.saveAndFlush(license);
 					}
 
