@@ -1,11 +1,18 @@
 package id.co.knt.helpdesk.api.impl;
 
-import java.util.*;
-
+import id.co.knt.helpdesk.api.model.License;
+import id.co.knt.helpdesk.api.model.LicenseHistory;
+import id.co.knt.helpdesk.api.model.Product;
 import id.co.knt.helpdesk.api.model.SubProduct;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
+import id.co.knt.helpdesk.api.repositories.LicenseHistoryRepo;
+import id.co.knt.helpdesk.api.repositories.ProductRepo;
+import id.co.knt.helpdesk.api.repositories.SNRepo;
+import id.co.knt.helpdesk.api.service.SNService;
 import id.co.knt.helpdesk.api.utilities.LoggingError;
+import id.web.pos.integra.gawl.Gawl;
+import id.web.pos.integra.gawl.Gawl.UnknownCharacterException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import id.co.knt.helpdesk.api.model.License;
-import id.co.knt.helpdesk.api.model.Product;
-import id.co.knt.helpdesk.api.repositories.ProductRepo;
-import id.co.knt.helpdesk.api.model.LicenseHistory;
-import id.co.knt.helpdesk.api.repositories.LicenseHistoryRepo;
-import id.co.knt.helpdesk.api.repositories.SNRepo;
-import id.co.knt.helpdesk.api.service.SNService;
-import id.web.pos.integra.gawl.Gawl;
-import id.web.pos.integra.gawl.Gawl.UnknownCharacterException;
+import java.util.*;
 
 @Service("snServiceImpl")
 public class SNServiceImpl implements SNService {

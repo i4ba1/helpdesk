@@ -3,8 +3,11 @@
  */
 package id.co.knt.helpdesk.api.controller;
 
-import java.util.List;
-
+import id.co.knt.helpdesk.api.model.Product;
+import id.co.knt.helpdesk.api.model.SubProduct;
+import id.co.knt.helpdesk.api.model.dto.ProductDTO;
+import id.co.knt.helpdesk.api.repositories.ProductRepo;
+import id.co.knt.helpdesk.api.repositories.SubProductRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import id.co.knt.helpdesk.api.model.Product;
-import id.co.knt.helpdesk.api.model.SubProduct;
-import id.co.knt.helpdesk.api.model.dto.ProductDTO;
-import id.co.knt.helpdesk.api.repositories.ProductRepo;
-import id.co.knt.helpdesk.api.repositories.SubProductRepo;
+import java.util.List;
 
 /**
  * @author MNI

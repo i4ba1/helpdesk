@@ -3,10 +3,10 @@
  */
 package id.co.knt.helpdesk.api.model.dto;
 
-import java.util.List;
-
 import id.co.knt.helpdesk.api.model.Product;
 import id.co.knt.helpdesk.api.model.SubProduct;
+
+import java.util.List;
 
 /**
  * @author marlina_kreative

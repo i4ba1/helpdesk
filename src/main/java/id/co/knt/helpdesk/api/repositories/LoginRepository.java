@@ -1,12 +1,11 @@
 package id.co.knt.helpdesk.api.repositories;
 
+import id.co.knt.helpdesk.api.model.Login;
+import id.co.knt.helpdesk.api.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import id.co.knt.helpdesk.api.model.Login;
-import id.co.knt.helpdesk.api.model.User;
 
 @Repository
 public interface LoginRepository extends JpaRepository<Login, Long> {

@@ -1,11 +1,10 @@
 package id.co.knt.helpdesk.api.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import id.co.knt.helpdesk.api.model.User;
 import id.co.knt.helpdesk.api.repositories.UserRepo;
 import id.co.knt.helpdesk.api.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserService {

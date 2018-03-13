@@ -3,13 +3,12 @@
  */
 package id.co.knt.helpdesk.api.repositories;
 
-import java.util.List;
-
+import id.co.knt.helpdesk.api.model.SubProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import id.co.knt.helpdesk.api.model.SubProduct;
+import java.util.List;
 
 /**
  * @author marlin_kreative

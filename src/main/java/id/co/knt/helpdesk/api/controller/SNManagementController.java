@@ -1,19 +1,18 @@
 package id.co.knt.helpdesk.api.controller;
 
-import java.util.*;
-
+import id.co.knt.helpdesk.api.model.License;
+import id.co.knt.helpdesk.api.model.LicenseHistory;
 import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
+import id.co.knt.helpdesk.api.service.SNService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import id.co.knt.helpdesk.api.model.License;
-import id.co.knt.helpdesk.api.model.LicenseHistory;
-import id.co.knt.helpdesk.api.service.SNService;
+import java.util.*;
 
 /**
  * @author kntdev

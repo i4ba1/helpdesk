@@ -1,9 +1,9 @@
 package id.co.knt.helpdesk.api.controller;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.Date;
-
+import id.co.knt.helpdesk.api.model.Login;
+import id.co.knt.helpdesk.api.model.User;
+import id.co.knt.helpdesk.api.service.LoginService;
+import id.co.knt.helpdesk.api.service.UserService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import id.co.knt.helpdesk.api.model.Login;
-import id.co.knt.helpdesk.api.model.User;
-import id.co.knt.helpdesk.api.service.LoginService;
-import id.co.knt.helpdesk.api.service.UserService;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.Date;
 
 /**
  * @author Muhamad Nizar Iqbal

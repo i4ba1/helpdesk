@@ -1,12 +1,11 @@
 package id.co.knt.helpdesk.api.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import id.co.knt.helpdesk.api.model.Login;
 import id.co.knt.helpdesk.api.model.User;
 import id.co.knt.helpdesk.api.repositories.LoginRepository;
 import id.co.knt.helpdesk.api.service.LoginService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service("loginService")
 public class LoginServiceImpl implements LoginService {
