@@ -56,19 +56,18 @@ public class LoginController {
          * First check if the username and password are valid
          */
         User user = userService.validateUser(userName, password);
-        Boolean isValid = user == null ? false : true;
-        Login login = null;
+        Boolean isValid = user != null;
 
         if (isValid) {
-            login = loginService.findByUser(user);
+            Login login = loginService.findByUser(user);
    
             if (login == null) {
                 return firstLogin(dt, rand, dateTime, user);
             } else {
-                return new ResponseEntity<Login>(login, HttpStatus.OK);
+                return new ResponseEntity<>(login, HttpStatus.EXPECTATION_FAILED);
             }
         }else{
-        	return new ResponseEntity<Login>(login, HttpStatus.NOT_FOUND);
+        	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
     
