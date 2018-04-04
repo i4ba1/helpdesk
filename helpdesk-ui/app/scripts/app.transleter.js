@@ -82,6 +82,7 @@
             SCHOOL_ADD: "Tambah Sekolah",
             LOGIN_ERROR_TITLE: "Login Gagal",
             LOGIN_ERROR_MESSAGE: "Maaf Nama Pengguna atau Kata Sandi Salah!",
+            LOGIN_UNEXPECTED_MESSAGE: "Maaf pengguna dengan akun ini sedang aktif!",
             SCHOOL_ADDRESS: "Alamat Sekolah",
             SCHOOL_NAME: "Nama Sekolah",
             SCHOOL_ADDRESS_PLH: "Masukan alamat sekolah",

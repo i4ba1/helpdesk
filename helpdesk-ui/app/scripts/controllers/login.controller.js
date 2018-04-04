@@ -33,7 +33,11 @@
                     },
                     function(responseError) {
                         console.error("Error : " + responseError);
-                        DialogFactory.messageDialog("LOGIN_ERROR_TITLE", ["LOGIN_ERROR_MESSAGE"], "md");
+                        if (responseError.status === 404) {
+                            DialogFactory.messageDialog("LOGIN_ERROR_TITLE", ["LOGIN_ERROR_MESSAGE"], "md");
+                        } else {
+                            DialogFactory.messageDialog("LOGIN_ERROR_TITLE", ["LOGIN_UNEXPECTED_MESSAGE"], "md");
+                        }
                     }
                 );
             }
