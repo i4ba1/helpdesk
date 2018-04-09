@@ -108,7 +108,7 @@ public class ProductController {
 		currentProduct.setSubModuleLable(productDTO.getProduct().getSubModuleLable());
 		
 
-		if (!productRepo.saveAndFlush(currentProduct).equals(null)) {
+		if (productRepo.saveAndFlush(currentProduct) != null) {
 			
 			for (SubProduct subProduct : productDTO.getSubProducts()) {
 				subProduct.setProduct(currentProduct);

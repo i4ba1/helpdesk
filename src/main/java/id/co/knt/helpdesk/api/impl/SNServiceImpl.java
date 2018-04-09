@@ -54,8 +54,6 @@ public class SNServiceImpl implements SNService {
 		SN, DATE, SCHOOL
 	}
 
-	public static String findAllSerialNumber = "select l from License l inner join fetch l.product p";
-
 	@Override
 	public List<ListLicenseDTO> saveGeneratedSN(License serialNumber) {
 		License snNumber = null;
@@ -247,18 +245,18 @@ public class SNServiceImpl implements SNService {
 
 		switch (filter) {
 		case SN:
-			totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("%" + searchText + "%", "");
+			totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCaseOrderByIdDesc("%" + searchText + "%", "");
 			dtoList = generateListLicenseDTO(
-					snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "%" + searchText + "%", ""), null);
+					snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCaseOrderByIdDesc(gotoPage(page), "%" + searchText + "%", ""), null);
 			break;
 		case SCHOOL:
-			totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCase("", "%" + searchText + "%");
+			totalRow = snRepo.countByLicenseLikeOrSchoolNameLikeAllIgnoreCaseOrderByIdDesc("", "%" + searchText + "%");
 			dtoList = generateListLicenseDTO(
-					snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(gotoPage(page), "", "%" + searchText + "%"), null);
+					snRepo.findByLicenseLikeOrSchoolNameLikeAllIgnoreCaseOrderByIdDesc(gotoPage(page), "", "%" + searchText + "%"), null);
 			break;
 		case DATE:
-			totalRow = snRepo.countByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(startDate, endDate);
-			dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(
+			totalRow = snRepo.countByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqualOrderByIdDesc(startDate, endDate);
+			dtoList = generateListLicenseDTO(snRepo.findLicenseByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqualOrderByIdDesc(
 					gotoPage(page), startDate, endDate), null);
 			break;
 		default:
