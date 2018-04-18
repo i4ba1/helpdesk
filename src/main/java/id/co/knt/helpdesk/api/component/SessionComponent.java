@@ -16,7 +16,7 @@ public class SessionComponent {
         this.loginRepository = loginRepository;
     }
 
-    @Scheduled(fixedRate = 900000)
+    @Scheduled(fixedRate = 1800000)
     public void kickOutActiveUser(){
         Iterable<Login> logins = loginRepository.findAll();
         if (logins != null) {
