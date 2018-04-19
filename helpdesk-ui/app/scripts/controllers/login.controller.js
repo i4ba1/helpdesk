@@ -27,7 +27,7 @@
                     function(response) {
                         var data = response.data;
                         $cookies.putObject("loggingIn", data, {
-                            expires: (new $window.Date(now.getFullYear(), now.getMonth(), now.getDate() + 2))
+                            expires: (new $window.Date(now.getTime() + (30 * 60 * 1000)))
                         });
                         $state.go('administrator.dashboard');
                     },

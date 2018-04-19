@@ -6,6 +6,7 @@
     userManagementController.$inject = ['$scope', '$state', '$stateParams', 'RequestFactory'];
 
     function userManagementController($scope, $state, $stateParams, RequestFactory) {
+        RequestFactory.isAlreadyAuthenticated();
         $scope.users = [];
         $scope.rowCollection = [];
 

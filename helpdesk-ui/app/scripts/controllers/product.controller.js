@@ -12,7 +12,7 @@
     productManagementController.$inject = ["$scope", "$state", "$stateParams", "RequestFactory", "DialogFactory"];
 
     function productManagementController($scope, $state, $stateParams, RequestFactory, DialogFactory) {
-
+        RequestFactory.isAlreadyAuthenticated();
         $scope.products = [];
         $scope.rowCollections = [];
         $scope.productId = null;
