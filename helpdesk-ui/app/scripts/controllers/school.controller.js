@@ -6,7 +6,7 @@
     schoolManagementController.$inject = ['$scope', '$state', '$stateParams', 'RequestFactory', 'DialogFactory'];
 
     function schoolManagementController($scope, $state, $stateParams, RequestFactory, DialogFactory) {
-        RequestFactory.isAlreadyAuthenticated();
+
         $scope.schools = [];
         $scope.rowCollection = [];
         $scope.schoolId = $stateParams.schoolId;

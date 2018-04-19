@@ -9,7 +9,6 @@
     ProjectSerialNumberController.$inject = ['$scope', 'RequestFactory', '$state', "$stateParams", 'DialogFactory', 'FileSaver', 'Blob', '$rootScope'];
 
     function ProjectSerialNumberController($scope, RequestFactory, $state, $stateParams, DialogFactory, FileSaver, Blob, $rootScope) {
-        RequestFactory.isAlreadyAuthenticated();
 
         $scope.rowCollection = [];
         $scope.displayCollection = [];

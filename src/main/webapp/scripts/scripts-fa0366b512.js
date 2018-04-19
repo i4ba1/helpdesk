@@ -693,13 +693,17 @@ function SubProduct() {
         }
 
         function getSerialNumber(searchModel) {
-            formData = new FormData();
-            formData.append("category", searchModel.category.toUpperCase());
-            formData.append("searchText", searchModel.searchText);
-            formData.append("page", searchModel.page - 1);
-            formData.append("startDate", searchModel.startDate);
-            formData.append("endDate", searchModel.endDate);
-            return $http.post(baseURL + '/snManagement/serialNumbers/', formData, httpHeader);
+            if (isAlreadyAuthenticated()) {
+                formData = new FormData();
+                formData.append("category", searchModel.category.toUpperCase());
+                formData.append("searchText", searchModel.searchText);
+                formData.append("page", searchModel.page - 1);
+                formData.append("startDate", searchModel.startDate);
+                formData.append("endDate", searchModel.endDate);
+                return $http.post(baseURL + '/snManagement/serialNumbers/', formData, httpHeader);
+            }
+            return null;
+
         }
 
         /**
@@ -722,22 +726,27 @@ function SubProduct() {
 
         function isAlreadyAuthenticated() {
             var user = $cookies.getObject("loggingIn");
-            if (user) {
-                return true;
-            } else {
+            var currentMillis = new Date().getTime();
+            if (currentMillis > user.expiredTime) {
+                $cookies.remove("loggingIn");
                 $state.go("login");
                 return false;
             }
+
+            return true;
         }
 
         function activate(licenseId, passkey, reason) {
-            var fd = new FormData();
+            if (isAlreadyAuthenticated()) {
+                var fd = new FormData();
+                fd.append("licenseId", licenseId);
+                fd.append("passkey", passkey);
+                fd.append("reason", reason);
 
-            fd.append("licenseId", licenseId);
-            fd.append("passkey", passkey);
-            fd.append("reason", reason);
+                return $http.post(baseURL + "/snManagement/activate/", fd, httpHeader);
+            }
 
-            return $http.post(baseURL + "/snManagement/activate/", fd, httpHeader);
+            return null;
         }
 
         /**
@@ -765,7 +774,10 @@ function SubProduct() {
          * get all products
          */
         function getProducts() {
-            return $http.get(baseURL + "/productManagement/");
+            if (isAlreadyAuthenticated()) {
+                return $http.get(baseURL + "/productManagement/");
+            }
+            return null;
         }
 
         /**
@@ -773,7 +785,10 @@ function SubProduct() {
          * @param {*} productId
          */
         function viewProductDetail(productId) {
-            return $http.get(baseURL + "/productManagement/productDetail/" + productId);
+            if (isAlreadyAuthenticated()) {
+                return $http.get(baseURL + "/productManagement/productDetail/" + productId);
+            }
+            return null;
         }
 
         /**
@@ -781,7 +796,10 @@ function SubProduct() {
          * @param {*} product
          */
         function createProduct(productDto) {
-            return $http.post(baseURL + "/productManagement/createProduct/", productDto);
+            if (isAlreadyAuthenticated()) {
+                return $http.post(baseURL + "/productManagement/createProduct/", productDto);
+            }
+            return null;
         }
 
         /**
@@ -789,7 +807,10 @@ function SubProduct() {
          * @param {*} product
          */
         function updateProduct(productDto) {
-            return $http.post(baseURL + "/productManagement/updateProduct/", productDto);
+            if (isAlreadyAuthenticated()) {
+                return $http.post(baseURL + "/productManagement/updateProduct/", productDto);
+            }
+            return null;
         }
 
         /**
@@ -797,7 +818,10 @@ function SubProduct() {
          * @param {*} productId
          */
         function deleteProduct(productId) {
-            return $http.delete(baseURL + "/productManagement/deleteProduct/" + productId);
+            if (isAlreadyAuthenticated()) {
+                return $http.delete(baseURL + "/productManagement/deleteProduct/" + productId);
+            }
+            return null;
         }
 
         /**
@@ -840,11 +864,17 @@ function SubProduct() {
          * requestType  is GET
          */
         function licenseGenerator(licenseProductDTO) {
-            return $http.post(baseURL + "/snManagement/snGenerator/", licenseProductDTO);
+            if (isAlreadyAuthenticated()) {
+                return $http.post(baseURL + "/snManagement/snGenerator/", licenseProductDTO);
+            }
+            return null;
         }
 
         function registerGeneratedSN(snList) {
-            return $http.post(baseURL + "/snManagement/registerGeneratedSN/", snList);
+            if (isAlreadyAuthenticated()) {
+                return $http.post(baseURL + "/snManagement/registerGeneratedSN/", snList);
+            }
+            return null;
         }
 
         function licenseCountByProduct() {
@@ -852,6 +882,7 @@ function SubProduct() {
         }
 
         function fetchSubProductByProductId(productId) {
+
             return $http.get(baseURL + "/productManagement/fetchSubProduct/" + productId);
         }
 
@@ -864,23 +895,32 @@ function SubProduct() {
         }
 
         function viewLicenseDetail(licenseId) {
-            return $http.get(baseURL + "/snManagement/viewDetailSN/" + licenseId);
+            if (isAlreadyAuthenticated()) {
+                return $http.get(baseURL + "/snManagement/viewDetailSN/" + licenseId);
+            }
+            return null;
         }
 
         function overrideActivationLimit(licenseId, message, file) {
-            var formdata = new FormData();
-            formdata.append("licenseId", licenseId);
-            formdata.append("message", message);
-            formdata.append("file", file)
+            if (isAlreadyAuthenticated()) {
+                var formdata = new FormData();
+                formdata.append("licenseId", licenseId);
+                formdata.append("message", message);
+                formdata.append("file", file)
 
-            return $http.post(baseURL + "/snManagement/overrideActivationLimit/", formdata, httpHeader);
+                return $http.post(baseURL + "/snManagement/overrideActivationLimit/", formdata, httpHeader);
+            }
+            return null;
         }
 
         function blockLicense(licenseId, message) {
-            formData = new FormData();
-            formData.append("licenseId", licenseId);
-            formData.append("message", message);
-            return $http.post(baseURL + "/snManagement/blocked/", formData, httpHeader);
+            if (isAlreadyAuthenticated()) {
+                formData = new FormData();
+                formData.append("licenseId", licenseId);
+                formData.append("message", message);
+                return $http.post(baseURL + "/snManagement/blocked/", formData, httpHeader);
+            }
+            return null;
         }
 
         function exportData(dataExport) {
@@ -889,7 +929,10 @@ function SubProduct() {
         }
 
         function register(license) {
-            return $http.post(baseURL + "/snManagement/registerInHelpdesk/", license);
+            if (isAlreadyAuthenticated()) {
+                return $http.post(baseURL + "/snManagement/registerInHelpdesk/", license);
+            }
+            return null;
         }
     }
 
@@ -1148,7 +1191,7 @@ function SubProduct() {
 
     function LoginController($scope, $state, RequestFactory, $cookies, $window, DialogFactory) {
         var now = new $window.Date();
-        if (RequestFactory.isAlreadyAuthenticated()) {
+        if ($cookies.getObject("loggingIn")) {
             $state.go('administrator.dashboard');
         } else {
             $scope.login = login;
@@ -1165,7 +1208,7 @@ function SubProduct() {
                     function(response) {
                         var data = response.data;
                         $cookies.putObject("loggingIn", data, {
-                            expires: (new $window.Date(now.getFullYear(), now.getMonth(), now.getDate() + 2))
+                            expires: (new $window.Date(data.expiredTime + (30 * 60 * 1000)))
                         });
                         $state.go('administrator.dashboard');
                     },
@@ -1195,7 +1238,6 @@ function SubProduct() {
     AdministratorController.$inject = ['$scope', '$state', '$cookies', 'RequestFactory'];
 
     function AdministratorController($scope, $state, $cookies, RequestFactory) {
-        RequestFactory.isAlreadyAuthenticated();
 
         $(document).ready(function() {
 
@@ -1471,14 +1513,9 @@ function SubProduct() {
         }
 
         function logout() {
-            RequestFactory.logout().then(
-                function(response) {
-                    $cookies.remove("loggingIn");
-                    $state.go("login");
-                },
-                function(error) {
-                    console.log("Error : " + error);
-                });
+            RequestFactory.logout();
+            $cookies.remove("loggingIn");
+            $state.go("login");
         }
 
     };
@@ -1494,7 +1531,6 @@ function SubProduct() {
     ProjectSerialNumberController.$inject = ['$scope', 'RequestFactory', '$state', "$stateParams", 'DialogFactory', 'FileSaver', 'Blob', '$rootScope'];
 
     function ProjectSerialNumberController($scope, RequestFactory, $state, $stateParams, DialogFactory, FileSaver, Blob, $rootScope) {
-        RequestFactory.isAlreadyAuthenticated();
 
         $scope.rowCollection = [];
         $scope.displayCollection = [];
@@ -1724,7 +1760,7 @@ function SubProduct() {
     aboutUs.$inject = ['RequestFactory'];
 
     function aboutUs(RequestFactory) {
-        RequestFactory.isAlreadyAuthenticated()
+        RequestFactory.isAlreadyAuthenticated();
     }
 })();
 /**
@@ -1795,6 +1831,7 @@ function SubProduct() {
     schoolManagementController.$inject = ['$scope', '$state', '$stateParams', 'RequestFactory', 'DialogFactory'];
 
     function schoolManagementController($scope, $state, $stateParams, RequestFactory, DialogFactory) {
+
         $scope.schools = [];
         $scope.rowCollection = [];
         $scope.schoolId = $stateParams.schoolId;
@@ -1889,6 +1926,7 @@ function SubProduct() {
     userManagementController.$inject = ['$scope', '$state', '$stateParams', 'RequestFactory'];
 
     function userManagementController($scope, $state, $stateParams, RequestFactory) {
+
         $scope.users = [];
         $scope.rowCollection = [];
 
@@ -2063,6 +2101,7 @@ function SubProduct() {
     generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "localStorageService", "$rootScope"];
 
     function generatorController(RequestFactory, DialogFactory, $scope, $state, localStorageService, $rootScope) {
+
         $scope.licenseGeneratorDTO = {
             product: null,
             subProducts: [],
@@ -2229,6 +2268,7 @@ function SubProduct() {
     registration.$inject = ["$scope", "RequestFactory", "DialogFactory", "$state"];
 
     function registration($scope, RequestFactory, DialogFactory, $state) {
+
         $scope.license = new License();
         $scope.products = [];
         $scope.submit = registration;

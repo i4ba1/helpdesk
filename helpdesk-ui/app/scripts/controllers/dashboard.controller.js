@@ -16,7 +16,6 @@
         $scope.itemPage = 5;
         $scope.currentPage = 1;
         $scope.rembemberCurrentPage = getCurrentPage;
-        RequestFactory.isAlreadyAuthenticated();
 
         //Get all new notification
         RequestFactory.getUnreadLicenses().then(

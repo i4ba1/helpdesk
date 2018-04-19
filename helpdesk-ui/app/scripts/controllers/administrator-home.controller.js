@@ -10,7 +10,6 @@
     AdministratorController.$inject = ['$scope', '$state', '$cookies', 'RequestFactory'];
 
     function AdministratorController($scope, $state, $cookies, RequestFactory) {
-        RequestFactory.isAlreadyAuthenticated();
 
         $(document).ready(function() {
 
@@ -286,14 +285,9 @@
         }
 
         function logout() {
-            RequestFactory.logout().then(
-                function(response) {
-                    $cookies.remove("loggingIn");
-                    $state.go("login");
-                },
-                function(error) {
-                    console.log("Error : " + error);
-                });
+            RequestFactory.logout();
+            $cookies.remove("loggingIn");
+            $state.go("login");
         }
 
     };

@@ -61,13 +61,17 @@
         }
 
         function getSerialNumber(searchModel) {
-            formData = new FormData();
-            formData.append("category", searchModel.category.toUpperCase());
-            formData.append("searchText", searchModel.searchText);
-            formData.append("page", searchModel.page - 1);
-            formData.append("startDate", searchModel.startDate);
-            formData.append("endDate", searchModel.endDate);
-            return $http.post(baseURL + '/snManagement/serialNumbers/', formData, httpHeader);
+            if (isAlreadyAuthenticated()) {
+                formData = new FormData();
+                formData.append("category", searchModel.category.toUpperCase());
+                formData.append("searchText", searchModel.searchText);
+                formData.append("page", searchModel.page - 1);
+                formData.append("startDate", searchModel.startDate);
+                formData.append("endDate", searchModel.endDate);
+                return $http.post(baseURL + '/snManagement/serialNumbers/', formData, httpHeader);
+            }
+            return null;
+
         }
 
         /**
@@ -90,22 +94,27 @@
 
         function isAlreadyAuthenticated() {
             var user = $cookies.getObject("loggingIn");
-            if (user) {
-                return true;
-            } else {
+            var currentMillis = new Date().getTime();
+            if (currentMillis > user.expiredTime) {
+                $cookies.remove("loggingIn");
                 $state.go("login");
                 return false;
             }
+
+            return true;
         }
 
         function activate(licenseId, passkey, reason) {
-            var fd = new FormData();
+            if (isAlreadyAuthenticated()) {
+                var fd = new FormData();
+                fd.append("licenseId", licenseId);
+                fd.append("passkey", passkey);
+                fd.append("reason", reason);
 
-            fd.append("licenseId", licenseId);
-            fd.append("passkey", passkey);
-            fd.append("reason", reason);
+                return $http.post(baseURL + "/snManagement/activate/", fd, httpHeader);
+            }
 
-            return $http.post(baseURL + "/snManagement/activate/", fd, httpHeader);
+            return null;
         }
 
         /**
@@ -133,7 +142,10 @@
          * get all products
          */
         function getProducts() {
-            return $http.get(baseURL + "/productManagement/");
+            if (isAlreadyAuthenticated()) {
+                return $http.get(baseURL + "/productManagement/");
+            }
+            return null;
         }
 
         /**
@@ -141,7 +153,10 @@
          * @param {*} productId
          */
         function viewProductDetail(productId) {
-            return $http.get(baseURL + "/productManagement/productDetail/" + productId);
+            if (isAlreadyAuthenticated()) {
+                return $http.get(baseURL + "/productManagement/productDetail/" + productId);
+            }
+            return null;
         }
 
         /**
@@ -149,7 +164,10 @@
          * @param {*} product
          */
         function createProduct(productDto) {
-            return $http.post(baseURL + "/productManagement/createProduct/", productDto);
+            if (isAlreadyAuthenticated()) {
+                return $http.post(baseURL + "/productManagement/createProduct/", productDto);
+            }
+            return null;
         }
 
         /**
@@ -157,7 +175,10 @@
          * @param {*} product
          */
         function updateProduct(productDto) {
-            return $http.post(baseURL + "/productManagement/updateProduct/", productDto);
+            if (isAlreadyAuthenticated()) {
+                return $http.post(baseURL + "/productManagement/updateProduct/", productDto);
+            }
+            return null;
         }
 
         /**
@@ -165,7 +186,10 @@
          * @param {*} productId
          */
         function deleteProduct(productId) {
-            return $http.delete(baseURL + "/productManagement/deleteProduct/" + productId);
+            if (isAlreadyAuthenticated()) {
+                return $http.delete(baseURL + "/productManagement/deleteProduct/" + productId);
+            }
+            return null;
         }
 
         /**
@@ -208,11 +232,17 @@
          * requestType  is GET
          */
         function licenseGenerator(licenseProductDTO) {
-            return $http.post(baseURL + "/snManagement/snGenerator/", licenseProductDTO);
+            if (isAlreadyAuthenticated()) {
+                return $http.post(baseURL + "/snManagement/snGenerator/", licenseProductDTO);
+            }
+            return null;
         }
 
         function registerGeneratedSN(snList) {
-            return $http.post(baseURL + "/snManagement/registerGeneratedSN/", snList);
+            if (isAlreadyAuthenticated()) {
+                return $http.post(baseURL + "/snManagement/registerGeneratedSN/", snList);
+            }
+            return null;
         }
 
         function licenseCountByProduct() {
@@ -220,6 +250,7 @@
         }
 
         function fetchSubProductByProductId(productId) {
+
             return $http.get(baseURL + "/productManagement/fetchSubProduct/" + productId);
         }
 
@@ -232,23 +263,32 @@
         }
 
         function viewLicenseDetail(licenseId) {
-            return $http.get(baseURL + "/snManagement/viewDetailSN/" + licenseId);
+            if (isAlreadyAuthenticated()) {
+                return $http.get(baseURL + "/snManagement/viewDetailSN/" + licenseId);
+            }
+            return null;
         }
 
         function overrideActivationLimit(licenseId, message, file) {
-            var formdata = new FormData();
-            formdata.append("licenseId", licenseId);
-            formdata.append("message", message);
-            formdata.append("file", file)
+            if (isAlreadyAuthenticated()) {
+                var formdata = new FormData();
+                formdata.append("licenseId", licenseId);
+                formdata.append("message", message);
+                formdata.append("file", file)
 
-            return $http.post(baseURL + "/snManagement/overrideActivationLimit/", formdata, httpHeader);
+                return $http.post(baseURL + "/snManagement/overrideActivationLimit/", formdata, httpHeader);
+            }
+            return null;
         }
 
         function blockLicense(licenseId, message) {
-            formData = new FormData();
-            formData.append("licenseId", licenseId);
-            formData.append("message", message);
-            return $http.post(baseURL + "/snManagement/blocked/", formData, httpHeader);
+            if (isAlreadyAuthenticated()) {
+                formData = new FormData();
+                formData.append("licenseId", licenseId);
+                formData.append("message", message);
+                return $http.post(baseURL + "/snManagement/blocked/", formData, httpHeader);
+            }
+            return null;
         }
 
         function exportData(dataExport) {
@@ -257,7 +297,10 @@
         }
 
         function register(license) {
-            return $http.post(baseURL + "/snManagement/registerInHelpdesk/", license);
+            if (isAlreadyAuthenticated()) {
+                return $http.post(baseURL + "/snManagement/registerInHelpdesk/", license);
+            }
+            return null;
         }
     }
 

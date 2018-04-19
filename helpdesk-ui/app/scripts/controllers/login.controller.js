@@ -10,7 +10,7 @@
 
     function LoginController($scope, $state, RequestFactory, $cookies, $window, DialogFactory) {
         var now = new $window.Date();
-        if (RequestFactory.isAlreadyAuthenticated()) {
+        if ($cookies.getObject("loggingIn")) {
             $state.go('administrator.dashboard');
         } else {
             $scope.login = login;
@@ -27,7 +27,7 @@
                     function(response) {
                         var data = response.data;
                         $cookies.putObject("loggingIn", data, {
-                            expires: (new $window.Date(now.getTime() + (30 * 60 * 1000)))
+                            expires: (new $window.Date(data.expiredTime + (30 * 60 * 1000)))
                         });
                         $state.go('administrator.dashboard');
                     },

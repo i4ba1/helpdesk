@@ -6,7 +6,7 @@
     registration.$inject = ["$scope", "RequestFactory", "DialogFactory", "$state"];
 
     function registration($scope, RequestFactory, DialogFactory, $state) {
-        RequestFactory.isAlreadyAuthenticated();
+
         $scope.license = new License();
         $scope.products = [];
         $scope.submit = registration;

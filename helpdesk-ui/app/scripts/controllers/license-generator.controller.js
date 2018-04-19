@@ -6,7 +6,7 @@
     generatorController.$inject = ["RequestFactory", "DialogFactory", "$scope", "$state", "localStorageService", "$rootScope"];
 
     function generatorController(RequestFactory, DialogFactory, $scope, $state, localStorageService, $rootScope) {
-        RequestFactory.isAlreadyAuthenticated();
+
         $scope.licenseGeneratorDTO = {
             product: null,
             subProducts: [],

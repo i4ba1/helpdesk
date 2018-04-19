@@ -6,6 +6,6 @@
     aboutUs.$inject = ['RequestFactory'];
 
     function aboutUs(RequestFactory) {
-        RequestFactory.isAlreadyAuthenticated()
+        RequestFactory.isAlreadyAuthenticated();
     }
 })();
