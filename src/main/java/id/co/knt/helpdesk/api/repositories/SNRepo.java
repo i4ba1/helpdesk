@@ -24,17 +24,17 @@ public interface SNRepo extends JpaRepository<License, Long> {
 	@Query("select p.productName ,count(p.productName) from License l inner join l.product p group by p.productName")
 	List<Object> findSnCountByProduct();
 
-	List<License> findByLicenseLikeOrSchoolNameLikeAllIgnoreCase(Pageable pageRequest, String license, String schoolName);
+	List<License> findByLicenseLikeOrSchoolNameLikeAllIgnoreCaseOrderByIdDesc(Pageable pageRequest, String license, String schoolName);
 
-	List<License> findLicenseByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(Pageable pageable, Long startDate, Long endDate);
+	List<License> findLicenseByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqualOrderByIdDesc(Pageable pageable, Long startDate, Long endDate);
 
-	@Query("select l from License l join fetch l.product")
+	@Query("select l from License l join fetch l.product order by id desc")
 	List<License> fetchLicenses(Pageable pageRequest);
 
 	@Query("SELECT COUNT(l) FROM License l")
 	int countLicense();
 
-	int countByLicenseLikeOrSchoolNameLikeAllIgnoreCase(String license, String schoolName);
+	int countByLicenseLikeOrSchoolNameLikeAllIgnoreCaseOrderByIdDesc(String license, String schoolName);
 
-	int countByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(Long startDate, Long endDate);
+	int countByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqualOrderByIdDesc(Long startDate, Long endDate);
 }

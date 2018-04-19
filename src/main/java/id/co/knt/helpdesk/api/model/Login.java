@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="helpdesk_login")
-public class Login implements Serializable {
+public class 			Login implements Serializable {
 
 	/**
 	 * 
@@ -25,16 +25,12 @@ public class Login implements Serializable {
 	@Column(name="login_token")
 	private String token;
 	
-	@Column(name="token_expired")
-	private Long tokenExpired;
-	
+	@Column(name="expired_time")
+	private Long expiredTime;
+
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", referencedColumnName="id")
 	private User user;
-
-	public Date getLoginDate() {
-		return loginDate;
-	}
 
 	public void setLoginDate(Date loginDate) {
 		this.loginDate = loginDate;
@@ -47,13 +43,9 @@ public class Login implements Serializable {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	
-	public Long getTokenExpired() {
-		return tokenExpired;
-	}
 
-	public void setTokenExpired(Long tokenExpired) {
-		this.tokenExpired = tokenExpired;
+	public void setExpiredTime(Long expiredTime) {
+		this.expiredTime = expiredTime;
 	}
 
 	public User getUser() {
