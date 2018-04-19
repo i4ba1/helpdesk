@@ -36,6 +36,10 @@ public class 			Login implements Serializable {
 		this.loginDate = loginDate;
 	}
 
+	public Date getLoginDate() {
+		return loginDate;
+	}
+
 	public String getToken() {
 		return token;
 	}
@@ -46,6 +50,10 @@ public class 			Login implements Serializable {
 
 	public void setExpiredTime(Long expiredTime) {
 		this.expiredTime = expiredTime;
+	}
+
+	public Long getExpiredTime() {
+		return expiredTime;
 	}
 
 	public User getUser() {
