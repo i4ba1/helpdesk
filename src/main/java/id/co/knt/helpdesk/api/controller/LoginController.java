@@ -49,7 +49,7 @@ public class LoginController {
     public ResponseEntity<Login> login(@RequestParam String userName, @RequestParam String password) {
         Date dt = new Date();
         DateTime dateTime = new DateTime(dt);
-        dateTime = dateTime.plusHours(3);
+        dateTime = dateTime.plusMinutes(29);
         SecureRandom rand = new SecureRandom();
 
         /**
@@ -99,7 +99,7 @@ public class LoginController {
         Login newLogin = new Login();
         newLogin.setLoginDate(dt);
         newLogin.setToken(new BigInteger(130, rand).toString(50));
-        newLogin.setTokenExpired(dateTime.getMillis());
+        newLogin.setExpiredTime(dateTime.getMillis());
         newLogin.setUser(user);
 
         return loginService.saveLogin(newLogin) != null
