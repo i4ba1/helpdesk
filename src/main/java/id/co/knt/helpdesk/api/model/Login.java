@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="helpdesk_login")
-public class 			Login implements Serializable {
+public class Login implements Serializable {
 
 	/**
 	 * 

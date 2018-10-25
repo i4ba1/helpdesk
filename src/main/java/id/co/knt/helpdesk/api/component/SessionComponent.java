@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class SessionComponent {
 
@@ -16,10 +18,10 @@ public class SessionComponent {
         this.loginRepository = loginRepository;
     }
 
-    @Scheduled(fixedRate = 1800000)
+    @Scheduled(fixedRate = 3600000)
     public void kickOutActiveUser(){
-        Iterable<Login> logins = loginRepository.findAll();
-        if (logins != null) {
+        List<Login> logins = loginRepository.findAll();
+        if (!logins.isEmpty()) {
             loginRepository.deleteAll();
         }
     }
