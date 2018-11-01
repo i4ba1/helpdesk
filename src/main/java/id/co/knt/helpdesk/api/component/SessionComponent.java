@@ -23,6 +23,7 @@ public class SessionComponent {
         List<Login> logins = loginRepository.findAll();
         if (!logins.isEmpty()) {
             loginRepository.deleteAll();
+            loginRepository.flush();
         }
     }
 }

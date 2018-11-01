@@ -1,6 +1,6 @@
 package id.co.knt.helpdesk.api.utilities;
 
-import id.web.pos.integra.gawl.Gawl;
+import id.web.pos.integra.gawl.KNT_SN.Gawl;
 
 import java.util.Map;
 

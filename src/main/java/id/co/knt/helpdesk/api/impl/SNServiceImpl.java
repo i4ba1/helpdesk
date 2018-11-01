@@ -11,8 +11,8 @@ import id.co.knt.helpdesk.api.repositories.ProductRepo;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.co.knt.helpdesk.api.service.SNService;
 import id.co.knt.helpdesk.api.utilities.LoggingError;
-import id.web.pos.integra.gawl.Gawl;
-import id.web.pos.integra.gawl.Gawl.UnknownCharacterException;
+import id.web.pos.integra.gawl.KNT_SN.Gawl;
+import id.web.pos.integra.gawl.KNT_SN.Gawl.UnknownCharacterException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +46,7 @@ public class SNServiceImpl implements SNService {
 
     private short status = 0;
     private String message = "";
+    private Set<License> list = new LinkedHashSet<>();
 
     private enum productTypeChoice {
         EL, EP
@@ -53,6 +54,23 @@ public class SNServiceImpl implements SNService {
 
     enum FilterSearch {
         SN, DATE, SCHOOL
+    }
+
+    @Override
+    public List<ListLicenseDTO> saveLicenseEntities(List<License> licenses){
+        List<License> result = snRepo.save(licenses);
+        List<ListLicenseDTO> listLicenseDTOS = new ArrayList<>();
+
+        for (License l:result) {
+            listLicenseDTOS.add(getListLicenseDTO(l, (short) 0));
+        }
+
+        return listLicenseDTOS;
+    }
+
+    @Override
+    public void emptyListOfLicense() {
+        list.clear();
     }
 
     @Override
@@ -68,7 +86,7 @@ public class SNServiceImpl implements SNService {
                 Map<String, Byte> extractResult = gawl.extract(serialNumber.getLicense());
                 byte Type = extractResult.get(Gawl.TYPE);
 
-                product = productRepo.findByProductCode(new Integer(Type));
+                product = productRepo.findByProductCode((int) Type);
                 message = "One license: " + serialNumber.getLicense() + "for " + product.getProductName()
                         + " has been generated";
                 status = 0;
@@ -82,7 +100,8 @@ public class SNServiceImpl implements SNService {
                 licenses.add(sn);
                 listLicenseDTO = generateListLicenseDTO(sn, status);
             } catch (Exception e) {
-                LoggingError.writeError(ExceptionUtils.getStackTrace(e));
+                e.getStackTrace();
+                //LoggingError.writeError(ExceptionUtils.getStackTrace(e));
             }
 
         }
@@ -105,7 +124,10 @@ public class SNServiceImpl implements SNService {
         snNumber.setNumberOfClient(serialNumber.getNumberOfClient());
         snNumber.setProduct(product);
         snNumber.setSchoolName(serialNumber.getSchoolName());
-        return snRepo.save(snNumber);
+        snNumber = snRepo.save(snNumber);
+        snRepo.flush();
+        LOG.info("Id=======> "+snNumber.getId());
+        return snNumber;
     }
 
     @Override
@@ -431,25 +453,28 @@ public class SNServiceImpl implements SNService {
      * @return
      */
     @Override
-    public TreeMap<String, List<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO) {
+    public TreeMap<String, Set<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO) {
         Product product = licenseGeneratorDTO.getProduct();
-        List<License> list = new ArrayList<>();
-        TreeMap<String, List<License>> sortedData = new TreeMap<>();
+        TreeMap<String, Set<License>> sortedData = new TreeMap<>();
         String generatedSn = "";
 
         /* For Direct Entry */
         if (product.getSubModuleType().equals("EL")) {
-            for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
+           for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
                 try {
-                    generatedSn = gawl.generate(product.getProductCode(),
-                            licenseGeneratorDTO.getSubProducts().get(0).getValue());
+                    generatedSn = gawl.generate(Gawl.SoftwareType.SE,
+                            product.getProductCode());
+
+                    if(snRepo.findByLicense(generatedSn) != null){
+                        generatedSn = gawl.generate(Gawl.SoftwareType.SE,
+                                product.getProductCode());
+                    }
 
                     License newLicense = new License();
                     newLicense.setLicense(generatedSn.toLowerCase());
                     newLicense.setNumberOfClient(licenseGeneratorDTO.getSubProducts().get(0).getValue());
                     newLicense.setCreatedDate(new Date().getTime());
                     newLicense.setProduct(product);
-
                     list.add(newLicense);
                 } catch (Exception e) {
                     LoggingError.writeError(ExceptionUtils.getStackTrace(e));
@@ -474,7 +499,7 @@ public class SNServiceImpl implements SNService {
                     }
 
                     sortedData.put("Paket" + (i + 1), list);
-                    list = new ArrayList<>();
+                    list = new LinkedHashSet<>();
                 } catch (Exception e) {
                     LoggingError.writeError(ExceptionUtils.getStackTrace(e));
                 }
@@ -558,6 +583,7 @@ public class SNServiceImpl implements SNService {
                     licenseHistory.setFileData(file.getBytes());
                 }
                 licenseHistoryRepo.save(licenseHistory);
+                licenseHistoryRepo.flush();
             }
         } catch (Exception e) {
             LoggingError.writeError(ExceptionUtils.getStackTrace(e));

@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public interface SNService{
@@ -29,7 +30,7 @@ public interface SNService{
 
     License manuallyActivate(Long licenseId, String passkey, String reason);
 
-    TreeMap<String, List<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO);
+    TreeMap<String, Set<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO);
     
     List<LicenseHistory> findUnreadLicense();
     
@@ -46,4 +47,8 @@ public interface SNService{
     void setLicenseHistory(License license, short status, String message, MultipartFile file);
 
     Map<String, Object> generateLicenseDTOResult(ListLicenseDTO data);
+
+    List<ListLicenseDTO> saveLicenseEntities(List<License> licenses);
+
+    void emptyListOfLicense();
 }

@@ -6,13 +6,17 @@ import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.co.knt.helpdesk.api.service.SNService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.rmi.runtime.Log;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * @author kntdev
@@ -20,6 +24,8 @@ import java.util.*;
 @RestController
 @RequestMapping(value = "/snManagement")
 public class SNManagementController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SNManagementController.class);
 
     @Autowired
     private SNService snService;
@@ -199,11 +205,10 @@ public class SNManagementController {
      * @return ResponseEntity<TreeMap   <   String   ,       List   <   License>>>
      */
     @RequestMapping(value = {"/snGenerator/"}, method = RequestMethod.POST)
-    public ResponseEntity<TreeMap<String, List<License>>> snGenerator(
+    public ResponseEntity<TreeMap<String, Set<License>>> snGenerator(
             @RequestBody LicenseGeneratorDTO licenseGeneratorDTO) {
 
-        TreeMap<String, List<License>> treeMap = snService.serialNumberGenerator(licenseGeneratorDTO);
-
+        TreeMap<String, Set<License>> treeMap = snService.serialNumberGenerator(licenseGeneratorDTO);
         if (treeMap.isEmpty()) {
             return new ResponseEntity<>(treeMap, HttpStatus.BAD_REQUEST);
         }
@@ -220,16 +225,27 @@ public class SNManagementController {
     @RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
     public ResponseEntity<List<Map<String, Object>>> registerGeneratedSN(@RequestBody List<License> list) {
         //List<List<ListLicenseDTO>> listList = new ArrayList<>();
-        List<ListLicenseDTO> licenseDTOS = new ArrayList<>();
-        Map<String, Object> objectMap = null;
+        List<ListLicenseDTO> licenseDTOS = null;
+       // Map<String, Object> objectMap = null;
         List<Map<String, Object>> result = new ArrayList<>();
 
-        for (License license : list) {
-            licenseDTOS.add(snService.saveGeneratedSN(license).get(0));
-        }
+        LOG.info("Size Of List: "+list.size());
+        licenseDTOS = snService.saveLicenseEntities(list);
+        snService.emptyListOfLicense();
+        /*IntStream.range(0, list.size()).forEach(
+                index->{
+                    LOG.info("index=====> "+index);
+                    ListLicenseDTO listLicenseDTO = snService.saveGeneratedSN(list.get(index));
+                    licenseDTOS.add(listLicenseDTO);
+                }
+        );*/
+       /* for (License license : list) {
+            licenseDTOS.add(snService.saveGeneratedSN(license));
+        }*/
 
-        for (ListLicenseDTO data : licenseDTOS) {
-            objectMap = snService.generateLicenseDTOResult(data);
+        LOG.info("Size Of List LicenseDTO: "+licenseDTOS.size());
+        for (ListLicenseDTO dto: licenseDTOS) {
+            Map<String, Object> objectMap = snService.generateLicenseDTOResult(dto);
             result.add(objectMap);
         }
 
