@@ -137,7 +137,7 @@ public class SNManagementController {
     public ResponseEntity<License> activateByInternet(@RequestBody License serialNumber) {
         License currentLicense = snService.findBySerial(serialNumber.getLicense());
 
-        if (currentLicense.getPassKey() != null && currentLicense.getPassKey().compareTo(serialNumber.getPassKey()) != 0){
+        if (currentLicense.getPassKey() != null && currentLicense.getPassKey().compareTo(serialNumber.getPassKey()) != 0) {
             return new ResponseEntity<>(currentLicense, HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -171,10 +171,11 @@ public class SNManagementController {
      * @param searchText
      * @param startDate
      * @param endDate
-     * @return ResponseEntity<Map   <   String   ,       Object>>
+     * @return ResponseEntity<Map       <       String       ,               Object>>
      */
     @RequestMapping(value = {"/serialNumbers/"}, method = RequestMethod.POST)
-    public ResponseEntity<Map<String, Object>> findAllSN(@RequestParam String category, @RequestParam int page, @RequestParam String searchText, @RequestParam Long startDate, @RequestParam Long endDate) {
+    public ResponseEntity<Map<String, Object>> findAllSN(@RequestParam String category, @RequestParam int page,
+                                                         @RequestParam String searchText, @RequestParam Long startDate, @RequestParam Long endDate) {
 
         Map<String, Object> result = snService.findAllSN(category, page, searchText, startDate, endDate);
         if (result.isEmpty()) {
@@ -188,7 +189,7 @@ public class SNManagementController {
      * View detail of license table
      *
      * @param id
-     * @return ResponseEntity<Map   <   String   ,       Object>>
+     * @return ResponseEntity<Map       <       String       ,               Object>>
      */
     @RequestMapping(value = "/viewDetailSN/{id}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> viewDetailSN(@PathVariable Long id) {
@@ -202,7 +203,7 @@ public class SNManagementController {
 
     /**
      * @param licenseGeneratorDTO
-     * @return ResponseEntity<TreeMap   <   String   ,       List   <   License>>>
+     * @return ResponseEntity<TreeMap       <       String       ,               List       <       License>>>
      */
     @RequestMapping(value = {"/snGenerator/"}, method = RequestMethod.POST)
     public ResponseEntity<TreeMap<String, Set<License>>> snGenerator(
@@ -223,13 +224,13 @@ public class SNManagementController {
      * @return generate license
      */
     @RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
-    public ResponseEntity<List<Map<String, Object>>> registerGeneratedSN(@RequestBody List<License> list) {
+    public ResponseEntity<List<Map<String, Object>>> registerGeneratedSN(@RequestBody Set<License> list) {
         //List<List<ListLicenseDTO>> listList = new ArrayList<>();
         List<ListLicenseDTO> licenseDTOS = null;
-       // Map<String, Object> objectMap = null;
+        // Map<String, Object> objectMap = null;
         List<Map<String, Object>> result = new ArrayList<>();
 
-        LOG.info("Size Of List: "+list.size());
+        LOG.info("Size Of List: " + list.size());
         licenseDTOS = snService.saveLicenseEntities(list);
         snService.emptyListOfLicense();
         /*IntStream.range(0, list.size()).forEach(
@@ -243,8 +244,8 @@ public class SNManagementController {
             licenseDTOS.add(snService.saveGeneratedSN(license));
         }*/
 
-        LOG.info("Size Of List LicenseDTO: "+licenseDTOS.size());
-        for (ListLicenseDTO dto: licenseDTOS) {
+        LOG.info("Size Of List LicenseDTO: " + licenseDTOS.size());
+        for (ListLicenseDTO dto : licenseDTOS) {
             Map<String, Object> objectMap = snService.generateLicenseDTOResult(dto);
             result.add(objectMap);
         }
@@ -255,7 +256,7 @@ public class SNManagementController {
     /**
      * To find unread license to show on dashboard
      *
-     * @return ResponseEntity<List   <   LicenseHistory>>
+     * @return ResponseEntity<List       <       LicenseHistory>>
      */
     @RequestMapping(value = "/findUnreadLicenses/", method = RequestMethod.GET)
     public ResponseEntity<List<LicenseHistory>> findUnreadLicenses() {

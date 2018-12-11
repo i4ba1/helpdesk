@@ -48,7 +48,7 @@ public interface SNService{
 
     Map<String, Object> generateLicenseDTOResult(ListLicenseDTO data);
 
-    List<ListLicenseDTO> saveLicenseEntities(List<License> licenses);
+    List<ListLicenseDTO> saveLicenseEntities(Set<License> licenses);
 
     void emptyListOfLicense();
 }

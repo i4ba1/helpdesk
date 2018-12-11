@@ -74,6 +74,7 @@ dependencies {
     compile 'org.mongodb:mongo-java-driver:3.4.3'
     compile 'org.apache.commons:commons-lang3:3.6'
     compile files('libs/KNT-SN-1.2-shaded.jar')
+    compile files('libs/gawl-1.2.1.jar')
 
     // Use JUnit test framework
     compile 'junit:junit:4.12'

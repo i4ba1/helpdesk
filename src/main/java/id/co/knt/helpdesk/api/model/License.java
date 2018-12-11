@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "helpdesk_sn", uniqueConstraints = @UniqueConstraint(columnNames = "serial_number"))
+@Table(name = "helpdesk_sn")
 public class License implements Serializable {
 
 	/**
@@ -13,7 +13,7 @@ public class License implements Serializable {
 	private static final long serialVersionUID = 7230259872048745134L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="id", updatable = false, nullable = false)
 	private Long id;
 
