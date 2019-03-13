@@ -13,10 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.rmi.runtime.Log;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 /**
  * @author kntdev
@@ -27,11 +25,15 @@ public class SNManagementController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SNManagementController.class);
 
-    @Autowired
-    private SNService snService;
+    private final SNService snService;
+
+    private final SNRepo snRepo;
 
     @Autowired
-    private SNRepo snRepo;
+    public SNManagementController(SNService snService, SNRepo snRepo) {
+        this.snService = snService;
+        this.snRepo = snRepo;
+    }
 
     /**
      * To handle register license
@@ -226,20 +228,21 @@ public class SNManagementController {
     @RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
     public ResponseEntity<List<Map<String, Object>>> registerGeneratedSN(@RequestBody Set<License> list) {
         //List<List<ListLicenseDTO>> listList = new ArrayList<>();
-        List<ListLicenseDTO> licenseDTOS = null;
+        List<ListLicenseDTO> licenseDTOS = new ArrayList<>();;
         // Map<String, Object> objectMap = null;
         List<Map<String, Object>> result = new ArrayList<>();
 
         LOG.info("Size Of List: " + list.size());
-        licenseDTOS = snService.saveLicenseEntities(list);
-        snService.emptyListOfLicense();
-        /*IntStream.range(0, list.size()).forEach(
-                index->{
-                    LOG.info("index=====> "+index);
-                    ListLicenseDTO listLicenseDTO = snService.saveGeneratedSN(list.get(index));
-                    licenseDTOS.add(listLicenseDTO);
-                }
-        );*/
+        /*licenseDTOS = snService.saveLicenseEntities(list);
+        snService.emptyListOfLicense();*/
+
+        Iterator<License> iterator = list.iterator();
+        while (iterator.hasNext()){
+            License l = iterator.next();
+            ListLicenseDTO listLicenseDTO = snService.saveGeneratedSN(l);
+            licenseDTOS.add(listLicenseDTO);
+        }
+
        /* for (License license : list) {
             licenseDTOS.add(snService.saveGeneratedSN(license));
         }*/

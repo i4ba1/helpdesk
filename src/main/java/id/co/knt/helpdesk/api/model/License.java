@@ -13,7 +13,9 @@ public class License implements Serializable {
 	private static final long serialVersionUID = 7230259872048745134L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "helpdesk_sn_generator")
+	@SequenceGenerator(name="helpdesk_sn_generator", sequenceName = "helpdesk_sn_seq", allocationSize = 1)
 	@Column(name="id", updatable = false, nullable = false)
 	private Long id;
 

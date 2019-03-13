@@ -20,7 +20,10 @@ public class LicenseHistory implements Serializable {
 	private static final long serialVersionUID = 5245897062416509792L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "license_history_generator")
+	@SequenceGenerator(name="license_history_generator", sequenceName = "license_history_seq", allocationSize = 1)
+	//@Column(name="id", updatable = false, nullable = false)
 	private Long id;
 
 	@Column(name = "message")

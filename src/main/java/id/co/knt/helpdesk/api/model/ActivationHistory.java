@@ -14,7 +14,10 @@ public class ActivationHistory implements Serializable {
 	private static final long serialVersionUID = -89336745576474568L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "activation_history_generator")
+	@SequenceGenerator(name="activation_history_generator", sequenceName = "activation_history_seq", allocationSize = 1)
+	@Column(name="id", updatable = false, nullable = false)
 	private Long id;
 	
 	@Temporal(TemporalType.TIMESTAMP)

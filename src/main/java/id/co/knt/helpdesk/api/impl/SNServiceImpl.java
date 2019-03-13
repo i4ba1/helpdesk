@@ -110,8 +110,10 @@ public class SNServiceImpl implements SNService {
                         + " has been generated";
                 status = 0;
 
+                LOG.info("saveGeneratedSN SN=====> "+sn);
                 if (sn == null) {
                     snNumber = saveLicenseData(serialNumber, product);
+                    LOG.info("saveGeneratedSN SN=====> "+snNumber);
                     setLicenseHistory(snNumber, status, message, null);
                     sn = snRepo.findByLicense(serialNumber.getLicense());
                 }
@@ -128,6 +130,7 @@ public class SNServiceImpl implements SNService {
     }
 
     private ListLicenseDTO generateListLicenseDTO(License sn, Short licenseStatus) {
+        LOG.info("generateListLicenseDTO licenseStatus=====> "+licenseStatus);
         ListLicenseDTO listLicenseDTO = getListLicenseDTO(sn, licenseStatus);
 
         return listLicenseDTO;
@@ -142,8 +145,8 @@ public class SNServiceImpl implements SNService {
         snNumber.setNumberOfClient(serialNumber.getNumberOfClient());
         snNumber.setProduct(product);
         snNumber.setSchoolName(serialNumber.getSchoolName());
-        snNumber = snRepo.save(snNumber);
-        snRepo.flush();
+        snNumber = snRepo.saveAndFlush(snNumber);
+        LOG.info("saveLicenseData =====> "+snNumber.getId());
         LOG.info("Id=======> " + snNumber.getId());
         return snNumber;
     }
@@ -306,13 +309,12 @@ public class SNServiceImpl implements SNService {
 
     private List<ListLicenseDTO> getListLicenseDTo(List<License> licenses, Short licenseStatus) {
         List<ListLicenseDTO> list = new ArrayList<>();
-        IntStream.range(0, licenses.size()).forEach(
-                index -> {
-
-                    License sn = licenses.get(index);
-                    list.add(getListLicenseDTO(sn, licenseStatus));
-                }
-        );
+        LOG.info("Size licenses ====> "+licenses.isEmpty()+" - "+licenses.size());
+        if(!licenses.isEmpty()) {
+            for (License sn : licenses) {
+                list.add(getListLicenseDTO(sn, licenseStatus));
+            }
+        }
 
         return list;
     }
@@ -360,7 +362,10 @@ public class SNServiceImpl implements SNService {
                     Map<String, Object> objectMap = new TreeMap<>();
                     ListLicenseDTO data = dtoList.get(i);
                     objectMap.put("serialNumber", data);
-                    objectMap.put("status", (int) fetchLicenseHistory(data.getId()).getLicenseStatus());
+
+                    LicenseHistory licenseHistory = fetchLicenseHistory(data.getId());
+                    objectMap.put("status", licenseHistory == null? 0: (int)licenseHistory.getLicenseStatus());
+
                     result.add(objectMap);
                 }
         );
@@ -622,8 +627,8 @@ public class SNServiceImpl implements SNService {
                 licenseHistory.setFileContentType(file.getContentType());
                 licenseHistory.setFileData(file.getBytes());
             }
-            licenseHistoryRepo.save(licenseHistory);
-            licenseHistoryRepo.flush();
+            licenseHistoryRepo.saveAndFlush(licenseHistory);
+            LOG.info("newLicenseHistory=======> "+licenseHistory.getId());
         }
         catch (Exception e){
             e.getStackTrace();
@@ -638,7 +643,10 @@ public class SNServiceImpl implements SNService {
     @Override
     public LicenseHistory fetchLicenseHistory(Long licenseId) {
         List<LicenseHistory> licenseHistories = licenseHistoryRepo.findLicenseHistory(licenseId);
-        return licenseHistories.get(0);
+        if(!licenseHistories.isEmpty()){
+            return licenseHistories.get(0);
+        }
+        return null;
     }
 
     private Short isLicenseNull(License license, LicenseHistoryRepo licenseHistoryRepo){
