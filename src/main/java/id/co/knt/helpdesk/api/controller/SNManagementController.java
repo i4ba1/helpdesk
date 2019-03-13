@@ -237,10 +237,14 @@ public class SNManagementController {
         snService.emptyListOfLicense();*/
 
         Iterator<License> iterator = list.iterator();
+        int count = 0;
         while (iterator.hasNext()){
             License l = iterator.next();
-            ListLicenseDTO listLicenseDTO = snService.saveGeneratedSN(l);
-            licenseDTOS.add(listLicenseDTO);
+            if ((count + 1) % 20 == 0) {
+                ListLicenseDTO listLicenseDTO = snService.saveGeneratedSN(l);
+                licenseDTOS.add(listLicenseDTO);
+            }
+            count++;
         }
 
        /* for (License license : list) {

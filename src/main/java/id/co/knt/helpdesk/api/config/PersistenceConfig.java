@@ -38,6 +38,9 @@ public class PersistenceConfig {
     private static final String PROPERTY_NAME_HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
     private static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     private static final String PROPERTY_NAME_HIBERNATE_PHYSICAL_NAMING_STRATEGY = "hibernate.physical_naming_strategy";
+    private static final String PROPERTY_NAME_HIBERNATE_BATCH_SIZE = "hibernate.jdbc.batch_size";
+    private static final String PROPERTY_NAME_HIBERNATE_ORDER_INSERTS = "hibernate.order_inserts";
+    private static final String PROPERTY_NAME_HIBERNATE_ORDER_UPDATES = "hibernate.order_updates";
     private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
     
     /**
@@ -94,7 +97,9 @@ public class PersistenceConfig {
         //If the value of this property is true, Hibernate will use prettyprint
         //when it writes SQL to the console.
         jpaProperties.put(PROPERTY_NAME_HIBERNATE_FORMAT_SQL, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_FORMAT_SQL));
-
+        jpaProperties.put(PROPERTY_NAME_HIBERNATE_BATCH_SIZE, 20);
+        jpaProperties.put(PROPERTY_NAME_HIBERNATE_ORDER_INSERTS, true);
+        jpaProperties.put(PROPERTY_NAME_HIBERNATE_ORDER_UPDATES, true);
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;
