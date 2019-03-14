@@ -475,9 +475,9 @@ public class SNServiceImpl implements SNService {
      * @return
      */
     @Override
-    public TreeMap<String, Set<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO) {
+    public TreeMap<String, Object> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO) {
         Product product = licenseGeneratorDTO.getProduct();
-        TreeMap<String, Set<License>> sortedData = new TreeMap<>();
+        TreeMap<String, Object> sortedData = new TreeMap<>();
         String generatedSn = "";
         list = new LinkedHashSet<>();
         generators = new LinkedHashSet<>();
@@ -520,6 +520,7 @@ public class SNServiceImpl implements SNService {
                 }
             }
         }
+        sortedData.put("product", product);
 
         return sortedData;
     }

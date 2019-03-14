@@ -204,14 +204,15 @@ public class SNManagementController {
     }
 
     /**
+     *
      * @param licenseGeneratorDTO
-     * @return ResponseEntity<TreeMap       <       String       ,               List       <       License>>>
+     * @return
      */
     @RequestMapping(value = {"/snGenerator/"}, method = RequestMethod.POST)
-    public ResponseEntity<TreeMap<String, Set<License>>> snGenerator(
+    public ResponseEntity<TreeMap<String, Object>> snGenerator(
             @RequestBody LicenseGeneratorDTO licenseGeneratorDTO) {
 
-        TreeMap<String, Set<License>> treeMap = snService.serialNumberGenerator(licenseGeneratorDTO);
+        TreeMap<String, Object> treeMap = snService.serialNumberGenerator(licenseGeneratorDTO);
         if (treeMap.isEmpty()) {
             return new ResponseEntity<>(treeMap, HttpStatus.BAD_REQUEST);
         }
@@ -237,9 +238,12 @@ public class SNManagementController {
         snService.emptyListOfLicense();*/
 
         Iterator<License> iterator = list.iterator();
+        List<License> licenseList = new ArrayList<>();
         int count = 0;
+
         while (iterator.hasNext()){
             License l = iterator.next();
+            licenseList.add(l);
             if ((count + 1) % 20 == 0) {
                 ListLicenseDTO listLicenseDTO = snService.saveGeneratedSN(l);
                 licenseDTOS.add(listLicenseDTO);

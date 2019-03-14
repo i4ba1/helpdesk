@@ -30,7 +30,7 @@ public interface SNService{
 
     License manuallyActivate(Long licenseId, String passkey, String reason);
 
-    TreeMap<String, Set<License>> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO);
+    TreeMap<String, Object> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO);
     
     List<LicenseHistory> findUnreadLicense();
     
