@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public interface SNService{
-    ListLicenseDTO saveGeneratedSN(License serialNumber);
+    List<ListLicenseDTO> saveGeneratedSN(List<License> serialNumber);
 
     int registerSN(License serialNumber);
 

@@ -173,7 +173,7 @@ public class SNManagementController {
      * @param searchText
      * @param startDate
      * @param endDate
-     * @return ResponseEntity<Map       <       String       ,               Object>>
+     * @return ResponseEntity<Map<String, Object>>
      */
     @RequestMapping(value = {"/serialNumbers/"}, method = RequestMethod.POST)
     public ResponseEntity<Map<String, Object>> findAllSN(@RequestParam String category, @RequestParam int page,
@@ -188,10 +188,9 @@ public class SNManagementController {
     }
 
     /**
-     * View detail of license table
      *
      * @param id
-     * @return ResponseEntity<Map       <       String       ,               Object>>
+     * @return ResponseEntity<Map<String, Object>>
      */
     @RequestMapping(value = "/viewDetailSN/{id}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> viewDetailSN(@PathVariable Long id) {
@@ -228,15 +227,10 @@ public class SNManagementController {
      */
     @RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
     public ResponseEntity<List<Map<String, Object>>> registerGeneratedSN(@RequestBody Set<License> list) {
-        //List<List<ListLicenseDTO>> listList = new ArrayList<>();
         List<ListLicenseDTO> licenseDTOS = new ArrayList<>();;
-        // Map<String, Object> objectMap = null;
         List<Map<String, Object>> result = new ArrayList<>();
 
         LOG.info("Size Of List: " + list.size());
-        /*licenseDTOS = snService.saveLicenseEntities(list);
-        snService.emptyListOfLicense();*/
-
         Iterator<License> iterator = list.iterator();
         List<License> licenseList = new ArrayList<>();
         int count = 0;
@@ -245,15 +239,11 @@ public class SNManagementController {
             License l = iterator.next();
             licenseList.add(l);
             if ((count + 1) % 20 == 0) {
-                ListLicenseDTO listLicenseDTO = snService.saveGeneratedSN(l);
-                licenseDTOS.add(listLicenseDTO);
+                licenseDTOS = snService.saveGeneratedSN(licenseList);
+                licenseList.clear();
             }
             count++;
         }
-
-       /* for (License license : list) {
-            licenseDTOS.add(snService.saveGeneratedSN(license));
-        }*/
 
         LOG.info("Size Of List LicenseDTO: " + licenseDTOS.size());
         for (ListLicenseDTO dto : licenseDTOS) {
