@@ -22,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -32,21 +34,26 @@ public class SNServiceImpl implements SNService {
     Logger LOG = LoggerFactory.getLogger(SNServiceImpl.class);
     private Gawl gawl = new Gawl();
 
-    @Autowired
-    private SNRepo snRepo;
+    private final SNRepo snRepo;
 
-    @Autowired
-    private ProductRepo productRepo;
+    private final ProductRepo productRepo;
 
-    private LicenseHistory licenseHistory;
-
-    @Autowired
-    private LicenseHistoryRepo licenseHistoryRepo;
+    private final LicenseHistoryRepo licenseHistoryRepo;
 
     private short status = 0;
     private String message = "";
     private Set<License> list = null;
     private Set<String> generators = null;
+
+    private StringWriter sw = null;
+    private PrintWriter pw = null;
+
+    @Autowired
+    public SNServiceImpl(SNRepo snRepo, ProductRepo productRepo, LicenseHistoryRepo licenseHistoryRepo) {
+        this.snRepo = snRepo;
+        this.productRepo = productRepo;
+        this.licenseHistoryRepo = licenseHistoryRepo;
+    }
 
     @Override
     public List<ListLicenseDTO> saveLicenseEntities(Set<License> licenses) {
@@ -96,8 +103,7 @@ public class SNServiceImpl implements SNService {
 
             listLicenseDTO = generateListLicenseDTO(listSerialsNumber, status);
         } catch (Exception e) {
-            e.getStackTrace();
-            //LoggingError.writeError(ExceptionUtils.getStackTrace(e));
+            LOG.error(LoggingError.stackTraceMessage(e).toString());
         }
 
         return listLicenseDTO;
@@ -385,7 +391,7 @@ public class SNServiceImpl implements SNService {
             activationKey = gawl.activate(passKey);
             snNumber.setActivationKey(activationKey);
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggingError.writeError(ExceptionUtils.getStackTrace(e));
         }
 
         return snNumber;
@@ -448,51 +454,56 @@ public class SNServiceImpl implements SNService {
      */
     @Override
     public TreeMap<String, Object> serialNumberGenerator(LicenseGeneratorDTO licenseGeneratorDTO) {
-        Product product = licenseGeneratorDTO.getProduct();
+
         TreeMap<String, Object> sortedData = new TreeMap<>();
-        String generatedSn = "";
-        list = new LinkedHashSet<>();
-        generators = new LinkedHashSet<>();
+        try {
+            Product product = licenseGeneratorDTO.getProduct();
+            String generatedSn = "";
+            list = new LinkedHashSet<>();
+            generators = new LinkedHashSet<>();
 
-        /* For Direct Entry */
-        if (product.getSubModuleType().equals("EL")) {
-            for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
-                try {
-                    generatedSn = gawl.generate(product.getProductCode(), licenseGeneratorDTO.getSubProducts().get(0).getValue());
-
-                    if (snRepo.findByLicense(generatedSn) != null) {
+            /* For Direct Entry */
+            if (product.getSubModuleType().equals("EL")) {
+                for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
+                    try {
                         generatedSn = gawl.generate(product.getProductCode(), licenseGeneratorDTO.getSubProducts().get(0).getValue());
-                    }
 
-                    i = getI(licenseGeneratorDTO, product, generatedSn, i);
-                } catch (Exception e) {
-                    LoggingError.writeError(ExceptionUtils.getStackTrace(e));
-                }
-            }
-
-            sortedData.put("EL", list);
-        } else {
-            // int lengthData = licenseGeneratorDTO.getLicenseCount() *
-            // licenseGeneratorDTO.getSubProducts().size();
-            for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
-                try {
-                    for (SubProduct sp : licenseGeneratorDTO.getSubProducts()) {
-                        generatedSn = gawl.generate(product.getProductCode(), sp.getValue());
                         if (snRepo.findByLicense(generatedSn) != null) {
-                            generatedSn = gawl.generate(product.getProductCode(), sp.getValue());
+                            generatedSn = gawl.generate(product.getProductCode(), licenseGeneratorDTO.getSubProducts().get(0).getValue());
                         }
+
                         i = getI(licenseGeneratorDTO, product, generatedSn, i);
+                    } catch (Exception e) {
+                        LoggingError.writeError(ExceptionUtils.getStackTrace(e));
                     }
+                }
+
+                sortedData.put("EL", list);
+            } else {
+                // int lengthData = licenseGeneratorDTO.getLicenseCount() *
+                // licenseGeneratorDTO.getSubProducts().size();
+                for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
+                    try {
+                        for (SubProduct sp : licenseGeneratorDTO.getSubProducts()) {
+                            generatedSn = gawl.generate(product.getProductCode(), sp.getValue());
+                            if (snRepo.findByLicense(generatedSn) != null) {
+                                generatedSn = gawl.generate(product.getProductCode(), sp.getValue());
+                            }
+                            i = getI(licenseGeneratorDTO, product, generatedSn, i);
+                        }
 
 
-                    sortedData.put("Paket" + (i + 1), list);
-                    list = new LinkedHashSet<>();
-                } catch (Exception e) {
-                    LoggingError.writeError(ExceptionUtils.getStackTrace(e));
+                        sortedData.put("Paket" + (i + 1), list);
+                        list = new LinkedHashSet<>();
+                    } catch (Exception e) {
+                        LoggingError.writeError(ExceptionUtils.getStackTrace(e));
+                    }
                 }
             }
+            sortedData.put("product", product);
+        }catch (Exception e){
+            LOG.error(LoggingError.stackTraceMessage(e).toString());
         }
-        sortedData.put("product", product);
 
         return sortedData;
     }

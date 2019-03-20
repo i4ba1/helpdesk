@@ -1,8 +1,6 @@
 package id.co.knt.helpdesk.api.utilities;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,4 +18,12 @@ public class LoggingError {
             e.printStackTrace();
         }
     }
+
+    public static StringWriter stackTraceMessage(Exception e){
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        return sw;
+    }
+
 }

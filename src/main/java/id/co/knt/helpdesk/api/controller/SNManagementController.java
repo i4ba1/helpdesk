@@ -6,6 +6,8 @@ import id.co.knt.helpdesk.api.model.dto.LicenseGeneratorDTO;
 import id.co.knt.helpdesk.api.model.dto.ListLicenseDTO;
 import id.co.knt.helpdesk.api.repositories.SNRepo;
 import id.co.knt.helpdesk.api.service.SNService;
+import id.co.knt.helpdesk.api.utilities.LoggingError;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import java.util.*;
 public class SNManagementController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SNManagementController.class);
+    private static final String PARENT_MAPPING = "/snManagement";
 
     private final SNService snService;
 
@@ -43,7 +46,10 @@ public class SNManagementController {
      */
     @RequestMapping(value = "/register/", method = RequestMethod.POST)
     public ResponseEntity<Integer> register(@RequestBody License license) {
+        LOG.info(PARENT_MAPPING+"/register/");
         int error = snService.registerSN(license);
+        LOG.info(PARENT_MAPPING+"/register/"+" error==> "+error);
+
         if (error == 1) {
             return new ResponseEntity<>(error, HttpStatus.ACCEPTED);
         } else if (error == 2) {
@@ -79,9 +85,6 @@ public class SNManagementController {
     @RequestMapping(value = "/requestActivationKey/{id}/{passKey}", method = RequestMethod.GET)
     public ResponseEntity<License> requestActivationKey(@PathVariable Long id, @PathVariable String passKey) {
         License serialNumber = snService.generateActivationKey(id, passKey);
-        if (serialNumber.equals(null)) {
-            return new ResponseEntity<>(serialNumber, HttpStatus.NOT_FOUND);
-        }
 
         return new ResponseEntity<>(serialNumber, HttpStatus.OK);
     }
@@ -119,7 +122,7 @@ public class SNManagementController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggingError.writeError(ExceptionUtils.getStackTrace(e));
         }
 
         if (result == null) {
@@ -155,7 +158,7 @@ public class SNManagementController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggingError.writeError(ExceptionUtils.getStackTrace(e));
         }
 
         if (currentLicense == null) {
@@ -210,6 +213,7 @@ public class SNManagementController {
     @RequestMapping(value = {"/snGenerator/"}, method = RequestMethod.POST)
     public ResponseEntity<TreeMap<String, Object>> snGenerator(
             @RequestBody LicenseGeneratorDTO licenseGeneratorDTO) {
+        LOG.info(PARENT_MAPPING+"/snGenerator/");
 
         TreeMap<String, Object> treeMap = snService.serialNumberGenerator(licenseGeneratorDTO);
         if (treeMap.isEmpty()) {
@@ -268,7 +272,6 @@ public class SNManagementController {
         }
 
         return new ResponseEntity<>(unreadLicenses, HttpStatus.OK);
-
     }
 
     /**
@@ -351,7 +354,7 @@ public class SNManagementController {
         License currentLicense = snRepo.findByLicense(license.getLicense());
 
         if (currentLicense == null) {
-            return new ResponseEntity<Integer>(-1, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(-1, HttpStatus.NOT_FOUND);
         }
 
         try {
@@ -359,7 +362,7 @@ public class SNManagementController {
                 return new ResponseEntity<>(-1, HttpStatus.NOT_ACCEPTABLE);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(LoggingError.stackTraceMessage(e).toString());
         }
 
         return new ResponseEntity<>(0, HttpStatus.OK);
