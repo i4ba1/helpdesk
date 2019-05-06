@@ -242,11 +242,14 @@ public class SNManagementController {
         while (iterator.hasNext()){
             License l = iterator.next();
             licenseList.add(l);
+            LOG.info("licenseList.size()====> "+ licenseList.size());
+
             if ((count + 1) % 20 == 0) {
                 licenseDTOS = snService.saveGeneratedSN(licenseList);
                 licenseList.clear();
             }
             count++;
+            LOG.info("count====> "+ count);
         }
 
         LOG.info("Size Of List LicenseDTO: " + licenseDTOS.size());

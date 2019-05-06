@@ -32,12 +32,6 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @Value("${userName}")
-    String userName;
-
-    @Value("${pass}")
-    String pass;
-
 
     /**
      *
@@ -71,7 +65,7 @@ public class LoginController {
         }
     }
     
-    @RequestMapping(value = "/createUser/", method = RequestMethod.POST)
+   /* @RequestMapping(value = "/createUser/", method = RequestMethod.POST)
     public ResponseEntity<Boolean> createAdmin(@RequestBody User newUser) {
     	LOG.info("ResponseEntity<Boolean> createAdmin /createAdmin/");
 		User adminUser = userService.findUserByUsername("a4m1n");
@@ -92,7 +86,7 @@ public class LoginController {
 
 		return u != null ? new ResponseEntity<Boolean>(true, HttpStatus.OK)
 				: new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
-    }
+    }*/
 
     private ResponseEntity<Login> firstLogin(Date dt, SecureRandom rand, DateTime dateTime,
                                                                  User user) {
