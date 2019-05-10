@@ -231,7 +231,8 @@ public class SNManagementController {
      */
     @RequestMapping(value = "/registerGeneratedSN/", method = RequestMethod.POST)
     public ResponseEntity<List<Map<String, Object>>> registerGeneratedSN(@RequestBody Set<License> list) {
-        List<ListLicenseDTO> licenseDTOS = new ArrayList<>();;
+        LOG.info("registerGeneratedSN(@RequestBody Set<License> list) /registerGeneratedSN");
+        List<ListLicenseDTO> licenseDTOS = new ArrayList<>();
         List<Map<String, Object>> result = new ArrayList<>();
 
         LOG.info("Size Of List: " + list.size());
@@ -244,11 +245,13 @@ public class SNManagementController {
             licenseList.add(l);
             LOG.info("licenseList.size()====> "+ licenseList.size());
 
-            if ((count + 1) % 20 == 0) {
+            if (++count % 20 == 0) {
                 licenseDTOS = snService.saveGeneratedSN(licenseList);
                 licenseList.clear();
+            }else {
+                licenseDTOS = snService.saveGeneratedSN(licenseList);
             }
-            count++;
+
             LOG.info("count====> "+ count);
         }
 
@@ -264,7 +267,7 @@ public class SNManagementController {
     /**
      * To find unread license to show on dashboard
      *
-     * @return ResponseEntity<List       <       LicenseHistory>>
+     * @return ResponseEntity<List<LicenseHistory>>
      */
     @RequestMapping(value = "/findUnreadLicenses/", method = RequestMethod.GET)
     public ResponseEntity<List<LicenseHistory>> findUnreadLicenses() {
