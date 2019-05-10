@@ -462,7 +462,8 @@ public class SNServiceImpl implements SNService {
             generators = new LinkedHashSet<>();
 
             /* For Direct Entry */
-            if (product.getSubModuleType().equals("EL")) {
+            String subModuleType = product.getSubModuleType();
+            if (subModuleType.equals("EL")) {
                 for (int i = 0; i < licenseGeneratorDTO.getLicenseCount(); i++) {
                     try {
                         generatedSn = gawl.generate(product.getProductCode(), licenseGeneratorDTO.getSubProducts().get(0).getValue());
@@ -471,7 +472,7 @@ public class SNServiceImpl implements SNService {
                             generatedSn = gawl.generate(product.getProductCode(), licenseGeneratorDTO.getSubProducts().get(0).getValue());
                         }
 
-                        i = getI(licenseGeneratorDTO, product, generatedSn, i);
+                        i = getI(licenseGeneratorDTO, product, generatedSn, i, subModuleType);
                     } catch (Exception e) {
                         LoggingError.writeError(ExceptionUtils.getStackTrace(e));
                     }
@@ -488,9 +489,8 @@ public class SNServiceImpl implements SNService {
                             if (snRepo.findByLicense(generatedSn) != null) {
                                 generatedSn = gawl.generate(product.getProductCode(), sp.getValue());
                             }
-                            i = getI(licenseGeneratorDTO, product, generatedSn, i);
+                            i = getI(licenseGeneratorDTO, product, generatedSn, i, subModuleType);
                         }
-
 
                         sortedData.put("Paket" + (i + 1), list);
                         list = new LinkedHashSet<>();
@@ -507,9 +507,9 @@ public class SNServiceImpl implements SNService {
         return sortedData;
     }
 
-    private int getI(LicenseGeneratorDTO licenseGeneratorDTO, Product product, String generatedSn, int i) {
+    private int getI(LicenseGeneratorDTO licenseGeneratorDTO, Product product, String generatedSn, int i, String subModuleType) {
         if (!generators.contains(generatedSn)) {
-            License newLicense = addLicenseToGenerators(generatedSn, licenseGeneratorDTO, product);
+            License newLicense = addLicenseToGenerators(generatedSn, licenseGeneratorDTO, product, subModuleType);
             list.add(newLicense);
             generators.add(generatedSn);
         } else {
@@ -518,10 +518,14 @@ public class SNServiceImpl implements SNService {
         return i;
     }
 
-    private License addLicenseToGenerators(String generatedSn, LicenseGeneratorDTO licenseGeneratorDTO, Product product) {
+    private License addLicenseToGenerators(String generatedSn, LicenseGeneratorDTO licenseGeneratorDTO, Product product, String subModuleType) {
         License newLicense = new License();
         newLicense.setLicense(generatedSn.toLowerCase());
-        newLicense.setNumberOfClient(licenseGeneratorDTO.getSubProducts().get(0).getValue());
+        if(subModuleType.equals("EP")) {
+            newLicense.setNumberOfClient(1);
+        }else {
+            newLicense.setNumberOfClient(licenseGeneratorDTO.getSubProducts().get(0).getValue());
+        }
         newLicense.setCreatedDate(new Date().getTime());
         newLicense.setProduct(product);
         return newLicense;
